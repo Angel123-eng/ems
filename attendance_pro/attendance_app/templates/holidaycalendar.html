@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<body>
+    <style>
+        .day {
+            padding: 20px;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+            border: 3px solid #ccc; /* Increase border width */
+        }
+    
+        .day:hover {
+            background-color: #f0f0f0;
+        }
+        .current-month {
+            color: #333;
+        }
+
+        .other-month {
+            color: #ccc;
+        }
+
+        #calendar {
+            margin: 20px;
+            max-width: 100%; /* Increased maximum width */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #calendar-header {
+            background-color: #f2f2f2;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-bottom: 1px solid #ccc;
+        }
+
+        #calendar-dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 10px;
+        }
+
+        .day {
+            padding: 20px;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .day:hover {
+            background-color: #f0f0f0;
+        }
+
+        .current-month {
+            color: #333;
+        }
+
+        .other-month {
+            color: #ccc;
+        }
+    </style>
+   
+    <div id="calendar">
+        <div id="calendar-header">
+            <button onclick="previousMonth()">&#8249;</button>
+            <h2 id="month-year"></h2>
+            <button onclick="nextMonth()">&#8250;</button>
+        </div>
+
+        <div id="calendar-days">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+
+        <div id="calendar-dates"></div>
+    </div>
+
+    <script>
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+
+        function updateCalendar(data) {
+            const calendarDates = document.getElementById('calendar-dates');
+    
+            calendarDates.childNodes.forEach(dayElement => {
+                const dayNumber = parseInt(dayElement.textContent);
+                const dayData = data.find(item => new Date(item.date).getDate() === dayNumber);
+    
+                if (dayData) {
+                    const isCurrentMonth = dayElement.classList.contains('current-month');
+    
+                    if (isCurrentMonth) {
+                        let borderColor = '';
+    
+                        switch (dayData.status.toLowerCase()) {
+                            case 'holiday':
+                                borderColor = 'brown';
+                                break;
+                            case 'weekoff':
+                                borderColor = 'yellow';
+                                break;
+                            case 'sunday':
+                                borderColor = 'black';
+                                break;
+                            default:
+                                return; // Skip if not one of the specified statuses
+                        }
+    
+                        dayElement.style.borderColor = borderColor;
+                        dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>`;
+                    }
+                }
+            });
+        }
+        
+        
+        
+        
+
+        function generateCalendar() {
+            const calendarHeader = document.getElementById('month-year');
+            const calendarDates = document.getElementById('calendar-dates');
+        
+            calendarHeader.textContent = new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                year: 'numeric'
+            }).format(currentDate);
+        
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        
+            calendarDates.innerHTML = '';
+        
+            for (let i = firstDayOfMonth; i > 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'day other-month';
+                day.textContent = new Date(currentYear, currentMonth, -i + 1).getDate();
+                calendarDates.appendChild(day);
+            }
+        
+            for (let i = 1; i <= lastDayOfMonth; i++) {
+                const day = document.createElement('div');
+                day.className = 'day current-month';
+        
+                // Set different colors based on the date range
+                const currentDate = new Date(currentYear, currentMonth, i);
+                const dateRanges = [
+               
+                    { start: new Date(currentYear, -1, 26), end: new Date(currentYear, 0, 25), color: '#fcf4fc' }, // Jan to Feb
+                    { start: new Date(currentYear, 0, 26), end: new Date(currentYear, 1, 25), color: '#e3f7e1' }, // Jan to Feb
+                    { start: new Date(currentYear, 1, 26), end: new Date(currentYear, 2, 25), color: '#fcedf0' }, // Feb to Mar
+                    { start: new Date(currentYear, 2, 26), end: new Date(currentYear, 3, 25), color: '#e0f6f4' }, // Mar to Apr
+                    { start: new Date(currentYear, 3, 26), end: new Date(currentYear, 4, 25), color: '#f6f4e0' }, // Apr to May
+                    { start: new Date(currentYear, 4, 26), end: new Date(currentYear, 5, 25), color: '#f4e4e4' }, // May to Jun
+                    { start: new Date(currentYear, 5, 26), end: new Date(currentYear, 6, 25), color: '#e0f7f1' }, // Jun to Jul
+                    { start: new Date(currentYear, 6, 26), end: new Date(currentYear, 7, 25), color: '#f9f0f8' }, // Jul to Aug
+                    { start: new Date(currentYear, 7, 26), end: new Date(currentYear, 8, 25), color: '#e9fcd9' }, // Aug to Sep
+                    { start: new Date(currentYear, 8, 26), end: new Date(currentYear, 9, 25), color: '#f7ebf3' }, // Sep to Oct
+                    { start: new Date(currentYear, 9, 26), end: new Date(currentYear, 10, 25), color: '#e1ecf9' }, // Oct to Nov
+                    { start: new Date(currentYear, 10, 26), end: new Date(currentYear, 11, 25), color: '#e4fbdf' }, // Nov to Dec
+                    { start: new Date(currentYear, 11, 26), end: new Date(currentYear + 1, 0, 25), color: '#fcf4fc' }, // Dec to Jan (next year)
+                ];
+        
+                dateRanges.forEach(range => {
+                    if (currentDate >= range.start && currentDate <= range.end) {
+                        day.style.backgroundColor = range.color;
+                    }
+                });
+        
+                day.textContent = i;
+                calendarDates.appendChild(day);
+            }
+        
+            const totalDays = calendarDates.children.length;
+            const remainingDays = 42 - totalDays;
+        
+            for (let i = 1; i <= remainingDays; i++) {
+                const day = document.createElement('div');
+                day.className = 'day other-month';
+                day.textContent = i;
+                calendarDates.appendChild(day);
+            }
+        
+            // Fetch data for the current month
+            fetchData(currentYear, currentMonth + 1)
+                .then(data => updateCalendar(data));
+        }
+
+        function fetchData(year, month) {
+            const url = `/fetch_data/${year}/${month}/`;
+    
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the calendar first, then the counts
+                    updateCalendar(data);
+                    updateCounts(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        function updateCounts(countData) {
+            const statusCounts = {};
+            countData.forEach(item => {
+                statusCounts[item.status] = item.count;
+            });
+        
+            document.getElementById('present-count').textContent = statusCounts['present'] || 0;
+            document.getElementById('halfday-count').textContent = statusCounts['half day'] || 0;
+            document.getElementById('absent-count').textContent = statusCounts['absent'] || 0;
+            document.getElementById('leave-count').textContent = statusCounts['leave'] || 0;
+            document.getElementById('halfdayleave-count').textContent = statusCounts['half day leave'] || 0;
+            document.getElementById('weekoff-count').textContent = statusCounts['weekoff'] || 0;
+            document.getElementById('sunday-count').textContent = statusCounts['sunday'] || 0;
+            document.getElementById('holiday-count').textContent = statusCounts['holiday'] || 0;
+        
+            // Update the table based on the counts
+            updateTable(countData);
+        }
+
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            currentDate = new Date(currentYear, currentMonth, 1);
+            generateCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            currentDate = new Date(currentYear, currentMonth, 1);
+            generateCalendar();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            generateCalendar();
+
+            document.getElementById('calendar').addEventListener('click', function (event) {
+                if (event.target.classList.contains('day')) {
+                    const selectedDate = event.target.textContent;
+                    const [year, month] = document.getElementById('month-year').textContent.split(' ');
+
+                    fetchData(year, month)
+                        .then(data => updateCalendar(data));
+                }
+            });
+        });
+    </script>
+</body>
+
+{% endblock %}
+
+  
+

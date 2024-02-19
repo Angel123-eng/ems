@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}Leave Application{% endblock %}
+
+{% block content %}
+
+<main class="main-content mt-0">
+    <section>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-xl-8">
+           
+              <div class="card-body">
+                <div class="container-box">
+                  <h4 class="font-weight-bolder">Leave Application</h4>
+
+                  <form role="form" method="POST" class="my-form">
+                    {% csrf_token %}
+                    
+                    <div class="input-group input-group-outline mb-2" style="position: relative;">
+                        <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px;">Name</label>
+                        <input type="text" readonly class="form-control" name="name" value="{{a.name}}" style="margin-top: 30px; width: 100%;">
+                    </div>
+                
+                    <div class="input-group input-group-outline mb-2" style="position: relative;">
+                        <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px;">Employee ID</label>
+                        <input type="number" readonly class="form-control" name="employeeid" value="{{a.employeeid}}" style="margin-top: 30px; width: 100%;">
+                    </div>
+                
+                    <div class="input-group input-group-outline mb-2" style="position: relative;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="leaveType" id="halfDay" value="Half Day">
+                            <label class="form-check-label" for="halfDay">Half Day</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="leaveType" id="fullDay" value="Full Day">
+                            <label class="form-check-label" for="fullDay">Full Day</label>
+                        </div>
+                    </div>
+                
+                    <div id="halfDayFields" style="display: none;">
+                        <div class="input-group input-group-outline mb-2" style="position: relative;">
+                            <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px;">Half Day Date</label>
+                            <input type="date" class="form-control" name="halfDayDate" style="margin-top: 30px; width: 100%;">
+                        </div>
+                    </div>
+                
+                    <div id="fullDayFields" style="display: none;">
+                        <div class="input-group input-group-outline mb-2" style="position: relative;">
+                            <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px;">From date</label>
+                            <input type="date" class="form-control" name="fromdate" style="margin-top: 30px; width: 100%;">
+                        </div>
+                        <div class="input-group input-group-outline mb-2" style="position: relative;">
+                            <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px; ">To date</label>
+                            <input type="date" class="form-control" name="todate" style="margin-top: 30px; width: 100%;">
+                        </div>
+                    </div>
+                
+                    <div class="input-group input-group-outline mb-2" style="position: relative;">
+                        <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px;">Reason</label>
+                        <textarea class="form-control" name="reason" style="margin-top: 30px; width: 100%;"></textarea>
+                    </div>
+                
+                    <input type="hidden" name="status" value="Pending">
+                
+                    <div class="container">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Apply</button>
+                        </div>
+                    </div>
+                </form>
+                
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const halfDayFields = document.getElementById("halfDayFields");
+                        const fullDayFields = document.getElementById("fullDayFields");
+                        const halfDayRadio = document.getElementById("halfDay");
+                        const fullDayRadio = document.getElementById("fullDay");
+                
+                        halfDayRadio.addEventListener("change", function () {
+                            if (halfDayRadio.checked) {
+                                halfDayFields.style.display = "block";
+                                fullDayFields.style.display = "none";
+                            }
+                        });
+                
+                        fullDayRadio.addEventListener("change", function () {
+                            if (fullDayRadio.checked) {
+                                fullDayFields.style.display = "block";
+                                halfDayFields.style.display = "none";
+                            }
+                        });
+                    });
+                </script>
+                
+      </div>
+  </div>
+  
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <style>
+    /* Add some basic styling if needed */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+  </style>
+  <style>
+    .container-box {
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Add some basic styling if needed */
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 20px;
+    }
+
+    /* Style for the form container */
+    .my-form {
+        /* Add additional styling for your form if needed */
+    }
+</style>
+  {% endblock %}

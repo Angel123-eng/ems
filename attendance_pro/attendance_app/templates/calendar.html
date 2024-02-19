@@ -1,0 +1,1054 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/ictlogotext.png">
+  <title>
+    Attendance Records
+    </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="/static/assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
+  <!-- Nepcha Analytics (nepcha.com) -->
+  <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <style>
+    <style>
+      body {
+          font-family: 'Arial', sans-serif;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+         
+      }
+
+      #calendar {
+          max-width: 1000px; /* Increased maximum width */
+          max-height: 1000px; /* Increased maximum height */
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          overflow: hidden;
+          margin: auto; /* Centering the calendar */
+      }
+
+      #calendar-header {
+          background-color: #f2f2f2;
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+      }
+
+      #calendar-days {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          border-bottom: 1px solid #ccc;
+      }
+
+      #calendar-dates {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          padding: 10px;
+      }
+
+   .day {
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    border: 3px solid #ccc; /* Add border to create lines between dates */
+}
+
+.day:hover {
+    background-color: #f0f0f0;
+}
+
+.current-month {
+    color: #333;
+}
+
+.other-month {
+    color: #ccc;
+}
+
+.content-container {
+  text-align: center;
+}
+
+  </style>
+</head>
+
+<body class="g-sidenav-show  bg-gray-100">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
+        <img src="/static/assets/img/ictlogotext.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold">ICT Global Tech</span>
+      </a>
+    </div>
+    <hr class="horizontal dark mt-0">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link  " href="/admindashboard/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>shop </title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-1716.000000, -439.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g transform="translate(0.000000, 148.000000)">
+                        <path class="color-background opacity-6" d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z"></path>
+                        <path class="color-background" d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/employeedetails/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>office</title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-1869.000000, -293.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g id="office" transform="translate(153.000000, 2.000000)">
+                        <path class="color-background opacity-6" d="M12.25,17.5 L8.75,17.5 L8.75,1.75 C8.75,0.78225 9.53225,0 10.5,0 L31.5,0 C32.46775,0 33.25,0.78225 33.25,1.75 L33.25,12.25 L29.75,12.25 L29.75,3.5 L12.25,3.5 L12.25,17.5 Z"></path>
+                        <path class="color-background" d="M40.25,14 L24.5,14 C23.53225,14 22.75,14.78225 22.75,15.75 L22.75,38.5 L19.25,38.5 L19.25,22.75 C19.25,21.78225 18.46775,21 17.5,21 L1.75,21 C0.78225,21 0,21.78225 0,22.75 L0,40.25 C0,41.21775 0.78225,42 1.75,42 L40.25,42 C41.21775,42 42,41.21775 42,40.25 L42,15.75 C42,14.78225 41.21775,14 40.25,14 Z M12.25,36.75 L7,36.75 L7,33.25 L12.25,33.25 L12.25,36.75 Z M12.25,29.75 L7,29.75 L7,26.25 L12.25,26.25 L12.25,29.75 Z M35,36.75 L29.75,36.75 L29.75,33.25 L35,33.25 L35,36.75 Z M35,29.75 L29.75,29.75 L29.75,26.25 L35,26.25 L35,29.75 Z M35,22.75 L29.75,22.75 L29.75,19.25 L35,19.25 L35,22.75 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Employee Details</span>
+          </a>
+        </li>
+      
+        <li class="nav-item">
+            <a class="nav-link" href="/display_attendance/">
+              <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <title>box-3d-50</title>
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-2319.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                      <g transform="translate(1716.000000, 291.000000)">
+                        <g transform="translate(603.000000, 0.000000)">
+                          <path class="color-background" d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474453 38.8987261,9.45068056 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
+                          <path class="color-background opacity-6" d="M23.625,22.429159 L23.625,39.8805372 C23.625,40.4328219 24.0727153,40.8805372 24.625,40.8805372 C24.7802551,40.8805372 24.9333778,40.8443874 25.0722402,40.7749511 L41.2741875,32.673375 L41.2741875,32.673375 C41.719125,32.4515625 42,31.9974375 42,31.5 L42,14.241659 C42,13.6893742 41.5522847,13.241659 41,13.241659 C40.8447549,13.241659 40.6916418,13.2778041 40.5527864,13.3472318 L24.1777864,21.5347318 C23.8390024,21.7041238 23.625,22.0503869 23.625,22.429159 Z"></path>
+                          <path class="color-background opacity-6" d="M20.4472136,21.5347318 L1.4472136,12.0347318 C0.953235098,11.7877425 0.352562058,11.9879669 0.105572809,12.4819454 C0.0361450918,12.6208008 6.47121774e-16,12.7739139 0,12.929159 L0,30.1875 L0,30.1875 C0,30.6849375 0.280875,31.1390625 0.7258125,31.3621875 L19.5528096,40.7750766 C20.0467945,41.0220531 20.6474623,40.8218132 20.8944388,40.3278283 C20.963859,40.1889789 21,40.0358742 21,39.8806379 L21,22.429159 C21,22.0503869 20.7859976,21.7041238 20.4472136,21.5347318 Z"></path>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+              <span class="nav-link-text ms-1">Attendance Records</span>
+            </a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link  " href="/monthlyattendance/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>credit-card</title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g transform="translate(453.000000, 454.000000)">
+                        <path class="color-background opacity-6" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"></path>
+                        <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Monthly Attendance</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  " href="/leavedisplay/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>box-3d-50</title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-2319.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g transform="translate(603.000000, 0.000000)">
+                        <path class="color-background" d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474453 38.8987261,9.45068056 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
+                        <path class="color-background opacity-6" d="M23.625,22.429159 L23.625,39.8805372 C23.625,40.4328219 24.0727153,40.8805372 24.625,40.8805372 C24.7802551,40.8805372 24.9333778,40.8443874 25.0722402,40.7749511 L41.2741875,32.673375 L41.2741875,32.673375 C41.719125,32.4515625 42,31.9974375 42,31.5 L42,14.241659 C42,13.6893742 41.5522847,13.241659 41,13.241659 C40.8447549,13.241659 40.6916418,13.2778041 40.5527864,13.3472318 L24.1777864,21.5347318 C23.8390024,21.7041238 23.625,22.0503869 23.625,22.429159 Z"></path>
+                        <path class="color-background opacity-6" d="M20.4472136,21.5347318 L1.4472136,12.0347318 C0.953235098,11.7877425 0.352562058,11.9879669 0.105572809,12.4819454 C0.0361450918,12.6208008 6.47121774e-16,12.7739139 0,12.929159 L0,30.1875 L0,30.1875 C0,30.6849375 0.280875,31.1390625 0.7258125,31.3621875 L19.5528096,40.7750766 C20.0467945,41.0220531 20.6474623,40.8218132 20.8944388,40.3278283 C20.963859,40.1889789 21,40.0358742 21,39.8806379 L21,22.429159 C21,22.0503869 20.7859976,21.7041238 20.4472136,21.5347318 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Leave Application</span>
+          </a>
+        </li>
+     
+        <li class="nav-item">
+          <a class="nav-link  " href="/weekoff/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>box-3d-50</title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-2319.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g transform="translate(603.000000, 0.000000)">
+                        <path class="color-background" d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474453 38.8987261,9.45068056 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
+                        <path class="color-background opacity-6" d="M23.625,22.429159 L23.625,39.8805372 C23.625,40.4328219 24.0727153,40.8805372 24.625,40.8805372 C24.7802551,40.8805372 24.9333778,40.8443874 25.0722402,40.7749511 L41.2741875,32.673375 L41.2741875,32.673375 C41.719125,32.4515625 42,31.9974375 42,31.5 L42,14.241659 C42,13.6893742 41.5522847,13.241659 41,13.241659 C40.8447549,13.241659 40.6916418,13.2778041 40.5527864,13.3472318 L24.1777864,21.5347318 C23.8390024,21.7041238 23.625,22.0503869 23.625,22.429159 Z"></path>
+                        <path class="color-background opacity-6" d="M20.4472136,21.5347318 L1.4472136,12.0347318 C0.953235098,11.7877425 0.352562058,11.9879669 0.105572809,12.4819454 C0.0361450918,12.6208008 6.47121774e-16,12.7739139 0,12.929159 L0,30.1875 L0,30.1875 C0,30.6849375 0.280875,31.1390625 0.7258125,31.3621875 L19.5528096,40.7750766 C20.0467945,41.0220531 20.6474623,40.8218132 20.8944388,40.3278283 C20.963859,40.1889789 21,40.0358742 21,39.8806379 L21,22.429159 C21,22.0503869 20.7859976,21.7041238 20.4472136,21.5347318 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Week off</span>
+          </a>
+        </li>
+      
+        <li class="nav-item">
+          <a class="nav-link  " href="/publicholidays/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>box-3d-50</title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-2319.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g transform="translate(603.000000, 0.000000)">
+                        <path class="color-background" d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474453 38.8987261,9.45068056 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
+                        <path class="color-background opacity-6" d="M23.625,22.429159 L23.625,39.8805372 C23.625,40.4328219 24.0727153,40.8805372 24.625,40.8805372 C24.7802551,40.8805372 24.9333778,40.8443874 25.0722402,40.7749511 L41.2741875,32.673375 L41.2741875,32.673375 C41.719125,32.4515625 42,31.9974375 42,31.5 L42,14.241659 C42,13.6893742 41.5522847,13.241659 41,13.241659 C40.8447549,13.241659 40.6916418,13.2778041 40.5527864,13.3472318 L24.1777864,21.5347318 C23.8390024,21.7041238 23.625,22.0503869 23.625,22.429159 Z"></path>
+                        <path class="color-background opacity-6" d="M20.4472136,21.5347318 L1.4472136,12.0347318 C0.953235098,11.7877425 0.352562058,11.9879669 0.105572809,12.4819454 C0.0361450918,12.6208008 6.47121774e-16,12.7739139 0,12.929159 L0,30.1875 L0,30.1875 C0,30.6849375 0.280875,31.1390625 0.7258125,31.3621875 L19.5528096,40.7750766 C20.0467945,41.0220531 20.6474623,40.8218132 20.8944388,40.3278283 C20.963859,40.1889789 21,40.0358742 21,39.8806379 L21,22.429159 C21,22.0503869 20.7859976,21.7041238 20.4472136,21.5347318 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Public Holidays</span>
+          </a>
+        </li>
+     
+    <div class="sidenav-footer mx-3 ">
+      <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
+        <div class="full-background" style="background-image: url('/static/assets/img/curved-images/white-curved.jpg')"></div>
+       
+      </div>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+         
+          <h3 class="font-weight-bolder mb-0">Calendar</h3>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            
+          </div>
+          <div class="input-group">
+            <div class="form-outline" data-mdb-input-init>
+              <input type="search" id="form1" class="form-control"/>
+            </div>
+            <button type="button" class="btn btn-dark" data-mdb-ripple-init>
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <ul class="navbar-nav  justify-content-end">
+           
+           
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0">
+                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user me-sm-1"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+             
+                <li class="mb-2">
+                  <div class="d-flex py-1">
+                      <div class="my-auto">
+                      </div>
+                      <a href="{% url 'adminlogout' %}">
+                          Logout <i class="fas fa-arrow-right"></i>
+                      </a>
+                  </div>
+              </li>
+               
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="content-container">
+  
+      {% for employee in employees %}
+        <div>
+            <p><b>Monthly Details of {{ employee.name }}</b></p>
+            <p><b>Employee ID: {{ employee.employeeid }}</b></p>
+            <p style="display:none;" id="employeeId">{{employee.employeeid}} </p>
+        </div>
+      {% endfor %}
+
+    <div id="calendar">
+      <div id="calendar-header">
+          <button onclick="previousMonth()">&#8249;</button>
+          <h2 id="month-year"></h2>
+          <button onclick="nextMonth()">&#8250;</button>
+      </div>
+  
+      <div id="calendar-days">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+      </div>
+  
+      <div id="calendar-dates"></div>
+  </div>
+  
+  <script>
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+
+    function updateCalendar(data) {
+        const calendarDates = document.getElementById('calendar-dates');
+    
+        calendarDates.childNodes.forEach(dayElement => {
+            const dayNumber = parseInt(dayElement.textContent);
+            const dayData = data.find(item => new Date(item.date).getDate() === dayNumber);
+    
+            if (dayData) {
+                // Check if the day is from the current month
+                const isCurrentMonth = dayElement.classList.contains('current-month');
+    
+                // Assign different border colors based on the status
+                let borderColor = '';
+                switch (dayData.status.toLowerCase()) {
+                    case 'present':
+                        borderColor = 'green';
+                        break;
+                    case 'half day':
+                        borderColor = 'yellow';
+                        break;
+                    case 'absent':
+                        borderColor = 'orange';
+                        break;
+                    case 'leave':
+                        borderColor = 'red';
+                        break;
+                    case 'half day leave':
+                        borderColor = 'purple';
+                        break;
+                    case 'weekoff':
+                        borderColor = 'yellow';
+                        break;
+                    case 'sunday':
+                        borderColor = 'black';
+                        break;
+                    case 'holiday':
+                        borderColor = 'brown';
+                        break;
+                    default:
+                        borderColor = 'black'; // Default color for unknown status
+                }
+    
+                // Set border color for the cell only if it's from the current month
+                if (isCurrentMonth) {
+                    dayElement.style.borderColor = borderColor;
+                }
+    
+                // Display date and status only if it's from the current month
+                if (isCurrentMonth) {
+                    dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>`;
+                }
+            }
+        });
+    }
+    
+    
+    
+    
+
+   function generateCalendar() {
+    const calendarHeader = document.getElementById('month-year');
+    const calendarDates = document.getElementById('calendar-dates');
+
+    calendarHeader.textContent = new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        year: 'numeric'
+    }).format(currentDate);
+
+    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    calendarDates.innerHTML = '';
+
+    for (let i = firstDayOfMonth; i > 0; i--) {
+        const day = document.createElement('div');
+        day.className = 'day other-month';
+        day.textContent = new Date(currentYear, currentMonth, -i + 1).getDate();
+        calendarDates.appendChild(day);
+    }
+
+    for (let i = 1; i <= lastDayOfMonth; i++) {
+        const day = document.createElement('div');
+        day.className = 'day current-month';
+
+        // Set different colors based on the date range
+        const currentDate = new Date(currentYear, currentMonth, i);
+        const dateRanges = [
+       
+            { start: new Date(currentYear, -1, 26), end: new Date(currentYear, 0, 25), color: '#fcf4fc' }, // Jan to Feb
+            { start: new Date(currentYear, 0, 26), end: new Date(currentYear, 1, 25), color: '#e3f7e1' }, // Jan to Feb
+            { start: new Date(currentYear, 1, 26), end: new Date(currentYear, 2, 25), color: '#fcedf0' }, // Feb to Mar
+            { start: new Date(currentYear, 2, 26), end: new Date(currentYear, 3, 25), color: '#e0f6f4' }, // Mar to Apr
+            { start: new Date(currentYear, 3, 26), end: new Date(currentYear, 4, 25), color: '#f6f4e0' }, // Apr to May
+            { start: new Date(currentYear, 4, 26), end: new Date(currentYear, 5, 25), color: '#f4e4e4' }, // May to Jun
+            { start: new Date(currentYear, 5, 26), end: new Date(currentYear, 6, 25), color: '#e0f7f1' }, // Jun to Jul
+            { start: new Date(currentYear, 6, 26), end: new Date(currentYear, 7, 25), color: '#f9f0f8' }, // Jul to Aug
+            { start: new Date(currentYear, 7, 26), end: new Date(currentYear, 8, 25), color: '#e9fcd9' }, // Aug to Sep
+            { start: new Date(currentYear, 8, 26), end: new Date(currentYear, 9, 25), color: '#f7ebf3' }, // Sep to Oct
+            { start: new Date(currentYear, 9, 26), end: new Date(currentYear, 10, 25), color: '#e1ecf9' }, // Oct to Nov
+            { start: new Date(currentYear, 10, 26), end: new Date(currentYear, 11, 25), color: '#e4fbdf' }, // Nov to Dec
+            { start: new Date(currentYear, 11, 26), end: new Date(currentYear + 1, 0, 25), color: '#fcf4fc' }, // Dec to Jan (next year)
+        ];
+
+        dateRanges.forEach(range => {
+            if (currentDate >= range.start && currentDate <= range.end) {
+                day.style.backgroundColor = range.color;
+            }
+        });
+
+        day.textContent = i;
+        calendarDates.appendChild(day);
+    }
+
+    const totalDays = calendarDates.children.length;
+    const remainingDays = 42 - totalDays;
+
+    for (let i = 1; i <= remainingDays; i++) {
+        const day = document.createElement('div');
+        day.className = 'day other-month';
+        day.textContent = i;
+        calendarDates.appendChild(day);
+    }
+
+    // Fetch data for the current month
+    fetchData(currentYear, currentMonth + 1)
+        .then(data => updateCalendar(data));
+}
+
+  
+    function updateCounts(countData) {
+        const statusCounts = {};
+        countData.forEach(item => {
+            statusCounts[item.status] = item.count;
+        });
+    
+        document.getElementById('present-count').textContent = statusCounts['present'] || 0;
+        document.getElementById('halfday-count').textContent = statusCounts['half day'] || 0;
+        document.getElementById('absent-count').textContent = statusCounts['absent'] || 0;
+        document.getElementById('leave-count').textContent = statusCounts['Half Day Leave(PL)'] || 0;
+        document.getElementById('halfdayleave-count').textContent = statusCounts['Leave(PL)'] || 0;
+        document.getElementById('weekoff-count').textContent = statusCounts['weekoff'] || 0;
+        document.getElementById('sunday-count').textContent = statusCounts['sunday'] || 0;
+        document.getElementById('holiday-count').textContent = statusCounts['holiday'] || 0;
+    
+        // Update the table based on the counts
+        updateTable(countData);
+    }
+
+    function previousMonth() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        currentDate = new Date(currentYear, currentMonth, 1);
+        generateCalendar();
+    }
+
+    function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        currentDate = new Date(currentYear, currentMonth, 1);
+        generateCalendar();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        generateCalendar();
+
+        document.getElementById('calendar').addEventListener('click', function (event) {
+            if (event.target.classList.contains('day')) {
+                const selectedDate = event.target.textContent;
+                const [year, month] = document.getElementById('month-year').textContent.split(' ');
+
+                fetchData(year, month)
+                    .then(data => updateCalendar(data));
+            }
+        });
+    });
+</script>
+
+
+<!-- Add this table below your existing HTML code -->
+<div class="container py-5">
+  <table class="tablee">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Employee ID</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody id="employee-details-table-body">
+        <!-- Data will be populated dynamically here -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // Add this function to update the employee details table
+  function updateEmployeeDetailsTable(data) {
+    const tableBody = document.getElementById('employee-details-table-body');
+    tableBody.innerHTML = ''; // Clear existing data
+
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="display: none;">${item.id}</td>
+        <td>${item.name}</td>
+        <td>${item.employeeid}</td>
+        <td>${item.date}</td>
+        <td>${item.status}</td>
+        <td>
+          <button class="btn btn-primary" onclick="editEmployee(${item.id})">Edit</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  // Modify the fetchData function to call the new function
+  function fetchData(year, month) {
+    const url = `/fetch_dat/${year}/${month}/`;
+
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        // Update the calendar first, then the counts
+        updateCalendar(data.records_specified_month);
+        updateCounts(data.records_current_month);
+        //updateTable(data.records_specified_month);
+        // Update the employee details table
+        updateEmployeeDetailsTable(data.records_current_month); // or updateEmployeeDetailsTable(data.records_specified_month);
+        return data; // Return the data for any further processing if needed
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  // Example of an editEmployee function (replace with your actual implementation)
+  function editEmployee(id) {
+    // Redirect to the "editattendance" page with the 'id' parameter in the URL
+    window.location.href = `/editattendance/${id}`;
+  }
+</script>
+
+
+
+ <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.3s;
+        }
+
+        .status-active {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            color: red;
+            font-weight: bold;
+        }
+
+        .edit-button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .edit-button:hover {
+            background-color: #217dbb;
+        }
+    </style>
+
+    <div class="row" style="text-align: center;" >
+      <div class="col-md-6">
+    <table id="status-counts-table" style="border-collapse: collapse; width: 80%; margin-left: auto; margin-right: auto;">
+          <thead>
+              <tr>
+                  <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><h3>Status</h3></th>
+                  <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><h3>Count</h3></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Present</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="present-count">0</span></td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Half Day Leave(UPL)</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="halfday-count">0</span></td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Full Day Leave(UPL)</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="absent-count">0</span></td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Half Day Leave(PL)</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="leave-count">0</span></td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Full Day Leave(PL)</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="halfdayleave-count">0</span></td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Weekoff (Saturday)</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="weekoff-count">0</span></td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Sunday</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="sunday-count">0</span></td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Holiday</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="holiday-count">0</span></td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+
+
+      <div class="col-md-6">
+      <table id="status-counts" style="border-collapse: collapse; width: 80%; margin-left: auto; margin-right: auto;">
+       
+        <thead>
+          <tr>
+              <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;" colspan="2">
+                  <h3>Salary Details</h3>
+              </th>
+          </tr>
+      </thead>
+      <tr>
+        <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Total Working Days</td>
+        <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="total-working-days">0</span></td>
+    </tr>
+    
+            <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Total Leave</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="total-leave-count">0</span></td>
+            </tr>
+          </tr>
+          <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Salary Deducted Leave</td>
+          <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="salary-deducted-count">0</span></td>
+    </tr>
+
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Salary</td>
+      <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="salary">{{ salary }}</span></td>
+  </tr>
+  <tr>
+    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Per Day Salary</td>
+    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="perdaysalary">0</span></td>
+</tr>
+<tr>
+  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Deduction Amount</td>
+  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="deductionamount">0</span></td>
+</tr>
+<tr>
+  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Monthly Salary</td>
+  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="monthlysalary">0</span></td>
+</tr>
+
+</tbody>
+</table>
+</div>   
+
+  <script>
+    // Your existing JavaScript code for updating the table
+
+    function updateTable(data) {
+        // Initialize status counts
+        let presentCount = 0,
+            halfdayCount = 0,
+            absentCount = 0,
+            leaveCount = 0,
+            halfdayleaveCount = 0,
+            weekoffCount = 0,
+            sundayCount = 0,
+            holidayCount = 0,
+            halfdayleavePL = 0,
+            fulldayleavePL = 0;
+
+        data.forEach(record => {
+            const normalizedStatus = normalizeStatus(record.status);
+            switch (normalizedStatus) {
+                case 'present':
+                    presentCount++;
+                    break;
+                case 'half day':
+                    halfdayCount++;
+                    break;
+                case 'absent':
+                    absentCount++;
+                    break;
+                case 'leave':
+                    leaveCount++;
+                    break;
+                case 'half day leave':
+                    halfdayleaveCount++;
+                    break;
+                case 'weekoff':
+                    weekoffCount++;
+                    break;
+                case 'sunday':
+                    sundayCount++;
+                    break;
+                case 'holiday':
+                    holidayCount++;
+                    break;
+                case 'half day leave(pl)':
+                    halfdayleavePL++;
+                    break;
+                case 'leave(pl)':
+                    fulldayleavePL++;
+                    break;
+                default:
+                    console.log('Unknown status:', normalizedStatus);
+            }
+        });
+
+        // Calculate the total halfday counts
+        const totalHalfdayCounts = data.reduce((count, record) => {
+            const normalizedStatus = normalizeStatus(record.status);
+            if (normalizedStatus === 'half day' || normalizedStatus === 'half day leave') {
+                count++;
+            }
+            return count;
+        }, 0);
+
+        // Calculate the total halfday counts
+        const totalFulldayCounts = data.reduce((count, record) => {
+            const normalizedStatus = normalizeStatus(record.status);
+            if (normalizedStatus === 'absent' || normalizedStatus === 'leave') {
+                count++;
+            }
+            return count;
+        }, 0);
+
+        
+  // Calculate the total working days
+  const totalWorkingDays = presentCount + weekoffCount + sundayCount + holidayCount +
+  (halfdayleavePL > 0 ? halfdayleavePL : 0) + (fulldayleavePL > 0 ? fulldayleavePL : 0);
+
+// Update the total working days in the HTML table
+document.getElementById('total-working-days').textContent = totalWorkingDays;
+
+        // Update the status counts in the HTML table
+        document.getElementById('present-count').textContent = presentCount;
+        document.getElementById('halfday-count').textContent = totalHalfdayCounts;
+        document.getElementById('absent-count').textContent = totalFulldayCounts;
+        document.getElementById('leave-count').textContent = halfdayleavePL;
+        document.getElementById('halfdayleave-count').textContent = fulldayleavePL;
+        document.getElementById('weekoff-count').textContent = weekoffCount;
+        document.getElementById('sunday-count').textContent = sundayCount;
+        document.getElementById('holiday-count').textContent = holidayCount;
+
+        // Display the table once the counts are updated
+        document.getElementById('status-counts-table').style.display = 'block';
+
+        // Calculate and display the total leave count
+        const totalLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5) + fulldayleavePL + (halfdayleavePL * 0.5);
+        document.getElementById('total-leave-count').textContent = totalLeave;
+       
+        //salary deducted leave
+        const salarydeductedLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5);
+        document.getElementById('salary-deducted-count').textContent = salarydeductedLeave;
+
+         // Retrieve the value of {{ salary }} and store it in a variable
+         var salary = parseFloat("{{ salary }}") || 0; // Assuming the salary is a numeric value
+
+         //perday salary
+         perdaySalary = salary / 30;
+         perdaySalary = parseFloat(perdaySalary.toFixed(3));  // Limit to 3 decimal points
+         document.getElementById('perdaysalary').textContent = perdaySalary;
+         console.log('perday:', perdaySalary)
+ 
+         //deduction amount
+         deductionAmount = perdaySalary * salarydeductedLeave;
+         deductionAmount = parseFloat(deductionAmount.toFixed(3));  // Limit to 3 decimal points
+         document.getElementById('deductionamount').textContent = deductionAmount;
+         console.log('ded amnt:', deductionAmount);
+         
+
+         //monthly salary
+         monthlySalary = salary - deductionAmount;
+         document.getElementById('monthlysalary').textContent = monthlySalary;
+         console.log('monthly salary:', monthlySalary)
+    }
+
+    // Function to normalize status strings
+    function normalizeStatus(status) {
+        return status.toLowerCase().trim();
+    }
+</script>
+
+
+
+
+
+<div class="text-center">
+  {% for employee in employees %}
+
+      <a href="#" class="btn bg-gradient-dark btn-lg btn-generate-salary-slip" data-employee-id="{{ employee.employeeid }}">Generate Salary Slip</a>
+ 
+{% endfor %}
+</div>
+<script>
+  $(document).ready(function() {
+    // Handle click event on the anchor tag
+    $(".btn-generate-salary-slip").on("click", function(e) {
+      e.preventDefault(); // Prevent the default behavior of the anchor tag
+  
+      // Collect data from the table and the button
+      var totalWorkingDays = $("#total-working-days").text();
+      var totalLeaveCount = $("#total-leave-count").text();
+      var salaryDeductedCount = $("#salary-deducted-count").text();
+      var salary = $("#salary").text();
+      var perDaySalary = $("#perdaysalary").text();
+      var deductionAmount = $("#deductionamount").text();
+      var monthlySalary = $("#monthlysalary").text();
+      var employeeId = $(this).data('employee-id'); // Use 'employee-id' instead of 'employeeId'
+  
+     // Prepare data to be sent to the backend
+var data = {
+  totalWorkingDays: totalWorkingDays,
+  totalLeaveCount: totalLeaveCount,
+  salaryDeductedCount: salaryDeductedCount,
+  salary: salary,
+  perDaySalary: perDaySalary,
+  deductionAmount: deductionAmount,
+  monthlySalary: monthlySalary,
+  employeeId: employeeId // Include the employee ID
+};
+
+// Print data to the console for debugging
+console.log("Data to be sent:", data);
+  
+      // Make an AJAX request to the backend
+      var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+      $.ajax({
+        type: "POST",
+        url: "/calendar/" + employeeId + "/save_salary_slip/",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        headers: { "X-CSRFToken": csrfToken },  // Include the CSRF token in the headers
+        success: function(response) {
+          console.log("Data sent successfully", response);
+          // Optionally, you can handle the response from the backend here
+        },
+        error: function(error) {
+          console.error("Error sending data to the backend", error);
+        }
+      });
+    });
+  });
+  </script>
+  
+
+
+</body>
+
+<footer class="footer pt-3 d-flex align-items-center justify-content-center">
+  <div class="container-fluid">
+      <div class="row align-items-center justify-content-center">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                  © <script>
+                      document.write(new Date().getFullYear())
+                  </script>,
+                  Developed by
+                  <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+
+</div>
+</main>
+<div class="fixed-plugin">
+<a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+  <i class="fa fa-cog py-2"> </i>
+</a>
+<div class="card shadow-lg ">
+  <div class="card-header pb-0 pt-3 ">
+    <div class="float-start">
+      <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
+      <p>See our dashboard options.</p>
+    </div>
+    <div class="float-end mt-4">
+      <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
+        <i class="fa fa-close"></i>
+      </button>
+    </div>
+    <!-- End Toggle Button -->
+  </div>
+  <hr class="horizontal dark my-1">
+  <div class="card-body pt-sm-3 pt-0">
+    <!-- Sidebar Backgrounds -->
+    <div>
+      <h6 class="mb-0">Sidebar Colors</h6>
+    </div>
+    <a href="javascript:void(0)" class="switch-trigger background-color">
+      <div class="badge-colors my-2 text-start">
+        <span class="badge filter bg-gradient-primary active" data-color="primary" onclick="sidebarColor(this)"></span>
+        <span class="badge filter bg-gradient-dark" data-color="dark" onclick="sidebarColor(this)"></span>
+        <span class="badge filter bg-gradient-info" data-color="info" onclick="sidebarColor(this)"></span>
+        <span class="badge filter bg-gradient-success" data-color="success" onclick="sidebarColor(this)"></span>
+        <span class="badge filter bg-gradient-warning" data-color="warning" onclick="sidebarColor(this)"></span>
+        <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
+      </div>
+    </a>
+    <!-- Sidenav Type -->
+    <div class="mt-3">
+      <h6 class="mb-0">Sidenav Type</h6>
+      <p class="text-sm">Choose between 2 different sidenav types.</p>
+    </div>
+    <div class="d-flex">
+      <button class="btn bg-gradient-primary w-100 px-3 mb-2 active" data-class="bg-transparent" onclick="sidebarType(this)">Transparent</button>
+      <button class="btn bg-gradient-primary w-100 px-3 mb-2 ms-2" data-class="bg-white" onclick="sidebarType(this)">White</button>
+    </div>
+    <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
+    <!-- Navbar Fixed -->
+    <div class="mt-3">
+      <h6 class="mb-0">Navbar Fixed</h6>
+    </div>
+    <div class="form-check form-switch ps-0">
+      <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
+    </div>
+    <hr class="horizontal dark my-sm-4">
+    <a class="btn bg-gradient-dark w-100" href="https://www.creative-tim.com/product/soft-ui-dashboard">Free Download</a>
+    <a class="btn btn-outline-dark w-100" href="https://www.creative-tim.com/learning-lab/bootstrap/license/soft-ui-dashboard">View documentation</a>
+    <div class="w-100 text-center">
+      <a class="github-button" href="https://github.com/creativetimofficial/soft-ui-dashboard" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star creativetimofficial/soft-ui-dashboard on GitHub">Star</a>
+      <h6 class="mt-3">Thank you for sharing!</h6>
+      <a href="https://twitter.com/intent/tweet?text=Check%20Soft%20UI%20Dashboard%20made%20by%20%40CreativeTim%20%23webdesign%20%23dashboard%20%23bootstrap5&amp;url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fsoft-ui-dashboard" class="btn btn-dark mb-0 me-2" target="_blank">
+        <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/soft-ui-dashboard" class="btn btn-dark mb-0 me-2" target="_blank">
+        <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+<!--   Core JS Files   -->
+<script src="/static/assets/js/core/popper.min.js"></script>
+<script src="/static/assets/js/core/bootstrap.min.js"></script>
+<script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="/static/assets/js/plugins/smooth-scrollbar.min.js"></script>
+<script>
+var win = navigator.platform.indexOf('Win') > -1;
+if (win && document.querySelector('#sidenav-scrollbar')) {
+  var options = {
+    damping: '0.5'
+  }
+  Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+}
+</script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+</body>
+
+</html>

@@ -1,0 +1,465 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<body>
+    <style>
+        .day {
+            padding: 20px;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+            border: 3px solid #ccc; /* Increase border width */
+        }
+    
+        .day:hover {
+            background-color: #f0f0f0;
+        }
+        .current-month {
+            color: #333;
+        }
+
+        .other-month {
+            color: #ccc;
+        }
+
+        #calendar {
+            margin: 20px;
+            max-width: 100%; /* Increased maximum width */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #calendar-header {
+            background-color: #f2f2f2;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-bottom: 1px solid #ccc;
+        }
+
+        #calendar-dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 10px;
+        }
+
+        .day {
+            padding: 20px;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .day:hover {
+            background-color: #f0f0f0;
+        }
+
+        .current-month {
+            color: #333;
+        }
+
+        .other-month {
+            color: #ccc;
+        }
+    </style>
+    <div class="btn-container text-end">
+        <a href="/holidaycalendar/" class="btn btn-dark btn-sm me-4">
+          <i class="zmdi zmdi-search"></i>Holiday Calendar
+        </a>
+      </div> 
+    <div id="calendar">
+        <div id="calendar-header">
+            <button onclick="previousMonth()">&#8249;</button>
+            <h2 id="month-year"></h2>
+            <button onclick="nextMonth()">&#8250;</button>
+        </div>
+
+        <div id="calendar-days">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+
+        <div id="calendar-dates"></div>
+    </div>
+
+    <script>
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+
+        function updateCalendar(data) {
+            const calendarDates = document.getElementById('calendar-dates');
+        
+            calendarDates.childNodes.forEach(dayElement => {
+                const dayNumber = parseInt(dayElement.textContent);
+                const dayData = data.find(item => new Date(item.date).getDate() === dayNumber);
+        
+                if (dayData) {
+                    // Check if the day is from the current month
+                    const isCurrentMonth = dayElement.classList.contains('current-month');
+        
+                    // Assign different border colors based on the status
+                    let borderColor = '';
+                    switch (dayData.status.toLowerCase()) {
+                        case 'present':
+                            borderColor = 'green';
+                            break;
+                        case 'half day':
+                            borderColor = 'yellow';
+                            break;
+                        case 'absent':
+                            borderColor = 'blue';
+                            break;
+                        case 'leave':
+                            borderColor = 'red';
+                            break;
+                        case 'half day leave':
+                            borderColor = 'purple';
+                            break;
+                        case 'weekoff':
+                            borderColor = 'yellow';
+                            break;
+                        case 'sunday':
+                            borderColor = 'black';
+                            break;
+                        case 'holiday':
+                            borderColor = 'brown';
+                            break;
+                        default:
+                            borderColor = 'black'; // Default color for unknown status
+                    }
+        
+                    // Set border color for the cell only if it's from the current month
+                    if (isCurrentMonth) {
+                        dayElement.style.borderColor = borderColor;
+                    }
+        
+                    // Display date and status only if it's from the current month
+                    if (isCurrentMonth) {
+                        dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>`;
+                    }
+                }
+            });
+        }
+        
+        
+        
+        
+
+        function generateCalendar() {
+            const calendarHeader = document.getElementById('month-year');
+            const calendarDates = document.getElementById('calendar-dates');
+        
+            calendarHeader.textContent = new Intl.DateTimeFormat('en-US', {
+                month: 'long',
+                year: 'numeric'
+            }).format(currentDate);
+        
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        
+            calendarDates.innerHTML = '';
+        
+            for (let i = firstDayOfMonth; i > 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'day other-month';
+                day.textContent = new Date(currentYear, currentMonth, -i + 1).getDate();
+                calendarDates.appendChild(day);
+            }
+        
+            for (let i = 1; i <= lastDayOfMonth; i++) {
+                const day = document.createElement('div');
+                day.className = 'day current-month';
+        
+                // Set different colors based on the date range
+                const currentDate = new Date(currentYear, currentMonth, i);
+                const dateRanges = [
+               
+                    { start: new Date(currentYear, -1, 26), end: new Date(currentYear, 0, 25), color: '#fcf4fc' }, // Jan to Feb
+                    { start: new Date(currentYear, 0, 26), end: new Date(currentYear, 1, 25), color: '#e3f7e1' }, // Jan to Feb
+                    { start: new Date(currentYear, 1, 26), end: new Date(currentYear, 2, 25), color: '#fcedf0' }, // Feb to Mar
+                    { start: new Date(currentYear, 2, 26), end: new Date(currentYear, 3, 25), color: '#e0f6f4' }, // Mar to Apr
+                    { start: new Date(currentYear, 3, 26), end: new Date(currentYear, 4, 25), color: '#f6f4e0' }, // Apr to May
+                    { start: new Date(currentYear, 4, 26), end: new Date(currentYear, 5, 25), color: '#f4e4e4' }, // May to Jun
+                    { start: new Date(currentYear, 5, 26), end: new Date(currentYear, 6, 25), color: '#e0f7f1' }, // Jun to Jul
+                    { start: new Date(currentYear, 6, 26), end: new Date(currentYear, 7, 25), color: '#f9f0f8' }, // Jul to Aug
+                    { start: new Date(currentYear, 7, 26), end: new Date(currentYear, 8, 25), color: '#e9fcd9' }, // Aug to Sep
+                    { start: new Date(currentYear, 8, 26), end: new Date(currentYear, 9, 25), color: '#f7ebf3' }, // Sep to Oct
+                    { start: new Date(currentYear, 9, 26), end: new Date(currentYear, 10, 25), color: '#e1ecf9' }, // Oct to Nov
+                    { start: new Date(currentYear, 10, 26), end: new Date(currentYear, 11, 25), color: '#e4fbdf' }, // Nov to Dec
+                    { start: new Date(currentYear, 11, 26), end: new Date(currentYear + 1, 0, 25), color: '#fcf4fc' }, // Dec to Jan (next year)
+                ];
+        
+                dateRanges.forEach(range => {
+                    if (currentDate >= range.start && currentDate <= range.end) {
+                        day.style.backgroundColor = range.color;
+                    }
+                });
+        
+                day.textContent = i;
+                calendarDates.appendChild(day);
+            }
+        
+            const totalDays = calendarDates.children.length;
+            const remainingDays = 42 - totalDays;
+        
+            for (let i = 1; i <= remainingDays; i++) {
+                const day = document.createElement('div');
+                day.className = 'day other-month';
+                day.textContent = i;
+                calendarDates.appendChild(day);
+            }
+        
+            // Fetch data for the current month
+            fetchData(currentYear, currentMonth + 1)
+                .then(data => updateCalendar(data));
+        }
+
+        function fetchData(year, month) {
+            const url = `/fetch_data/${year}/${month}/`;
+    
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the calendar first, then the counts
+                    updateCalendar(data);
+                    updateCounts(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        function updateCounts(countData) {
+            const statusCounts = {};
+            countData.forEach(item => {
+                statusCounts[item.status] = item.count;
+            });
+        
+            document.getElementById('present-count').textContent = statusCounts['present'] || 0;
+            document.getElementById('halfday-count').textContent = statusCounts['half day'] || 0;
+            document.getElementById('absent-count').textContent = statusCounts['absent'] || 0;
+            document.getElementById('leave-count').textContent = statusCounts['leave'] || 0;
+            document.getElementById('halfdayleave-count').textContent = statusCounts['half day leave'] || 0;
+            document.getElementById('weekoff-count').textContent = statusCounts['weekoff'] || 0;
+            document.getElementById('sunday-count').textContent = statusCounts['sunday'] || 0;
+            document.getElementById('holiday-count').textContent = statusCounts['holiday'] || 0;
+        
+            // Update the table based on the counts
+            updateTable(countData);
+        }
+
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            currentDate = new Date(currentYear, currentMonth, 1);
+            generateCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            currentDate = new Date(currentYear, currentMonth, 1);
+            generateCalendar();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            generateCalendar();
+
+            document.getElementById('calendar').addEventListener('click', function (event) {
+                if (event.target.classList.contains('day')) {
+                    const selectedDate = event.target.textContent;
+                    const [year, month] = document.getElementById('month-year').textContent.split(' ');
+
+                    fetchData(year, month)
+                        .then(data => updateCalendar(data));
+                }
+            });
+        });
+    </script>
+</body>
+
+{% endblock %}
+
+    {% comment %} <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.3s;
+        }
+
+        .status-active {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            color: red;
+            font-weight: bold;
+        }
+
+        .edit-button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .edit-button:hover {
+            background-color: #217dbb;
+        }
+    </style>
+
+    <div style="text-align: center;">
+        <table id="status-counts-table" style="margin-top: 20px; border-collapse: collapse; width: 50%; margin-left: auto; margin-right: auto;">
+            <thead>
+                <tr>
+                    <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><h3>Status</h3></th>
+                    <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><h3>Count</h3></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">Present</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><span id="present-count">0</span></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">Half Day (Working hours b/w 5 & 7)</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><span id="halfday-count">0</span></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">Absent (Working hours < 5)</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><span id="absent-count">0</span></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">Leave</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><span id="leave-count">0</span></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">Half Day Leave</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><span id="halfdayleave-count">0</span></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">Weekoff (Saturday)</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><span id="weekoff-count">0</span></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">Sunday</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><span id="sunday-count">0</span></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">Holiday</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;"><span id="holiday-count">0</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Your existing JavaScript code for updating the table
+    
+        function updateTable(data) {
+            // Initialize status counts
+            let presentCount = 0,
+                halfdayCount = 0,
+                absentCount = 0,
+                leaveCount = 0,
+                halfdayleaveCount = 0,
+                weekoffCount = 0,
+                sundayCount = 0,
+                holidayCount = 0;
+    
+            data.forEach(record => {
+                const normalizedStatus = normalizeStatus(record.status);
+                switch (normalizedStatus) {
+                    case 'present':
+                        presentCount++;
+                        break;
+                    case 'half day':
+                        halfdayCount++;
+                        break;
+                    case 'absent':
+                        absentCount++;
+                        break;
+                    case 'leave':
+                        leaveCount++;
+                        break;
+                    case 'half day leave':
+                        halfdayleaveCount++;
+                        break;
+                    case 'weekoff':
+                        weekoffCount++;
+                        break;
+                    case 'sunday':
+                        sundayCount++;
+                        break;
+                    case 'holiday':
+                        holidayCount++;
+                        break;
+                    default:
+                        console.log('Unknown status:', normalizedStatus);
+                }
+            });
+    
+            // Update the status counts in the HTML table
+            document.getElementById('present-count').textContent = presentCount;
+            document.getElementById('halfday-count').textContent = halfdayCount;
+            document.getElementById('absent-count').textContent = absentCount;
+            document.getElementById('leave-count').textContent = leaveCount;
+            document.getElementById('halfdayleave-count').textContent = halfdayleaveCount;
+            document.getElementById('weekoff-count').textContent = weekoffCount;
+            document.getElementById('sunday-count').textContent = sundayCount;
+            document.getElementById('holiday-count').textContent = holidayCount;
+            
+            // Display the table once the counts are updated
+            document.getElementById('status-counts-table').style.display = 'block';
+        }
+    
+        // Function to normalize status strings
+function normalizeStatus(status) {
+    return status.toLowerCase().trim();
+}
+    </script> {% endcomment %}
+

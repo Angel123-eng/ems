@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Leave Status{% endblock %}
+
+{% block content %}
+
+<div class="row" style="justify-content: center;">
+    <div class="col-md-9 mt-4">
+        <div class="">
+            <div class="card-body pt-4 p-3">
+                <ul class="list-group">
+                    {% for leave_status in leave_statuses %}
+                    <li class="list-group-item border-0 d-flex p-4 bg-gray-100 border-radius-lg card my-3">
+                        <div class="container custom-container">
+                            <div class="d-flex flex-column">
+                                <h3>Applied Leave Status</h3>
+                        
+                                <p><b>Name:</b> {{ leave_status.name }}</p>
+                                <p><b>Employee ID:</b> {{ leave_status.employeeid }}</p>
+                                <p><b>Leave Type:</b> {{ leave_status.leaveType }}</p>
+                                {% if leave_status.leaveType == 'Half Day' %}
+                                    <p><b>Half Day Date:</b> {{ leave_status.halfDayDate|date:"Y-m-d" }}</p>
+                                {% elif leave_status.leaveType == 'Full Day' %}
+                                    <p><b>From date:</b> {{ leave_status.fromdate|date:"Y-m-d" }}</p>
+                                    <p><b>To date:</b> {{ leave_status.todate|date:"Y-m-d" }}</p>
+                                {% endif %}
+                        
+                             
+                                <p><b>Reason:</b> {{ leave_status.reason }}</p>
+
+                              
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-lg w-100 {% if leave_status.status == 'Approved' %}btn-success{% elif leave_status.status == 'Rejected' %}btn-danger{% elif leave_status.status == 'Pending' %}btn-warning{% else %}custom-red-btn{% endif %}">{{ leave_status.status }}</button>
+                            <style>
+                            .custom-container {
+                                margin-left: 0;
+                                padding-left: 0;
+                            }
+                        </style>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
