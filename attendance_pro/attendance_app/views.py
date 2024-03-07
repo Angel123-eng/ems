@@ -683,18 +683,198 @@ def leave(request, id):
 
 # Employee attendance display for admin
 
+# from datetime import datetime, time
+# import pandas as pd
+# from django.http import JsonResponse
+# from django.shortcuts import render
+# from .forms import ExcelUploadForm
+# from .models import ExcelModel
+
+# def display_attendance(request):
+#     try:
+#         # Process the Excel file upload form
+#         if request.method == 'POST':
+#             form = ExcelUploadForm(request.POST, request.FILES)
+#             if form.is_valid():
+#                 # Get the uploaded file from the form
+#                 excel_file = request.FILES['excel_file']
+
+#                 # Read the Excel file using pandas
+#                 df = pd.read_excel(excel_file)
+
+#                 # Debug: Print the DataFrame to inspect the data
+#                 print(df)
+
+#                 # Create a list to store the inserted time data
+#                 inserted_time_data = []
+
+#                 # Iterate through rows and save to the database
+#                 for index, row in df.iterrows():
+#                     # Parse date from the Excel file format
+#                     date_value = datetime.strptime(str(row['date']), "%Y-%m-%d").date()
+
+#                     # Parse time from the Excel file format
+#                     time_str = str(row['time'])
+#                     if time_str.strip() == '00:00:00':
+#                         # If the time is '00:00:00', provide a default time value
+#                         time_value = time(0, 0)
+#                     else:
+#                         # Convert time string to time object directly
+#                         time_parts = list(map(int, time_str.split(':')))
+#                         time_value = time(*time_parts)
+
+#                     # Create ExcelModel object and save to the database
+#                     excel_instance = ExcelModel.objects.create(
+#                         name=row['name'],
+#                         employeeid=row['employeeid'],
+#                         date=date_value,
+#                         time=time_value
+#                     )
+
+#                     # Append the inserted time data to the list
+#                     inserted_time_data.append({
+#                         'name': excel_instance.name,
+#                         'employeeid': excel_instance.employeeid,
+#                         'date': excel_instance.date,
+#                         'time': excel_instance.time,
+#                     })
+
+#                 # Return JsonResponse with inserted_time_data
+#                 return JsonResponse({'status': 'success', 'message': 'Data uploaded successfully', 'inserted_time_data': inserted_time_data})
+
+#             else:
+#                 # Debug: Print form errors to identify validation issues
+#                 print(form.errors)
+#                 return JsonResponse({'status': 'error', 'message': form.errors.as_json()})
+
+#         else:
+#             form = ExcelUploadForm()
+
+#         # Render the template with the form
+#         return render(request, 'attendance_template.html', {'form': form})
+
+#     except Exception as e:
+#         return JsonResponse({'status': 'error', 'message': str(e)})
+
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .forms import ExcelUploadForm
+from .models import ExcelModel
+import pandas as pd
+
 def display_attendance(request):
-    try:
-        # Fetch all records from the AttendanceModel
-        attendance_records = AttendanceModel.objects.all()
+    if request.method == 'POST':
+        form = ExcelUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            excel_file = request.FILES['excel_file']
 
-        # Pass the records to the template for rendering
-        return render(request, 'attendance_template.html', {'attendance_records': attendance_records})
+            # Use pandas to read the Excel file
+            df = pd.read_excel(excel_file)
 
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)})
- 
- 
+            # Loop through the DataFrame and save each row to the database
+            for index, row in df.iterrows():
+                ExcelModel.objects.create(
+                    employeeid=row['employeeid'],
+                    name=row['name'],
+                    date=row['date'],
+                    intime=row['intime'],  # Adjust to the actual column name in your Excel file
+                    outtime=row['outtime']  # Adjust to the actual column name in your Excel file
+                )
+
+            return HttpResponse('Data uploaded successfully!!!')
+    else:
+        form = ExcelUploadForm()
+
+    return render(request, 'attendance_template.html', {'form': form})
+
+
+
+from .models import ExcelModel
+
+# def display_attendance_details(request):
+#     # Retrieve all ExcelModel instances from the database
+#     excel_data = ExcelModel.objects.all()
+
+#     # Pass the data to the HTML page
+#     return render(request, 'attendancedetails.html', {'excel_data': excel_data})
+
+from datetime import datetime, date
+from django.shortcuts import render
+from .models import ExcelModel
+
+from datetime import datetime, date
+from django.shortcuts import render
+from .models import ExcelModel
+
+def calculate_working_hours(intime, outtime):
+    if intime and outtime:
+        delta = datetime.combine(date.today(), outtime) - datetime.combine(date.today(), intime)
+        hours, remainder = divmod(delta.seconds, 3600)
+        minutes = remainder // 60
+        working_hours = f"{hours} hours {minutes} minutes"
+        return working_hours
+    else:
+        return "N/A"
+
+def get_attendance_status(working_hours):
+    if working_hours != "N/A":
+        # Split the working_hours string into hours and minutes
+        hours_str, minutes_str = working_hours.split(' hours ')
+        
+        # Convert hours and minutes to integers
+        hours = int(hours_str)
+        minutes = int(minutes_str.split(' minutes')[0])
+
+        # Calculate total minutes
+        total_minutes = hours * 60 + minutes
+
+        if total_minutes >= 450:
+            return "Present"
+        elif 270 <= total_minutes < 450:
+            return "Half Day Leave"
+        else:
+            return "Leave"
+    else:
+        return "N/A"
+
+
+from .models import ExcelModel, ExtraModel
+
+from django.shortcuts import get_object_or_404
+
+def display_attendance_details(request):
+    excel_data = ExcelModel.objects.all()
+
+    for row in excel_data:
+        # Calculate working hours and get attendance status
+        row.working_hours = calculate_working_hours(row.intime, row.outtime)
+        row.status = get_attendance_status(row.working_hours)
+
+        # Check if data already exists for the employee on that date
+        existing_data = ExtraModel.objects.filter(employeeid=row.employeeid, date=row.date).first()
+
+        # Retrieve the registered name
+        registered_name = regmodel.objects.filter(employeeid=row.employeeid).values('name').first()
+
+        if existing_data:
+            # Update existing record
+            existing_data.name = registered_name['name'] if registered_name else row.name
+            existing_data.status = row.status
+            existing_data.save()
+        else:
+            # Create a new record
+            extra_data = ExtraModel(name=registered_name['name'] if registered_name else row.name, 
+                                    employeeid=row.employeeid, date=row.date, status=row.status)
+            extra_data.save()
+
+    return render(request, 'attendancedetails.html', {'excel_data': excel_data})
+
+
+
+
+
+
  # Applied leaves display for admin   
 def appliedleaves(request):
     try:
@@ -908,14 +1088,9 @@ def attendancesalary(request, id):
 
 
 from django.shortcuts import render, redirect
-from .models import WeekoffModel
+from .models import WeekoffModel, ExtraModel
 from .forms import WeekoffForm
-
-from .models import WeekoffModel, ExtraModel
-# Weekoff selection page for admin
-from .models import WeekoffModel, ExtraModel
 from django.utils import timezone
-
 from django.shortcuts import get_object_or_404
 
 def weekoff(request):
@@ -947,6 +1122,14 @@ def weekoff(request):
                     if existing_leave1:
                         existing_leave1.status = 'Weekoff'
                         existing_leave1.save()
+                    else:
+                        # If there is no existing leave entry, create a new one for weekoff1
+                        ExtraModel.objects.create(
+                            name=weekoff_instance.name,
+                            employeeid=weekoff_instance.employeeid,
+                            date=weekoff_instance.weekoff1,
+                            status='Weekoff'
+                        )
 
                     # Check if there is an existing leave entry for weekoff2 and update it to 'Weekoff'
                     existing_leave2 = ExtraModel.objects.filter(
@@ -959,6 +1142,14 @@ def weekoff(request):
                     if existing_leave2:
                         existing_leave2.status = 'Weekoff'
                         existing_leave2.save()
+                    else:
+                        # If there is no existing leave entry, create a new one for weekoff2
+                        ExtraModel.objects.create(
+                            name=weekoff_instance.name,
+                            employeeid=weekoff_instance.employeeid,
+                            date=weekoff_instance.weekoff2,
+                            status='Weekoff'
+                        )
 
         return redirect(admindashboard)  # Replace 'admindashboard' with the actual URL name or path
     else:
@@ -971,17 +1162,33 @@ def weekoff(request):
 
 
 
+
 # Weekoff display page for admin
 def weekoffdisplayadmin(request):
     try:
-        # Fetch all records from the AttendanceModel
-        weekoff_data = WeekoffModel.objects.all()
+        # Fetch all unique dates from the WeekoffModel
+        unique_dates = WeekoffModel.objects.values_list('weekoff1', flat=True).distinct()
 
-        # Pass the records to the template for rendering
-        return render(request, 'weekoffdisplayadmin.html', {'weekoff_data': weekoff_data})
+        # Create a list to store the data for each date
+        weekoff_data_by_date = []
+
+        # Iterate over unique dates
+        for date in unique_dates:
+            # Fetch records for the current date
+            records_for_date = WeekoffModel.objects.filter(weekoff1=date)
+
+            # Extract the name and employeeid for each record and store in a list
+            records_data = [{'name': record.name, 'employeeid': record.employeeid} for record in records_for_date]
+
+            # Append the data for the current date to the list
+            weekoff_data_by_date.append({'date': date, 'records': records_data})
+
+        # Pass the data to the template for rendering
+        return render(request, 'weekoffdisplayadmin.html', {'weekoff_data_by_date': weekoff_data_by_date})
 
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
+
     
 # Weekoff display page for employee
 def weekoffemployee(request):
@@ -991,7 +1198,7 @@ def weekoffemployee(request):
 
         # Check if the employee ID exists in the session
         if id1 is not None:
-            weekoff = WeekoffModel.objects.filter(employeeid=id1)
+            weekoff = ExtraModel.objects.filter(employeeid=id1, status='Weekoff')
 
             return render(request, 'weekoffemployee.html', {'weekoff': weekoff})
         else:
@@ -1023,6 +1230,10 @@ def generate_sundays(year):
 
     return sundays
 
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from .models import PublicholidaysModel, ExtraModel, regmodel
+
 def publicholidays(request):
     if request.method == 'POST':
         date_value = request.POST.get('date')
@@ -1030,52 +1241,50 @@ def publicholidays(request):
 
         # Check if Sundays for the current year are already stored
         current_year = timezone.now().year
-        existing_sundays_count = PublicholidaysModel.objects.filter(date__year=current_year, status='Sunday').count()
+        existing_sundays_count = ExtraModel.objects.filter(date__year=current_year, status='Sunday').count()
 
         if existing_sundays_count == 0:
             # Generate and save Sundays for the current year
             sundays = generate_sundays(current_year)
 
             for sunday in sundays:
-                public_holiday = PublicholidaysModel(date=sunday, status='Sunday')
-                public_holiday.save()
-
-                # Loop through each employee and save Sunday information to ExtraModel
-                employees = regmodel.objects.all()  # Replace YourEmployeeModel with your actual employee model
+                # Save Sundays to ExtraModel
+                employees = regmodel.objects.all()  
                 for employee in employees:
                     sunday_data = ExtraModel(name=employee.name, employeeid=employee.employeeid, date=sunday, status='Sunday')
                     sunday_data.save()
 
         # Loop through each employee and save the data to both models
-        employees = regmodel.objects.all()  # Replace YourEmployeeModel with your actual employee model
+        employees = regmodel.objects.all() 
         for employee in employees:
+            # Save public holidays to ExtraModel
             extra_data = ExtraModel(name=employee.name, employeeid=employee.employeeid, date=date_value, status='Holiday')
             extra_data.save()
 
+            # Save public holidays to PublicholidaysModel
             public_holiday = PublicholidaysModel(date=date_value, status=status)
             public_holiday.save()
 
-        return redirect(admindashboard)  # Redirect to the same page after submission
+        return redirect(publicholidays)  # Redirect to the same page after submission
 
     # If it's not a POST request, check if Sundays for the current year are already stored
     current_year = timezone.now().year
-    existing_sundays_count = PublicholidaysModel.objects.filter(date__year=current_year, status='Sunday').count()
+    existing_sundays_count = ExtraModel.objects.filter(date__year=current_year, status='Sunday').count()
 
     if existing_sundays_count == 0:
         # If Sundays are not stored, generate and save them
         sundays = generate_sundays(current_year)
 
         for sunday in sundays:
-            public_holiday = PublicholidaysModel(date=sunday, status='Sunday')
-            public_holiday.save()
-
-            # Loop through each employee and save Sunday information to ExtraModel
-            employees = regmodel.objects.all()  # Replace YourEmployeeModel with your actual employee model
+            # Save Sundays to ExtraModel
+            employees = regmodel.objects.all()  
             for employee in employees:
                 sunday_data = ExtraModel(name=employee.name, employeeid=employee.employeeid, date=sunday, status='Sunday')
                 sunday_data.save()
 
     return render(request, 'publicholidays.html')
+
+
 
 
 # Public holidays display for admin
@@ -1159,17 +1368,71 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import ExtraModel, regmodel
 
+# def view_monthly_details(request, employee_id):
+#     request.session['empid'] = employee_id
+#     employees = ExtraModel.objects.filter(employeeid=employee_id).values('name', 'employeeid').distinct()
+    
+#     if employees.exists():
+#         # Fetch salary information from RegModel
+#         employee_salary = get_object_or_404(regmodel, employeeid=employee_id).salary
+
+#         return render(request, 'calendar.html', {'employees': employees, 'salary': employee_salary})
+#     else:
+#         return HttpResponse("Details does not exist!!!")
+
+# from decimal import Decimal
+# from django.shortcuts import render, get_object_or_404
+# from django.http import HttpResponse
+# from .models import ExtraModel, regmodel, SalarySlipModel
+
+# from django.shortcuts import render, get_object_or_404
+# from django.http import HttpResponse
+# from .models import ExtraModel, SalarySlipModel
+# from decimal import Decimal
+
 def view_monthly_details(request, employee_id):
     request.session['empid'] = employee_id
     employees = ExtraModel.objects.filter(employeeid=employee_id).values('name', 'employeeid').distinct()
-    
+
     if employees.exists():
-        # Fetch salary information from RegModel
         employee_salary = get_object_or_404(regmodel, employeeid=employee_id).salary
+
+        if request.method == 'POST':
+            name = request.POST.get('name', '')
+            month = request.POST.get('month', '')
+            year = request.POST.get('year', '')
+
+            total_working_days = int(request.POST.get('totalPayableDays', 0))
+            total_leave = int(request.POST.get('totalleave', 0))
+            salary_deducted_leave = int(request.POST.get('salarydeductedleave', 0))
+
+            salary = Decimal(request.POST.get('salary', 0)) if request.POST.get('salary', '').replace('.', '', 1).isdigit() else 0
+            per_day_salary = Decimal(request.POST.get('perdaysalary', 0)) if request.POST.get('perdaysalary', '').replace('.', '', 1).isdigit() else 0
+            deduction_amount = Decimal(request.POST.get('deductionamount', 0)) if request.POST.get('deductionamount', '').replace('.', '', 1).isdigit() else 0
+            monthly_salary = Decimal(request.POST.get('monthlysalary', 0)) if request.POST.get('monthlysalary', '').replace('.', '', 1).isdigit() else 0
+
+            salary_slip = SalarySlipModel(
+                name=name,
+                employeeid=employee_id,
+                month=month,
+                year=year,
+                totalPayableDays=total_working_days,
+                totalleave=total_leave,
+                salarydeductedleave=salary_deducted_leave,
+                salary=salary,
+                perdaysalary=per_day_salary,
+                deductionamount=deduction_amount,
+                monthlysalary=monthly_salary
+            )
+            salary_slip.save()
+
+            return HttpResponse("Salary Slip generated and saved successfully!")
 
         return render(request, 'calendar.html', {'employees': employees, 'salary': employee_salary})
     else:
-        return render(request, 'employee_not_found.html')
+        return HttpResponse("Details do not exist!!!")
+
+
 
 
 
@@ -1221,53 +1484,71 @@ def attendance_salary_view(request, employeeId):
     # For demonstration purposes, let's just return a simple response
     return HttpResponse(f"Attendance Salary for Employee ID {employeeId}")
 
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-import json
+from django.http import HttpResponseBadRequest
+from django.shortcuts import render
+from django.views import View
+from .models import SalarySlipModel
+from django.db import transaction
+from decimal import Decimal
+
+from decimal import Decimal
 
 
-@csrf_exempt
-@require_POST
-def save_salary_slip(request):
-    try:
-        # Parse JSON data from the request body
-        data = json.loads(request.body.decode('utf-8'))
-
-        # Print received data for debugging
-        print("Received data:", data)
-
-      # Extract data from the JSON using correct keys
-        name = data.get('name', '')
-        employeeid = data.get('employeeid', '')
-        month = data.get('month', '')
-        year = data.get('year', 0)  # Assuming the year is an integer
-        totalworkingdays = data.get('totalworkingdays', 0)
-        salarydeductedleave = data.get('salarydeductedleave', 0)
-        salary = data.get('salary', 0)
-        deductionamount = data.get('deductionamount', 0)
-        monthlysalary = data.get('monthlysalary', 0)
 
 
-        # Create and save a new SalarySlipModel instance
-        salary_slip = SalarySlipModel(
-            name=name,
-            employeeid=employeeid,
-            month=month,
-            year=year,
-            totalworkingdays=totalworkingdays,
-            salarydeductedleave=salarydeductedleave,
-            salary=salary,
-            deductionamount=deductionamount,
-            monthlysalary=monthlysalary
-        )
-        salary_slip.save()
+# class SaveSalarySlipView(View):
 
-        return JsonResponse({'message': 'Data saved successfully'}, status=200)
+#     def post(self, request, employee_id, *args, **kwargs):
+#         # Use cleaned data directly from the form
+#         form_data = request.POST
 
-    except Exception as e:
-        print("Error:", e)
-        return JsonResponse({'error': str(e)}, status=500)
+#         # Validate if the employee_id in the form matches the one in the URL
+#         if form_data.get('employeeid') != employee_id:
+#             return HttpResponseBadRequest("Invalid employee_id")
+
+#         # Function to safely convert a value to int or return 0 if the value is empty or invalid
+#         def safe_int(value):
+#             try:
+#                 return int(value)
+#             except (ValueError, TypeError):
+#                 return 0
+
+#         # Function to safely convert a value to Decimal or return 0 if the value is empty or invalid
+#         def safe_decimal(value):
+#             try:
+#                 return Decimal(value)
+#             except (ValueError, TypeError):
+#                 return Decimal(0)
+
+#         # Save data to the model with employee_id
+#         with transaction.atomic():
+#             salary_slip = SalarySlipModel.objects.create(
+#                 name=form_data.get('name'),
+#                 employeeid=form_data.get('employeeid'),
+#                 month=form_data.get('month'),
+#                 year=form_data.get('year'),
+#                 totalworkingdays=safe_int(form_data.get('totalworkingdays')),
+#                 totalleave=safe_int(form_data.get('totalleave')),
+#                 salarydeductedleave=safe_int(form_data.get('salarydeductedleave')),
+#                 salary=safe_decimal(form_data.get('salary')),
+#                 deductionamount=safe_decimal(form_data.get('deductionamount')),
+#                 monthlysalary=safe_decimal(form_data.get('monthlysalary'))
+#             )
+
+#         return render(request, 'calendar.html', {'salary_slip': salary_slip})
+
+
+
+
 
 def holidaycalendar(request):
     return render(request, 'holidaycalendar.html')
 
+# def fetch_extra_model_data(request, year, month):
+#     # Add your logic to retrieve ExtraModel data (replace with your actual model and field names)
+#     extra_model_data = ExtraModel.objects.filter(year=year, month=month).values('day', 'status')
+
+#     # Convert extra_model_data to a list of dictionaries
+#     extra_model_data_list = list(extra_model_data)
+
+#     return JsonResponse(extra_model_data_list, safe=False)

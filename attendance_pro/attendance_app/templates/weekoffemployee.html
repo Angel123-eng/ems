@@ -40,8 +40,8 @@
         <tr>
             <th>Name</th>
             <th>Employee ID</th>
-            <th>Weekoff 1</th>
-            <th>Weekoff 2</th>
+            <th>Date</th>
+           
         </tr>
     </thead>
     <tbody>
@@ -49,8 +49,8 @@
             <tr>
                 <td>{{ data.name }}</td>
                 <td>{{ data.employeeid }}</td>
-                <td>{{ data.weekoff1 }}</td>
-                <td>{{ data.weekoff2 }}</td>
+                <td>{{ data.date }}</td>
+                {% comment %} <td>{{ data.weekoff2 }}</td> {% endcomment %}
             </tr>
         {% endfor %}
     </tbody>

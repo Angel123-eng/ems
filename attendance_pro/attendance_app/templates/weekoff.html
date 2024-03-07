@@ -249,12 +249,42 @@
     </nav>
     <div class="input-group">
       <div class="form-outline" data-mdb-input-init>
-        <input type="search" id="form1" class="form-control"/>
+          <input type="search" id="form1" class="form-control" />
       </div>
-      <button type="button" class="btn btn-dark" data-mdb-ripple-init>
-        <i class="fas fa-search"></i>
+      <button type="button" id="searchButton" class="btn btn-dark" data-mdb-ripple-init>
+          <i class="fas fa-search"></i>
       </button>
-    </div>
+  </div>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const searchButton = document.getElementById("searchButton");
+          const searchInput = document.getElementById("form1");
+          const tableRows = document.querySelectorAll("table tbody tr");
+  
+          searchButton.addEventListener("click", function () {
+              searchEmployees();
+          });
+  
+          searchInput.addEventListener("input", function () {
+              searchEmployees();
+          });
+  
+          function searchEmployees() {
+              const searchQuery = searchInput.value.toLowerCase();
+  
+              tableRows.forEach(function (row) {
+                const rowData = row.textContent.toLowerCase();
+                if (rowData.includes(searchQuery.toLowerCase())) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+                
+              });
+          }
+      });
+  </script>
+    
     <div class="container">
       <div class="row">
         <div class="col-md-6">
@@ -266,18 +296,23 @@
 
            
 
-            <div class="mx-1 col me-3">
-              <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#weekOffModal">
-                <i class="zmdi zmdi-search"></i> View weekoff
-              </button>
-            </div>
-
+            
+              <div class="mx-1 col me-3">
+                <a href="/weekoffdisplayadmin/">
+                  <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#weekOffModal">
+                      <i class="zmdi zmdi-search"></i> View weekoff
+                  </button>
+                </a>
+              </div>
+          
+          
+         
           </div> 
         </div>
       </div>
     </div>
     
-    <div class="modal fade" id="weekOffModal" tabindex="-1" role="dialog" aria-labelledby="weekOffModalLabel" aria-hidden="true">
+    {% comment %} <div class="modal fade" id="weekOffModal" tabindex="-1" role="dialog" aria-labelledby="weekOffModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -297,7 +332,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> {% endcomment %}
     <style>
       body {
           font-family: 'Arial', sans-serif;

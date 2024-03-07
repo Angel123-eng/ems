@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import regmodel,LeaveModel,AttendanceModel,WeekoffModel,PublicholidaysModel,ExtraModel,SalarySlipModel
+from .models import regmodel,LeaveModel,AttendanceModel,WeekoffModel,PublicholidaysModel,ExtraModel,ExcelModel,SalarySlipModel
 # Register your models here.
 
 class regAdmin(admin.ModelAdmin):
@@ -19,17 +19,19 @@ class PublicholidaysAdmin(admin.ModelAdmin):
     
 class ExtraAdmin(admin.ModelAdmin):
     list_display=('name','employeeid','date','status')
-    
-class SalarySlipAdmin(admin.ModelAdmin):
-    list_display=('name','employeeid','month','year','totalworkingdays','salarydeductedleave','salary','deductionamount','monthlysalary')
-    
-    
 
-     
+class ExcelModelAdmin(admin.ModelAdmin):
+    list_display = ('employeeid', 'name', 'date', 'intime', 'outtime')  # Add intime and outtime to the list_display
+
+class SalarySlipModelAdmin(admin.ModelAdmin):
+    list_display = ('name', 'employeeid', 'month', 'year', 'totalPayableDays', 'totalleave', 'salarydeductedleave', 'salary','perdaysalary', 'deductionamount', 'monthlysalary')
+
+
 admin.site.register(regmodel, regAdmin)
 admin.site.register(LeaveModel, leaveAdmin)
 admin.site.register(AttendanceModel, AttendanceAdmin)
 admin.site.register(WeekoffModel,WeekoffAdmin)
 admin.site.register(PublicholidaysModel, PublicholidaysAdmin)
 admin.site.register(ExtraModel, ExtraAdmin)
-admin.site.register(SalarySlipModel, SalarySlipAdmin)
+admin.site.register(ExcelModel,ExcelModelAdmin)
+admin.site.register(SalarySlipModel, SalarySlipModelAdmin)

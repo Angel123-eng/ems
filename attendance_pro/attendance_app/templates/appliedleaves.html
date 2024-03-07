@@ -247,16 +247,45 @@
         </div>
       </div>
     </nav>
-    <div class="input-group">
-      <div class="form-outline" data-mdb-input-init>
-        <input type="search" id="form1" class="form-control"/>
-      </div>
-      <button type="button" class="btn btn-dark" data-mdb-ripple-init>
-        <i class="fas fa-search"></i>
-      </button>
-    </div>
+   
 <body>
-    
+  <div class="input-group">
+    <div class="form-outline" data-mdb-input-init>
+        <input type="search" id="form1" class="form-control" />
+    </div>
+    <button type="button" id="searchButton" class="btn btn-dark" data-mdb-ripple-init>
+        <i class="fas fa-search"></i>
+    </button>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchButton = document.getElementById("searchButton");
+        const searchInput = document.getElementById("form1");
+        const tableRows = document.querySelectorAll("table tbody tr");
+
+        searchButton.addEventListener("click", function () {
+            searchEmployees();
+        });
+
+        searchInput.addEventListener("input", function () {
+            searchEmployees();
+        });
+
+        function searchEmployees() {
+            const searchQuery = searchInput.value.toLowerCase();
+
+            tableRows.forEach(function (row) {
+              const rowData = row.textContent.toLowerCase();
+              if (rowData.includes(searchQuery.toLowerCase())) {
+                  row.style.display = "";
+              } else {
+                  row.style.display = "none";
+              }
+              
+            });
+        }
+    });
+</script>
     <style>
         /* Add any additional styles specific to your table if needed */
         table {

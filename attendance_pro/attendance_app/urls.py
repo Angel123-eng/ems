@@ -51,12 +51,12 @@ urlpatterns=[
     path('editattendance/<int:employee_id>', views.editattendance, name='editattendance'),
     path('fetch_data/<int:year>/<int:month>/', fetch_data, name='fetch_data'),
     path('fetch_dat/<int:year>/<int:month>/', fetch_dat, name='fetch_dat'),
-    path('calendar/<str:employee_id>/save_salary_slip/', save_salary_slip, name='save_salary_slip'),
+    # path('calendar/<str:employee_id>/save_salary_slip/', save_salary_slip, name='save_salary_slip'),
+    # In your urls.py
+# path('calendar/<str:employee_id>/save_salary_slip/', SaveSalarySlipView.as_view(), name='save_salary_slip'),
+
     path('holidaycalendar/', holidaycalendar, name='holidaycalendar'),
+    path('display_attendance_details/', display_attendance_details, name='display_attendance_details'),
+    path('calculate_working_hours/', calculate_working_hours, name='calculate_working_hours'),
     
     ]
-
-
-
-
-    

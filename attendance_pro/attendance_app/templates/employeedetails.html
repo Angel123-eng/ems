@@ -267,16 +267,45 @@
     }
   </style>
     <!-- End Navbar -->
-     <button id="addEmployeeBtn" onclick="redirectToRegisterPage()">+ Add New Employee</button>
-     <div class="input-group">
-      <div class="form-outline" data-mdb-input-init>
-        <input type="search" id="form1" class="form-control"/>
-      </div>
-      <button type="button" class="btn btn-dark" data-mdb-ripple-init>
-        <i class="fas fa-search"></i>
-      </button>
+    <button id="addEmployeeBtn" onclick="redirectToRegisterPage()">+ Add New Employee</button>
+<div class="input-group">
+    <div class="form-outline" data-mdb-input-init>
+        <input type="search" id="form1" class="form-control" />
     </div>
-   
+    <button type="button" id="searchButton" class="btn btn-dark" data-mdb-ripple-init>
+        <i class="fas fa-search"></i>
+    </button>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchButton = document.getElementById("searchButton");
+        const searchInput = document.getElementById("form1");
+        const tableRows = document.querySelectorAll(".table tbody tr"); // Adjusted the selector
+
+        searchButton.addEventListener("click", function () {
+            searchEmployees();
+        });
+
+        searchInput.addEventListener("input", function () {
+            searchEmployees();
+        });
+
+        function searchEmployees() {
+            const searchQuery = searchInput.value.toLowerCase();
+
+            tableRows.forEach(function (row) {
+                const rowData = row.textContent.toLowerCase();
+                if (rowData.includes(searchQuery)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    });
+</script>
+
+  
     <script>
         // JavaScript function to handle the button click event and redirect to register.html
         function redirectToRegisterPage() {
@@ -329,6 +358,7 @@
                         <th >Sl.no</th>
                         <th >Name</th>
                         <th >Employee id</th>
+                        <th >Monthly Details</th>
                         <th >Designation</th>
                         <th >Email</th>
                         <th >Blood group</th>
@@ -341,7 +371,6 @@
                         <th >Branch</th>
                         <th >IFSC code</th>
                         <th >Salary</th>
-                        <th >View</th>
                         <th >Edit</th>
                         <th >Status</th>
                        
@@ -354,6 +383,11 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ j }}</td>
                         <td>{{ k }}</td>
+                        <td>
+                          <a href="/calendar/{{ k }}" class="btn btn-dark">
+                            <i class="zmdi zmdi-edit">View Monthly Details</i>
+                          </a>
+                        </td>
                         <td>{{ l }}</td>
                         <td>{{ m }}</td>
                         <td>{{ n }}</td>
@@ -366,12 +400,6 @@
                         <td>{{ u }}</td>
                         <td>{{ v }}</td>
                         <td>{{ w }}</td>
-                        <td>
-                          <a href="/calendar/{{ k }}" class="btn btn-dark">
-                            <i class="zmdi zmdi-edit">View Monthly Details</i>
-                          </a>
-                        </td>
-                        
                         <td><a href="/editemployeedetails/{{ i }}" class="btn btn-info"><i class="zmdi zmdi-edit">Edit</i></a></td>
                         <td>
                           <form method="post">
@@ -380,8 +408,8 @@
                             <button type="submit" name="action" value="inactive" class="btn btn-toggle-state inactive-state" data-employee-id="{{ i }}" data-current-state="Inactive">
                               Inactive
                             </button>
-                            <button type="submit" name="action" value="resigned" class="btn btn-resign">
-                              Resigned
+                            <button type="submit"  onclick="return confirm('Are you sure you want to remove this employee?')" name="action" value="resigned" class="btn btn-resign">
+                              Resign
                             </button>
                           </form>
                         </td>

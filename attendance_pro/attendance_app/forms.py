@@ -9,6 +9,7 @@ class regform(forms.Form):
     phonenumber=forms.IntegerField()
     dateofbirth=forms.DateField(widget=forms.SelectDateWidget)
     joiningdate=forms.DateField(widget=forms.SelectDateWidget)
+    
     image=forms.FileField()
     accountnumber=forms.IntegerField()
     bankname=forms.CharField(max_length=100)
@@ -73,25 +74,27 @@ class ExtraStatusForm(forms.ModelForm):
     class Meta:
         model = ExtraModel
         fields = ['status']
-        
 
-# forms.py
+from .models import ExcelModel
+
+class ExcelUploadForm(forms.ModelForm):
+    class Meta:
+        model = ExcelModel
+        fields = ['excel_file']
+    
+    excel_file = forms.FileField(
+        label='Choose an Excel file (.xlsx, .xls)',
+        widget=forms.FileInput(attrs={'accept': '.xlsx, .xls', 'required': 'required'})
+    )
+
 
 from django import forms
 from .models import SalarySlipModel
 
-class SalarySlipForm(forms.ModelForm):
+class SalarySlipModelForm(forms.ModelForm):
     class Meta:
         model = SalarySlipModel
-        fields = '__all__'
+        fields = '__all__'  # You can specify the fields you want to include here if needed
 
-
-
-
-
-
-        
-
-
-        
-        
+    # You can add additional custom validation or form logic here if necessary
+      

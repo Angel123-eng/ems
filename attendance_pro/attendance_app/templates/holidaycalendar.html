@@ -70,6 +70,14 @@
         .other-month {
             color: #ccc;
         }
+
+        .today {
+            background-color: green !important;
+            color: #fff;
+            border: 2px solid skyblue !important;
+            font-weight: bold;
+            font-size:30px;
+        }
     </style>
    
     <div id="calendar">
@@ -99,37 +107,39 @@
 
         function updateCalendar(data) {
             const calendarDates = document.getElementById('calendar-dates');
-    
+        
             calendarDates.childNodes.forEach(dayElement => {
                 const dayNumber = parseInt(dayElement.textContent);
                 const dayData = data.find(item => new Date(item.date).getDate() === dayNumber);
-    
+        
                 if (dayData) {
                     const isCurrentMonth = dayElement.classList.contains('current-month');
-    
+        
                     if (isCurrentMonth) {
-                        let borderColor = '';
-    
+                        const currentDate = new Date(currentYear, currentMonth, dayNumber);
+                        const today = new Date();
+        
+                        let backgroundColor = '';
+        
                         switch (dayData.status.toLowerCase()) {
                             case 'holiday':
-                                borderColor = 'brown';
-                                break;
                             case 'weekoff':
-                                borderColor = 'yellow';
-                                break;
                             case 'sunday':
-                                borderColor = 'black';
+                                // Check if the date is before or after the current date
+                                backgroundColor = currentDate < today ? '  #CD5C5C ' : '#FF0000';
                                 break;
                             default:
                                 return; // Skip if not one of the specified statuses
                         }
-    
-                        dayElement.style.borderColor = borderColor;
-                        dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>`;
+        
+                        dayElement.style.backgroundColor = backgroundColor;
+                        dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: #fff;">${dayData.status}</div>`;
                     }
                 }
             });
         }
+        
+        
         
         
         
@@ -159,9 +169,16 @@
             for (let i = 1; i <= lastDayOfMonth; i++) {
                 const day = document.createElement('div');
                 day.className = 'day current-month';
-        
+
+       
                 // Set different colors based on the date range
                 const currentDate = new Date(currentYear, currentMonth, i);
+
+                 // Check if the current date matches the loop date
+            if (currentDate.toDateString() === new Date().toDateString()) {
+                day.classList.add('today'); // Add a class or styling for today
+            }
+
                 const dateRanges = [
                
                     { start: new Date(currentYear, -1, 26), end: new Date(currentYear, 0, 25), color: '#fcf4fc' }, // Jan to Feb

@@ -249,12 +249,41 @@
     </nav>
     <div class="input-group">
       <div class="form-outline" data-mdb-input-init>
-        <input type="search" id="form1" class="form-control"/>
+          <input type="search" id="form1" class="form-control" />
       </div>
-      <button type="button" class="btn btn-dark" data-mdb-ripple-init>
-        <i class="fas fa-search"></i>
+      <button type="button" id="searchButton" class="btn btn-dark" data-mdb-ripple-init>
+          <i class="fas fa-search"></i>
       </button>
-    </div>
+  </div>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const searchButton = document.getElementById("searchButton");
+          const searchInput = document.getElementById("form1");
+          const tableRows = document.querySelectorAll("table tbody tr");
+  
+          searchButton.addEventListener("click", function () {
+              searchEmployees();
+          });
+  
+          searchInput.addEventListener("input", function () {
+              searchEmployees();
+          });
+  
+          function searchEmployees() {
+              const searchQuery = searchInput.value.toLowerCase();
+  
+              tableRows.forEach(function (row) {
+                const rowData = row.textContent.toLowerCase();
+                if (rowData.includes(searchQuery.toLowerCase())) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+                
+              });
+          }
+      });
+  </script>
 <body>
 
   
@@ -299,29 +328,27 @@
   // Display the week off data in your page
 </script>
 
-  <table border="2">
-    <thead>
-      <tr>
-        <th>Sl.no</th>
-        <th>Name</th>
-        <th>Employee ID</th>
-        <th>Weekoff 1</th>
-        <th>Weekoff 2</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for data in weekoff_data %}
+<table border="2">
+  <tbody>
+    {% for data_by_date in weekoff_data_by_date %}
+      {% for record in data_by_date.records %}
         <tr>
-          <td>{{forloop.counter}}</td>
-          <td>{{ data.name }}</td>
-          <td>{{ data.employeeid }}</td>
-          <td>{{ data.weekoff1 }}</td>
-          <td>{{ data.weekoff2 }}</td>
+          <td>{{forloop.parentloop.counter}}</td>
+          <td>
+            {% if forloop.first %}
+              <strong>{{ data_by_date.date }}</strong>
+            {% endif %}
+          </td>
+          <td>{{ record.name }}</td>
+          <td>{{ record.employeeid }}</td>
         </tr>
       {% endfor %}
-    </tbody>
-  </table>
-  
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
   
   </body>
   <footer class="footer pt-3  ">

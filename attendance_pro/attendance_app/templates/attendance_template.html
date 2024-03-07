@@ -200,7 +200,7 @@
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
 
-          <h3 class="font-weight-bolder mb-0">Attendance Records</h3>
+          <h3 class="font-weight-bolder mb-0">Upload Attendance</h3>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -296,11 +296,77 @@
       }
   </style>
   <title>Attendance Records</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+        margin-bottom: 15px;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    /* Style to place the button to the right */
+    .button-container {
+        display: flex;
+        justify-content: flex-right;
+        margin-top: 50px;
+    }
+
+    /* Style to add space below the form */
+    .form-container {
+        margin-bottom: 20px;
+    }
+</style>
 </head>
 <body>
+  {% comment %} <!-- Display the existing attendance records -->
+{% for record in attendance_records %}
+<!-- Display record details as needed -->
+{{ record.name }}, {{ record.employee_id }}, {{ record.date }}, {{ record.time }}<br>
+{% endfor %} {% endcomment %}
 
+<div class="form-container">
+  <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="excel_file">Choose an Excel file (.xlsx, .xls)</label>
+      <input type="file" name="excel_file" id="excel_file" accept=".xlsx, .xls" required>
+      <button type="submit">Upload Excel</button>
+  </form>
+</div>
 
-  <table>
+<!-- Container for the button to align to the right -->
+<div class="button-container">
+  <a href="{% url 'display_attendance_details' %}" class="btn btn-dark">View Attendance</a>
+</div>
+  {% comment %} <table>
       <thead>
           <tr>
               <th>Name</th>
@@ -329,7 +395,7 @@
               </tr>
           {% endfor %}
       </tbody>
-  </table>
+  </table> {% endcomment %}
 
 </body>
 <footer class="footer pt-3  ">

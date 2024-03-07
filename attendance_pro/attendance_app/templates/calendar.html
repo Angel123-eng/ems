@@ -272,14 +272,7 @@
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             
           </div>
-          <div class="input-group">
-            <div class="form-outline" data-mdb-input-init>
-              <input type="search" id="form1" class="form-control"/>
-            </div>
-            <button type="button" class="btn btn-dark" data-mdb-ripple-init>
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
+         
           <ul class="navbar-nav  justify-content-end">
            
            
@@ -320,16 +313,28 @@
         </div>
       </div>
     </nav>
-
+    <style>
+      #month-display,
+      #year-display {
+          display: none;
+      }
+  </style>
     <div class="content-container">
   
       {% for employee in employees %}
         <div>
-            <p><b>Monthly Details of {{ employee.name }}</b></p>
-            <p><b>Employee ID: {{ employee.employeeid }}</b></p>
+            <h3><b>Monthly Details of {{ employee.name }}</b></h3>
+            <h4><b>Employee ID: {{ employee.employeeid }}</b></h4>
+          
+        <!-- Add these lines where you want to display the month and year -->
+<h4><span id="month-display"></span></h4>
+<h4><span id="year-display"></span></h4>
+
+        <p style="display:none;" id="employeeId">{{employee.employeeid}} </p>
             <p style="display:none;" id="employeeId">{{employee.employeeid}} </p>
         </div>
       {% endfor %}
+      <div id="days-between"></div>
 
     <div id="calendar">
       <div id="calendar-header">
@@ -355,7 +360,9 @@
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
-
+    // Add these lines within your script tag 
+    document.getElementById('month-display').textContent = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(currentDate);
+    document.getElementById('year-display').textContent = currentYear;
     function updateCalendar(data) {
         const calendarDates = document.getElementById('calendar-dates');
     
@@ -386,7 +393,7 @@
                         borderColor = 'purple';
                         break;
                     case 'weekoff':
-                        borderColor = 'yellow';
+                        borderColor = ' #FFD700';
                         break;
                     case 'sunday':
                         borderColor = 'black';
@@ -395,7 +402,7 @@
                         borderColor = 'brown';
                         break;
                     default:
-                        borderColor = 'black'; // Default color for unknown status
+                        borderColor = '  #ADFF2F '; // Default color for unknown status
                 }
     
                 // Set border color for the cell only if it's from the current month
@@ -411,38 +418,56 @@
         });
     }
     
+    function getDaysBetweenDates(startDate, endDate) {
+      const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
+      const start = startDate.getTime();
+      const end = endDate.getTime();
     
-    
-    
-
-   function generateCalendar() {
-    const calendarHeader = document.getElementById('month-year');
-    const calendarDates = document.getElementById('calendar-dates');
-
-    calendarHeader.textContent = new Intl.DateTimeFormat('en-US', {
-        month: 'long',
-        year: 'numeric'
-    }).format(currentDate);
-
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-    calendarDates.innerHTML = '';
-
-    for (let i = firstDayOfMonth; i > 0; i--) {
-        const day = document.createElement('div');
-        day.className = 'day other-month';
-        day.textContent = new Date(currentYear, currentMonth, -i + 1).getDate();
-        calendarDates.appendChild(day);
+      return Math.round(Math.abs((start - end) / oneDay)) + 1;
     }
-
-    for (let i = 1; i <= lastDayOfMonth; i++) {
-        const day = document.createElement('div');
-        day.className = 'day current-month';
-
-        // Set different colors based on the date range
-        const currentDate = new Date(currentYear, currentMonth, i);
-        const dateRanges = [
+  
+  
+  function generateCalendar() {
+      const calendarHeader = document.getElementById('month-year');
+      const calendarDates = document.getElementById('calendar-dates');
+  
+      calendarHeader.textContent = new Intl.DateTimeFormat('en-US', {
+          month: 'long',
+          year: 'numeric'
+      }).format(currentDate);
+  
+      const selectedMonth = currentMonth;
+      const selectedYear = currentYear;
+  
+      const daysBetween = getDaysBetweenDates(
+          new Date(selectedYear, selectedMonth - 1, 26), // 26th of the previous month
+          new Date(selectedYear, selectedMonth, 25) // 25th of the selected month
+      );
+  
+      // Log or use the calculated daysBetween variable as per your requirement
+      const daysBetweenElement = document.getElementById('days-between');
+      daysBetweenElement.textContent = `Number of days: ${daysBetween}`;
+      //console.log(`Number of days from the 26th of the previous month to the 25th of the selected month: ${daysBetween}`);
+  
+      const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+      const lastDayOfMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+  
+      calendarDates.innerHTML = '';
+  
+      for (let i = firstDayOfMonth; i > 0; i--) {
+          const day = document.createElement('div');
+          day.className = 'day other-month';
+          day.textContent = new Date(selectedYear, selectedMonth - 1, -i + 1).getDate();
+          calendarDates.appendChild(day);
+      }
+  
+      for (let i = 1; i <= lastDayOfMonth; i++) {
+          const day = document.createElement('div');
+          day.className = 'day current-month';
+  
+          // Set different colors based on the date range
+          const currentDate = new Date(selectedYear, selectedMonth, i);
+          const dateRanges = [
        
             { start: new Date(currentYear, -1, 26), end: new Date(currentYear, 0, 25), color: '#fcf4fc' }, // Jan to Feb
             { start: new Date(currentYear, 0, 26), end: new Date(currentYear, 1, 25), color: '#e3f7e1' }, // Jan to Feb
@@ -460,28 +485,28 @@
         ];
 
         dateRanges.forEach(range => {
-            if (currentDate >= range.start && currentDate <= range.end) {
-                day.style.backgroundColor = range.color;
-            }
-        });
+          if (currentDate >= range.start && currentDate <= range.end) {
+              day.style.backgroundColor = range.color;
+          }
+      });
 
-        day.textContent = i;
-        calendarDates.appendChild(day);
-    }
+      day.textContent = i;
+      calendarDates.appendChild(day);
+  }
 
-    const totalDays = calendarDates.children.length;
-    const remainingDays = 42 - totalDays;
+  const totalDays = calendarDates.children.length;
+  const remainingDays = 42 - totalDays;
 
-    for (let i = 1; i <= remainingDays; i++) {
-        const day = document.createElement('div');
-        day.className = 'day other-month';
-        day.textContent = i;
-        calendarDates.appendChild(day);
-    }
+  for (let i = 1; i <= remainingDays; i++) {
+      const day = document.createElement('div');
+      day.className = 'day other-month';
+      day.textContent = i;
+      calendarDates.appendChild(day);
+  }
 
-    // Fetch data for the current month
-    fetchData(currentYear, currentMonth + 1)
-        .then(data => updateCalendar(data));
+  // Fetch data for the current month
+  fetchData(selectedYear, selectedMonth + 1)
+      .then(data => updateCalendar(data));
 }
 
   
@@ -690,262 +715,346 @@
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Full Day Leave(PL)</td>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="halfdayleave-count">0</span></td>
               </tr>
+              <tr style="display: none;">
+                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Weekoff</td>
+                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="weekoff-count">0</span></td>
+            </tr>
+            <tr style="display: none;">
+                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Sunday</td>
+                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="sunday-count">0</span></td>
+            </tr>
+            
               <tr>
-                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Weekoff (Saturday)</td>
-                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="weekoff-count">0</span></td>
-              </tr>
+                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Weekoff</td>
+                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;">
+                    <span id="weekoff-sunday-sum">0</span>
+                </td>
+            </tr>
+            
               <tr>
-                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Sunday</td>
-                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="sunday-count">0</span></td>
-              </tr>
-              <tr>
-                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Holiday</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Holidays</td>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="holiday-count">0</span></td>
               </tr>
             </tbody>
           </table>
       </div>
-
-
-      <div class="col-md-6">
-      <table id="status-counts" style="border-collapse: collapse; width: 80%; margin-left: auto; margin-right: auto;">
-       
-        <thead>
-          <tr>
-              <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;" colspan="2">
-                  <h3>Salary Details</h3>
-              </th>
-          </tr>
-      </thead>
-      <tr>
-        <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Total Working Days</td>
-        <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="total-working-days">0</span></td>
-    </tr>
+     
     
-            <tr>
-                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Total Leave</td>
-                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="total-leave-count">0</span></td>
-            </tr>
-          </tr>
-          <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Salary Deducted Leave</td>
-          <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="salary-deducted-count">0</span></td>
-    </tr>
-
-    <tr>
-      <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Salary</td>
-      <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="salary">{{ salary }}</span></td>
-  </tr>
-  <tr>
-    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Per Day Salary</td>
-    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="perdaysalary">0</span></td>
-</tr>
-<tr>
-  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Deduction Amount</td>
-  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="deductionamount">0</span></td>
-</tr>
-<tr>
-  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Monthly Salary</td>
-  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="monthlysalary">0</span></td>
-</tr>
-
-</tbody>
-</table>
-</div>   
-
-  <script>
-    // Your existing JavaScript code for updating the table
-
-    function updateTable(data) {
-        // Initialize status counts
-        let presentCount = 0,
-            halfdayCount = 0,
-            absentCount = 0,
-            leaveCount = 0,
-            halfdayleaveCount = 0,
-            weekoffCount = 0,
-            sundayCount = 0,
-            holidayCount = 0,
-            halfdayleavePL = 0,
-            fulldayleavePL = 0;
-
-        data.forEach(record => {
-            const normalizedStatus = normalizeStatus(record.status);
-            switch (normalizedStatus) {
-                case 'present':
-                    presentCount++;
-                    break;
-                case 'half day':
-                    halfdayCount++;
-                    break;
-                case 'absent':
-                    absentCount++;
-                    break;
-                case 'leave':
-                    leaveCount++;
-                    break;
-                case 'half day leave':
-                    halfdayleaveCount++;
-                    break;
-                case 'weekoff':
-                    weekoffCount++;
-                    break;
-                case 'sunday':
-                    sundayCount++;
-                    break;
-                case 'holiday':
-                    holidayCount++;
-                    break;
-                case 'half day leave(pl)':
-                    halfdayleavePL++;
-                    break;
-                case 'leave(pl)':
-                    fulldayleavePL++;
-                    break;
-                default:
-                    console.log('Unknown status:', normalizedStatus);
-            }
-        });
-
-        // Calculate the total halfday counts
-        const totalHalfdayCounts = data.reduce((count, record) => {
-            const normalizedStatus = normalizeStatus(record.status);
-            if (normalizedStatus === 'half day' || normalizedStatus === 'half day leave') {
-                count++;
-            }
-            return count;
-        }, 0);
-
-        // Calculate the total halfday counts
-        const totalFulldayCounts = data.reduce((count, record) => {
-            const normalizedStatus = normalizeStatus(record.status);
-            if (normalizedStatus === 'absent' || normalizedStatus === 'leave') {
-                count++;
-            }
-            return count;
-        }, 0);
-
-        
-  // Calculate the total working days
-  const totalWorkingDays = presentCount + weekoffCount + sundayCount + holidayCount +
-  (halfdayleavePL > 0 ? halfdayleavePL : 0) + (fulldayleavePL > 0 ? fulldayleavePL : 0);
-
-// Update the total working days in the HTML table
-document.getElementById('total-working-days').textContent = totalWorkingDays;
-
-        // Update the status counts in the HTML table
-        document.getElementById('present-count').textContent = presentCount;
-        document.getElementById('halfday-count').textContent = totalHalfdayCounts;
-        document.getElementById('absent-count').textContent = totalFulldayCounts;
-        document.getElementById('leave-count').textContent = halfdayleavePL;
-        document.getElementById('halfdayleave-count').textContent = fulldayleavePL;
-        document.getElementById('weekoff-count').textContent = weekoffCount;
-        document.getElementById('sunday-count').textContent = sundayCount;
-        document.getElementById('holiday-count').textContent = holidayCount;
-
-        // Display the table once the counts are updated
-        document.getElementById('status-counts-table').style.display = 'block';
-
-        // Calculate and display the total leave count
-        const totalLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5) + fulldayleavePL + (halfdayleavePL * 0.5);
-        document.getElementById('total-leave-count').textContent = totalLeave;
-       
-        //salary deducted leave
-        const salarydeductedLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5);
-        document.getElementById('salary-deducted-count').textContent = salarydeductedLeave;
-
-         // Retrieve the value of {{ salary }} and store it in a variable
-         var salary = parseFloat("{{ salary }}") || 0; // Assuming the salary is a numeric value
-
-         //perday salary
-         perdaySalary = salary / 30;
-         perdaySalary = parseFloat(perdaySalary.toFixed(3));  // Limit to 3 decimal points
-         document.getElementById('perdaysalary').textContent = perdaySalary;
-         console.log('perday:', perdaySalary)
- 
-         //deduction amount
-         deductionAmount = perdaySalary * salarydeductedLeave;
-         deductionAmount = parseFloat(deductionAmount.toFixed(3));  // Limit to 3 decimal points
-         document.getElementById('deductionamount').textContent = deductionAmount;
-         console.log('ded amnt:', deductionAmount);
-         
-
-         //monthly salary
-         monthlySalary = salary - deductionAmount;
-         document.getElementById('monthlysalary').textContent = monthlySalary;
-         console.log('monthly salary:', monthlySalary)
-    }
-
-    // Function to normalize status strings
-    function normalizeStatus(status) {
-        return status.toLowerCase().trim();
-    }
-</script>
+      <div class="col-md-6">
+        <table id="status-counts" style="border-collapse: collapse; width: 80%; margin-left: auto; margin-right: auto;">
+              {% for employee in employees %}
+              <form class="salary-form" id="salaryForm{{ employee.employeeid }}" method="POST" action="{% url 'view_monthly_details' employee.employeeid %}">
+                {% csrf_token %}
+                <div>
+                    {% comment %} <h3><b>Monthly Details of {{ employee.name }}</b></h3> {% endcomment %}
+                    {% comment %} <h4><b>Employee ID: {{ employee.employeeid }}</b></h4> {% endcomment %}
+                    <input type="hidden" name="employeeid" value="{{ employee.employeeid }}">
+                    <input type="hidden" name="name" value="{{ employee.name }}">
+                    <input type="hidden" name="month" id="month{{ employee.employeeid }}" value="">
+                    <input type="hidden" name="year" id="year{{ employee.employeeid }}" value="">
+                    <!-- Add these lines where you want to display the month and year -->
+                    {% comment %} <h4>Month: <span id="month-display"></span></h4> {% endcomment %}
+                    {% comment %} <h4>Year: <span id="year-display"></span></h4> {% endcomment %}
+                    <p style="display:none;" id="employeeId">{{ employee.employeeid }} </p>
+                </div>
+                <thead>
+                  <tr>
+                      <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;" colspan="2">
+                          <h3>Salary Details</h3>
+                      </th>
+                  </tr>
+              </thead>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Total Payable Days</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                        <span id="total-payable-days">0</span>
+                        <input type="number" style="display:none;" id="totalw"  name="totalPayableDays" value="">
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Total Leave</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                        <span id="total-leave-count">0</span>
+                        <input type="number" style="display:none;" id="totall" name="totalleave" value="">
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Salary Deducted Leave</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                        <span id="salary-deducted-count">0</span>
+                        <input type="number" style="display:none;" id="salaryd" name="salarydeductedleave" value="">
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Salary</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                        <span id="salary">{{ salary }}</span>
+                        <input type="hidden" name="salary" value="{{ salary }}">
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Per Day Salary</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                        <span id="perdaysalary">0</span>
+                        <input type="hidden" id="perdays" name="perdaysalary" value="">
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Deduction Amount</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                        <span id="deductionamount">0</span>
+                        <input type="hidden" id="deductionA" name="deductionamount" value="" >
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Monthly Salary</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                        <span id="monthlysalary">0</span>
+                        <input type="hidden" id="monthlys" name="monthlysalary" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+  <button type="submit" class="btn bg-gradient-dark btn-lg" onclick="updateFormFields({{ employee.employeeid }})">Generate Salary Slip</button>                    </td>
+                </tr>
+            </form>
+            {% endfor %}
+        </table>
+    </div>     
 
 
-
-
-
-<div class="text-center">
-  {% for employee in employees %}
-
-      <a href="#" class="btn bg-gradient-dark btn-lg btn-generate-salary-slip" data-employee-id="{{ employee.employeeid }}">Generate Salary Slip</a>
- 
-{% endfor %}
-</div>
+{% comment %} <input type="text" name="" value={{"presentCount"}}> {% endcomment %}
 <script>
-  $(document).ready(function() {
-    // Handle click event on the anchor tag
-    $(".btn-generate-salary-slip").on("click", function(e) {
-      e.preventDefault(); // Prevent the default behavior of the anchor tag
-  
-      // Collect data from the table and the button
-      var totalWorkingDays = $("#total-working-days").text();
-      var totalLeaveCount = $("#total-leave-count").text();
-      var salaryDeductedCount = $("#salary-deducted-count").text();
-      var salary = $("#salary").text();
-      var perDaySalary = $("#perdaysalary").text();
-      var deductionAmount = $("#deductionamount").text();
-      var monthlySalary = $("#monthlysalary").text();
-      var employeeId = $(this).data('employee-id'); // Use 'employee-id' instead of 'employeeId'
-  
-     // Prepare data to be sent to the backend
-var data = {
-  totalWorkingDays: totalWorkingDays,
-  totalLeaveCount: totalLeaveCount,
-  salaryDeductedCount: salaryDeductedCount,
-  salary: salary,
-  perDaySalary: perDaySalary,
-  deductionAmount: deductionAmount,
-  monthlySalary: monthlySalary,
-  employeeId: employeeId // Include the employee ID
+  window.onload = function() {
+    
 };
+  // Your existing JavaScript code for updating the table
 
-// Print data to the console for debugging
-console.log("Data to be sent:", data);
+  // Function to update the hidden form fields before submission
+
   
-      // Make an AJAX request to the backend
-      var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
-      $.ajax({
-        type: "POST",
-        url: "/calendar/" + employeeId + "/save_salary_slip/",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        headers: { "X-CSRFToken": csrfToken },  // Include the CSRF token in the headers
-        success: function(response) {
-          console.log("Data sent successfully", response);
-          // Optionally, you can handle the response from the backend here
-        },
-        error: function(error) {
-          console.error("Error sending data to the backend", error);
-        }
+
+  function updateTable(data) {
+      // Initialize status counts
+      let presentCount = 0,
+          halfdayCount = 0,
+          absentCount = 0,
+          leaveCount = 0,
+          halfdayleaveCount = 0,
+          weekoffCount = 0,
+          sundayCount = 0,
+          holidayCount = 0,
+          halfdayleavePL = 0,
+          fulldayleavePL = 0;
+
+      data.forEach(record => {
+          const normalizedStatus = normalizeStatus(record.status);
+          switch (normalizedStatus) {
+              case 'present':
+                  presentCount++;
+                  break;
+              case 'half day':
+                  halfdayCount++;
+                  break;
+              case 'absent':
+                  absentCount++;
+                  break;
+              case 'leave':
+                  leaveCount++;
+                  break;
+              case 'half day leave':
+                  halfdayleaveCount++;
+                  break;
+              case 'weekoff':
+                  weekoffCount++;
+                  break;
+              case 'sunday':
+                  sundayCount++;
+                  break;
+              case 'holiday':
+                  holidayCount++;
+                  break;
+              case 'half day leave(pl)':
+                  halfdayleavePL++;
+                  break;
+              case 'leave(pl)':
+                  fulldayleavePL++;
+                  break;
+              default:
+                  console.log('Unknown status:', normalizedStatus);
+          }
       });
-    });
-  });
-  </script>
-  
+
+          // Calculate and display the sum of weekoffCount and sundayCount
+    const weekoffSundaySum = weekoffCount + sundayCount;
+    document.getElementById('weekoff-sunday-sum').textContent = weekoffSundaySum;
+     // Move the code for calculating the number of days here
+     const selectedMonth = currentMonth;
+     const selectedYear = currentYear;
+ 
+     const daysBetween = getDaysBetweenDates(
+         new Date(selectedYear, selectedMonth - 1, 26), // 26th of the previous month
+         new Date(selectedYear, selectedMonth, 25) // 25th of the selected month
+     );
+ 
+     // Log or use the calculated daysBetween variable as per your requirement
+     const daysBetweenElement = document.getElementById('days-between');
+     daysBetweenElement.textContent = `Number of days: ${daysBetween}`;
+
+      // Calculate the total halfday counts
+      const totalHalfdayCounts = data.reduce((count, record) => {
+          const normalizedStatus = normalizeStatus(record.status);
+          if (normalizedStatus === 'half day' || normalizedStatus === 'half day leave') {
+              count++;
+          }
+          return count;
+      }, 0);
+
+      // Calculate the total halfday counts
+      const totalFulldayCounts = data.reduce((count, record) => {
+          const normalizedStatus = normalizeStatus(record.status);
+          if (normalizedStatus === 'absent' || normalizedStatus === 'leave') {
+              count++;
+          }
+          return count;
+      }, 0);
 
 
-</body>
+      halfdayValue = halfdayleavePL/2;
+      // Calculate the total working days
+      const totalPayableDays = presentCount + weekoffCount + sundayCount + holidayCount +
+          (halfdayValue > 0 ? halfdayValue : 0) + (fulldayleavePL > 0 ? fulldayleavePL : 0);
+
+      // Update the total working days in the HTML table
+      document.getElementById('total-payable-days').textContent = totalPayableDays;
+      document.getElementById('totalw').value = totalPayableDays;
+
+      // Calculate the difference between totalPayableDays and daysBetween
+      const daysDifference = 30 - daysBetween;
+
+      // Log or use the calculated daysDifference variable as per your requirement
+      console.log(`Difference between totalPayableDays and daysBetween: ${daysDifference}`);
+
+
+      // Update the status counts in the HTML table
+      document.getElementById('present-count').textContent = presentCount;
+      document.getElementById('halfday-count').textContent = totalHalfdayCounts;
+      document.getElementById('absent-count').textContent = totalFulldayCounts;
+      document.getElementById('leave-count').textContent = halfdayleavePL;
+      document.getElementById('halfdayleave-count').textContent = fulldayleavePL;
+      document.getElementById('weekoff-count').textContent = weekoffCount;
+      document.getElementById('sunday-count').textContent = sundayCount;
+      document.getElementById('holiday-count').textContent = holidayCount;
+
+      // Display the table once the counts are updated
+      document.getElementById('status-counts-table').style.display = 'block';
+
+      // Calculate and display the total leave count
+      const totalLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5) + fulldayleavePL + (halfdayleavePL * 0.5);
+      document.getElementById('total-leave-count').textContent = totalLeave;
+      document.getElementById('totall').value = totalLeave;
+
+
+      //salary deducted leave
+      const salarydeductedLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5);
+      document.getElementById('salary-deducted-count').textContent = salarydeductedLeave;
+      document.getElementById('salaryd').value = salarydeductedLeave;
+
+      console.log("monthly salary======>  ",  document.getElementById('salaryd').value);
+
+      // Retrieve the value of {{ salary }} and store it in a variable
+      var salary = parseFloat("{{ salary }}") || 0; // Assuming the salary is a numeric value
+
+      //perday salary
+      perdaySalary = salary / 30;
+      perdaySalary = parseFloat(perdaySalary.toFixed(3)); // Limit to 3 decimal points
+      document.getElementById('perdaysalary').textContent = perdaySalary;
+      document.getElementById('perdays').value = perdaySalary;
+
+   
+
+      // Calculate the amount based on daysDifference and perdaySalary
+      const amt = daysDifference * perdaySalary;
+
+      // Log the calculated amount to the console
+      console.log(`Amount calculated: ${amt}`);
+
+      //deduction amount
+      deductionAmount = perdaySalary * salarydeductedLeave;
+      deductionAmount = parseFloat(deductionAmount.toFixed(3)); // Limit to 3 decimal points
+      document.getElementById('deductionamount').textContent = deductionAmount;
+      document.getElementById('deductionA').value = deductionAmount;
+
+      //monthly salary
+      monthlySalary = totalPayableDays * perdaySalary;
+      monthlySalary = Math.round(monthlySalary);
+      document.getElementById('monthlysalary').textContent = monthlySalary;
+      
+
+      document.getElementById('salaryd').value = salarydeductedLeave;
+     
+      document.getElementById('monthlys').value = monthlySalary;
+
+if (currentDate.getDate() === 25) {
+        // Calculate and round the monthly salary
+        monthlySalary = (totalPayableDays * perdaySalary) + amt;
+        monthlySalary = Math.round(monthlySalary);
+
+        // Log the rounded net amount to the console
+        console.log(`Rounded Net Amount calculated on the 25th: ${monthlySalary}`);
+
+        // Display the rounded monthly salary in the specified HTML element
+        document.getElementById('monthlysalary').textContent = monthlySalary;
+        document.getElementById('monthlys').value = monthlySalary; // Set the hidden input value if needed
+    } else {
+        // Calculate and round the monthly salary
+        monthlySalary = totalPayableDays * perdaySalary;
+        monthlySalary = Math.round(monthlySalary);
+
+        // Display the rounded monthly salary in the specified HTML element
+        document.getElementById('monthlysalary').textContent = monthlySalary;
+        document.getElementById('monthlys').value = monthlySalary; // Set the hidden input value if needed
+    }
+
+  }
+
+  // Function to normalize status strings
+  function normalizeStatus(status) {
+      return status.toLowerCase().trim();
+  }
+
+  // Call the function to update the form fields before submitting
+  updateFormFields();
+
+
+  function updateFormFields() {
+    const employeeId = document.getElementById('employeeId').textContent.trim();
+    const month = document.getElementById('month-display').textContent.trim();
+    const year = document.getElementById('year-display').textContent.trim();
+    const totalPayableDays = document.getElementById('total-payable-days').textContent.trim();
+    const totalLeave = document.getElementById('total-leave-count').textContent.trim();
+    const salaryDeductedLeave = document.getElementById('salary-deducted-count').textContent.trim();
+    const salary = document.getElementById('salary').textContent.trim();
+    const perDaySalary = document.getElementById('perdaysalary').textContent.trim();
+    const deductionAmount = document.getElementById('deductionamount').textContent.trim();
+    const monthlySalary = document.getElementById('monthlysalary').textContent;
+
+
+    console.log("monthly salary",monthlySalary);
+    // Set the values to the corresponding hidden form fields
+    document.getElementById(`month${employeeId}`).value = month;
+    document.getElementById(`year${employeeId}`).value = year;
+    
+}
+
+
+</script>
 
 <footer class="footer pt-3 d-flex align-items-center justify-content-center">
   <div class="container-fluid">

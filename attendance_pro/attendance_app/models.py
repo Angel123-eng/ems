@@ -13,6 +13,7 @@ class regmodel(models.Model):
     phonenumber=models.IntegerField()
     dateofbirth=models.CharField(max_length=30)
     joiningdate=models.CharField(max_length=30)
+   
     image=models.FileField(upload_to='attendance_app/static')
     accountnumber=models.IntegerField()
     bankname=models.CharField(max_length=100)
@@ -69,35 +70,37 @@ class ExtraModel(models.Model):
     employeeid=models.IntegerField()
     date=models.DateField(blank=True, null=True)
     status=models.CharField(max_length=40)
-    
 
+from django.db import models
+
+class ExcelModel(models.Model):
+    employeeid = models.CharField(max_length=10)
+    name = models.CharField(max_length=255)
+    date = models.DateField()
+    intime = models.TimeField()  # Add intime field
+    outtime = models.TimeField()  # Add outtime field
+
+    def __str__(self):
+        return f"{self.employeeid} - {self.name}"
+    
+# models.py
 
 from django.db import models
 
 class SalarySlipModel(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=100)
     employeeid = models.CharField(max_length=20)
     month = models.CharField(max_length=20)
     year = models.IntegerField()
-    totalworkingdays = models.IntegerField()
+    totalPayableDays = models.IntegerField()
+    totalleave = models.IntegerField()
     salarydeductedleave = models.IntegerField()
     salary = models.DecimalField(max_digits=10, decimal_places=2)
+    perdaysalary = models.DecimalField(max_digits=10, decimal_places=2)
     deductionamount = models.DecimalField(max_digits=10, decimal_places=2)
     monthlysalary = models.DecimalField(max_digits=10, decimal_places=2)
 
-
-
-    
-    
-    
-    
-    
-    
-
-
-    
-    
-
-    
+    def __str__(self):
+        return f"{self.name} - {self.month} {self.year} Salary Slip"
 
     

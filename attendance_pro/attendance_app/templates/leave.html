@@ -262,34 +262,34 @@
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Name:</th>
                                         <td>{{a.name}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Employee ID</th>
+                                        <th>Employee ID:</th>
                                         <td>{{a.employeeid}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Leave Type</th>
+                                        <th>Leave Type:</th>
                                         <td>{{a.leaveType}}</td>
                                     </tr>
                                     {% if a.leaveType == 'Half Day' %}
                                         <tr>
-                                            <th>Half Day Date</th>
+                                            <th>Half Day Date:</th>
                                             <td>{{a.halfDayDate|date:"Y-m-d"}}</td>
                                         </tr>
                                     {% elif a.leaveType == 'Full Day' and a.fromdate and a.todate %}
                                         <tr>
-                                            <th>From Date</th>
+                                            <th>From Date:</th>
                                             <td>{{a.fromdate|date:"Y-m-d"}}</td>
                                         </tr>
                                         <tr>
-                                            <th>To Date</th>
+                                            <th>To Date:</th>
                                             <td>{{a.todate|date:"Y-m-d"}}</td>
                                         </tr>
                                     {% endif %}
                                     <tr>
-                                        <th>Reason</th>
+                                        <th>Reason:</th>
                                         <td>{{a.reason}}</td>
                                     </tr>
                                  
