@@ -30,8 +30,8 @@
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-        <img src="  /static/assets/img/ictlogotext.png " class="navbar-brand-img h-100" alt="main_logo">
+      <a class="navbar-brand m-0" href=" " target="_blank">
+        <img src="  /static/ict logo.png " class="navbar-brand-img h-100" alt="main_logo">
 
         <span class="ms-1 font-weight-bold">ICT Global Tech</span>
       </a>
@@ -165,26 +165,7 @@
             <span class="nav-link-text ms-1">Public Holidays</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link  " href="/monthlyattendance/">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <title>credit-card</title>
-                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                    <g transform="translate(1716.000000, 291.000000)">
-                      <g transform="translate(453.000000, 454.000000)">
-                        <path class="color-background opacity-6" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"></path>
-                        <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            </div>
-            <span class="nav-link-text ms-1">Monthly Attendance</span>
-          </a>
-        </li>
+    
    
      
        
@@ -260,7 +241,7 @@
         padding: 10px 20px;
         font-size: 16px;
         cursor: pointer;
-        background-color: hsl(170, 88%, 32%); /* Green color, you can change this to your preferred color */
+        background-color: green; /* Green color, you can change this to your preferred color */
         color: white; /* Text color for better contrast */
         border: none; /* Remove border for a cleaner look */
         border-radius: 5px; /* Add border-radius for rounded corners */
@@ -344,6 +325,15 @@
           margin-right: 5px;
         }
       </style>
+
+      <div class="mx-1 col me-3 d-flex justify-content-end"> <!-- Add d-flex justify-content-end -->
+        <a href="/resigned_employees/">
+            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#weekOffModal">
+                <i class="zmdi zmdi-search"></i> Resigned employees
+            </button>
+        </a>
+    </div>
+    
       <div class="container-fluid py-4">
         <div class="row">
           <div class="col-12">
@@ -354,72 +344,82 @@
                 <div class="table-responsive p-0">
                   <table class="table align-items-center mb-0">
                     <thead>
-                      <tr>
-                        <th >Sl.no</th>
-                        <th >Name</th>
-                        <th >Employee id</th>
-                        <th >Monthly Details</th>
-                        <th >Designation</th>
-                        <th >Email</th>
-                        <th >Blood group</th>
-                        <th >Phone number</th>
-                        <th >Date of Birth</th>
-                        <th >Joining date</th>
-                        <th >Image</th>
-                        <th >Account number</th>
-                        <th >Bank name</th>
-                        <th >Branch</th>
-                        <th >IFSC code</th>
-                        <th >Salary</th>
-                        <th >Edit</th>
-                        <th >Status</th>
-                       
-                      </tr>
+                        <tr>
+                            <th>Sl.no</th>
+                            <th>Name</th>
+                            <th>Employee id</th>
+                            <th>Monthly Details</th>
+                            <th>Designation</th>
+                            <th>Email</th>
+                            <th>Blood group</th>
+                            <th>Phone number</th>
+                            <th>Date of Birth</th>
+                            <th>Joining date</th>
+                            <th>Image</th>
+                            <th>Account number</th>
+                            <th>Bank name</th>
+                            <th>Branch</th>
+                            <th>IFSC code</th>
+                            <th>Salary</th>
+                            <th>Logintime</th>
+                            <th>Address</th>
+                            <th>Edit</th>
+                            <th>Status</th>
+                            
+                        </tr>
                     </thead>
                     <tbody>
-                      
-                      {% for i,j,k,l,m,n,o,p,q,r,s,t,u,v,w in a %}
-                      <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ j }}</td>
-                        <td>{{ k }}</td>
-                        <td>
-                          <a href="/calendar/{{ k }}" class="btn btn-dark">
-                            <i class="zmdi zmdi-edit">View Monthly Details</i>
-                          </a>
-                        </td>
-                        <td>{{ l }}</td>
-                        <td>{{ m }}</td>
-                        <td>{{ n }}</td>
-                        <td>{{ o }}</td>
-                        <td>{{ p }}</td>
-                        <td>{{ q }}</td>
-                        <td><img src="{% static r %}" width="100px"></td>
-                        <td>{{ s }}</td>
-                        <td>{{ t }}</td>
-                        <td>{{ u }}</td>
-                        <td>{{ v }}</td>
-                        <td>{{ w }}</td>
-                        <td><a href="/editemployeedetails/{{ i }}" class="btn btn-info"><i class="zmdi zmdi-edit">Edit</i></a></td>
-                        <td>
-                          <form method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="employee_id" value="{{ i }}">
-                            <button type="submit" name="action" value="inactive" class="btn btn-toggle-state inactive-state" data-employee-id="{{ i }}" data-current-state="Inactive">
-                              Inactive
-                            </button>
-                            <button type="submit"  onclick="return confirm('Are you sure you want to remove this employee?')" name="action" value="resigned" class="btn btn-resign">
-                              Resign
-                            </button>
-                          </form>
-                        </td>
-                      </tr>
-                    {% endfor %}
-                    
-  
-                    
+                        {% for i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z in a %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ j }}</td>
+                            <td>{{ k }}</td>
+                            <td>
+                                <a href="/calendar/{{ k }}" class="btn btn-dark">
+                                    <i class="zmdi zmdi-edit">View Monthly Details</i>
+                                </a>
+                            </td>
+                            <td>{{ l }}</td>
+                            <td>{{ m }}</td>
+                            <td>{{ n }}</td>
+                            <td>{{ o }}</td>
+                            <td>{{ p }}</td>
+                            <td>{{ q }}</td>
+                            <td><img src="{% static r %}" width="100px"></td>
+                            <td>{{ s }}</td>
+                            <td>{{ t }}</td>
+                            <td>{{ u }}</td>
+                            <td>{{ v }}</td>
+                            <td>{{ w }}</td>
+                            <td>{{ x }}</td>
+                            <td>{{ y }}</td>
+                            <td><a href="/editemployeedetails/{{ i }}" class="btn btn-info"><i class="zmdi zmdi-edit">Edit</i></a></td>
+                            <td>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="employee_id" value="{{ i }}">
+                                    {% if z == 'Active' %}
+                                    <button type="submit" name="action" value="inactive" class="btn btn-toggle-state inactive-state" data-employee-id="{{ i }}" data-current-state="Inactive">
+                                        Inactive    
+                                    </button>
+                                    {% elif z == 'Inactive' %}
+                                    <button type="submit" name="action" value="active" class="btn btn-toggle-state active-state" data-employee-id="{{ i }}" data-current-state="Active">
+                                        Active
+                                    </button>
+                                    {% endif %}
+                                    <button type="submit" onclick="return confirm('Are you sure you want to remove this employee?')" name="action" value="resigned" class="btn btn-resign">
+                                        Resign
+                                    </button>
+                                </form>
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
                     </tbody>
-                  </table>
+                </table>
+                
+            
+                
                 </div>
               </div>
             </div>
@@ -440,35 +440,19 @@
             border: none;
         }
         .btn-resign {
-          background-color: yellow; /* Change this color to yellow for Resigned button */
-          color: black; /* You can adjust the text color as needed */
+          background-color: red; /* Change this color to yellow for Resigned button */
+          color: white; /* You can adjust the text color as needed */
       }
         .inactive-state {
-            background-color: red; /* Change this color to your desired color for Inactive state */
-            color: white;
+            background-color: yellow; /* Change this color to your desired color for Inactive state */
+            color: black;
         }
+        .active-state {
+          background-color: green; /* Change this color to your desired color for Inactive state */
+          color: white;
+      }
         </style>
-       <script>
-
-        toggleButtons.forEach(button => {
-          button.addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent the form submission
-        
-            const employeeId = this.getAttribute('data-employee-id');
-            const currentState = this.getAttribute('data-current-state');
-        
-            // Toggle between Active and Inactive
-            const newState = currentState === 'Active' ? 'Inactive' : 'Active';
-        
-            // Update the button immediately
-            updateButtonState(this, newState);
-        
-            // Send an AJAX request to update the state on the server
-            sendUpdateRequest(employeeId, newState);
-          });
-        });
-        
-       </script>
+      
         
         
       

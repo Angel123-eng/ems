@@ -6,14 +6,13 @@ from django.utils import timezone
 
 class regmodel(models.Model):
     name=models.CharField(max_length=30)
-    employeeid=models.IntegerField()
+    employeeid=models.CharField(max_length=30)
     designation=models.CharField(max_length=30)
     email=models.EmailField()
     bloodgroup=models.CharField(max_length=10)
     phonenumber=models.IntegerField()
     dateofbirth=models.CharField(max_length=30)
     joiningdate=models.CharField(max_length=30)
-   
     image=models.FileField(upload_to='attendance_app/static')
     accountnumber=models.IntegerField()
     bankname=models.CharField(max_length=100)
@@ -22,10 +21,12 @@ class regmodel(models.Model):
     salary=models.IntegerField()
     password=models.CharField(max_length=10)
     status = models.CharField(max_length=20, default='Active')
+    logintime = models.CharField(max_length=20)
+    address = models.CharField(max_length=1000)
 
 class LeaveModel(models.Model):
     name = models.CharField(max_length=255)
-    employeeid = models.PositiveIntegerField()
+    employeeid = models.CharField(max_length=30)
     leaveType = models.CharField(max_length=10, choices=[('Half Day', 'Half Day'), ('Full Day', 'Full Day')])
     halfDayDate = models.DateField(blank=True, null=True)
     fromdate = models.DateField(blank=True, null=True)
@@ -41,7 +42,7 @@ class LeaveModel(models.Model):
 
 class AttendanceModel(models.Model):
     name = models.CharField(max_length=30)
-    employeeid = models.IntegerField()
+    employeeid = models.CharField(max_length=30)
     logintime = models.DateTimeField(null=True)
     logofftime = models.DateTimeField(null=True)
     totalbreakTimex = models.CharField(max_length=100)  # Adjust the max length as needed
@@ -57,7 +58,7 @@ def __str__(self):
     
 class WeekoffModel(models.Model):
     name = models.CharField(max_length=30)
-    employeeid = models.IntegerField()
+    employeeid = models.CharField(max_length=30)
     weekoff1 = models.DateField(blank=True, null=True)
     weekoff2 = models.DateField(blank=True, null=True)
     
@@ -67,9 +68,11 @@ class PublicholidaysModel(models.Model):
     
 class ExtraModel(models.Model):
     name=models.CharField(max_length=30)
-    employeeid=models.IntegerField()
+    employeeid=models.CharField(max_length=30)
     date=models.DateField(blank=True, null=True)
     status=models.CharField(max_length=40)
+    login=models.CharField(max_length=20)
+
 
 from django.db import models
 
@@ -88,19 +91,25 @@ class ExcelModel(models.Model):
 from django.db import models
 
 class SalarySlipModel(models.Model):
-    name = models.CharField(max_length=100)
-    employeeid = models.CharField(max_length=20)
-    month = models.CharField(max_length=20)
+    name = models.CharField(max_length=30)
+    employeeid= models.CharField(max_length=20)
+    month = models.CharField(max_length=30)
     year = models.IntegerField()
-    totalPayableDays = models.IntegerField()
-    totalleave = models.IntegerField()
-    salarydeductedleave = models.IntegerField()
-    salary = models.DecimalField(max_digits=10, decimal_places=2)
-    perdaysalary = models.DecimalField(max_digits=10, decimal_places=2)
-    deductionamount = models.DecimalField(max_digits=10, decimal_places=2)
-    monthlysalary = models.DecimalField(max_digits=10, decimal_places=2)
+    totalPayableDays  = models.DecimalField(max_digits=10, decimal_places=1)
+    totalleave = models.DecimalField(max_digits=10, decimal_places=1)
+    paidleave = models.DecimalField(max_digits=10, decimal_places=1)
+    Latelogin = models.DecimalField(max_digits=10, decimal_places=1)
+    salarydeductedleave = models.DecimalField(max_digits=10, decimal_places=1)
+    salary = models.DecimalField(max_digits=10, decimal_places=3)
+    perdaysalary = models.DecimalField(max_digits=10, decimal_places=3)
+    deductionamount = models.DecimalField(max_digits=10, decimal_places=3)
+    incentive = models.DecimalField(max_digits=10, decimal_places=3)
+    monthlysalary = models.DecimalField(max_digits=10, decimal_places=3)
 
     def __str__(self):
         return f"{self.name} - {self.month} {self.year} Salary Slip"
+    
+
+
 
     

@@ -48,7 +48,7 @@
       }
 
       #calendar-header {
-          background-color: #f2f2f2;
+          background-color:    #e0ebeb;
           padding: 10px;
           display: flex;
           justify-content: space-between;
@@ -97,8 +97,8 @@
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-        <img src="/static/assets/img/ictlogotext.png" class="navbar-brand-img h-100" alt="main_logo">
+      <a class="navbar-brand m-0" href=" " target="_blank">
+        <img src="/static/ict logo.png" class="navbar-brand-img h-100" alt="main_logo">
         <span class="ms-1 font-weight-bold">ICT Global Tech</span>
       </a>
     </div>
@@ -167,26 +167,7 @@
               <span class="nav-link-text ms-1">Attendance Records</span>
             </a>
           </li>
-        <li class="nav-item">
-          <a class="nav-link  " href="/monthlyattendance/">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <title>credit-card</title>
-                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                    <g transform="translate(1716.000000, 291.000000)">
-                      <g transform="translate(453.000000, 454.000000)">
-                        <path class="color-background opacity-6" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"></path>
-                        <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            </div>
-            <span class="nav-link-text ms-1">Monthly Attendance</span>
-          </a>
-        </li>
+      
         <li class="nav-item">
           <a class="nav-link  " href="/leavedisplay/">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -321,27 +302,23 @@
   </style>
     <div class="content-container">
   
-      {% for employee in employees %}
-        <div>
-            <h3><b>Monthly Details of {{ employee.name }}</b></h3>
-            <h4><b>Employee ID: {{ employee.employeeid }}</b></h4>
-          
+      <div>
+        <h3><b>Monthly Details of {{ employees.0.name }}</b></h3>
+        <h4><b>Employee ID: {{ employees.0.employeeid }}</b></h4>
+      
         <!-- Add these lines where you want to display the month and year -->
-<h4><span id="month-display"></span></h4>
-<h4><span id="year-display"></span></h4>
-
-        <p style="display:none;" id="employeeId">{{employee.employeeid}} </p>
-            <p style="display:none;" id="employeeId">{{employee.employeeid}} </p>
-        </div>
-      {% endfor %}
+        <h4><span id="month-display"></span></h4>
+        <h4><span id="year-display"></span></h4>
+    </div>
+    
       <div id="days-between"></div>
 
-    <div id="calendar">
-      <div id="calendar-header">
-          <button onclick="previousMonth()">&#8249;</button>
-          <h2 id="month-year"></h2>
-          <button onclick="nextMonth()">&#8250;</button>
-      </div>
+      <div id="calendar" class="bg-white p-4">
+        <div id="calendar-header" class="p-3" style="border-radius:20px">
+            <button onclick="previousMonth()">&#8249;</button>
+            <h2 id="month-year"></h2>
+            <button onclick="nextMonth()">&#8250;</button>
+        </div>
   
       <div id="calendar-days">
           <div>Sun</div>
@@ -412,7 +389,8 @@
     
                 // Display date and status only if it's from the current month
                 if (isCurrentMonth) {
-                    dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>`;
+                  const loginInfo = dayData.login ? `<div style="color: ${dayData.login === 'Latelogin' ? 'red' : 'inherit'};">${dayData.login}</div>` : '';
+                  dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>${loginInfo}`;
                 }
             }
         });
@@ -574,6 +552,7 @@
             <th>Employee ID</th>
             <th>Date</th>
             <th>Status</th>
+            <th>Login</th>
             <th>Edit</th>
         </tr>
     </thead>
@@ -597,6 +576,7 @@
         <td>${item.employeeid}</td>
         <td>${item.date}</td>
         <td>${item.status}</td>
+        <td>${item.login}</td>
         <td>
           <button class="btn btn-primary" onclick="editEmployee(${item.id})">Edit</button>
         </td>
@@ -615,7 +595,6 @@
         // Update the calendar first, then the counts
         updateCalendar(data.records_specified_month);
         updateCounts(data.records_current_month);
-        //updateTable(data.records_specified_month);
         // Update the employee details table
         updateEmployeeDetailsTable(data.records_current_month); // or updateEmployeeDetailsTable(data.records_specified_month);
         return data; // Return the data for any further processing if needed
@@ -631,6 +610,7 @@
     window.location.href = `/editattendance/${id}`;
   }
 </script>
+
 
 
 
@@ -735,21 +715,22 @@
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Holidays</td>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="holiday-count">0</span></td>
               </tr>
+
+            
+            
             </tbody>
           </table>
       </div>
      
     
       <div class="col-md-6">
-        <table id="status-counts" style="border-collapse: collapse; width: 80%; margin-left: auto; margin-right: auto;">
-              {% for employee in employees %}
-              <form class="salary-form" id="salaryForm{{ employee.employeeid }}" method="POST" action="{% url 'view_monthly_details' employee.employeeid %}">
-                {% csrf_token %}
-                <div>
+        <form class="salary-form" id="salaryForm{{ employees.0.employeeid}}" method="POST" action="{% url 'view_monthly_details' employees.0.employeeid %}">
+            {% csrf_token %}
+            <div>
                     {% comment %} <h3><b>Monthly Details of {{ employee.name }}</b></h3> {% endcomment %}
                     {% comment %} <h4><b>Employee ID: {{ employee.employeeid }}</b></h4> {% endcomment %}
                     <input type="hidden" name="employeeid" value="{{ employee.employeeid }}">
-                    <input type="hidden" name="name" value="{{ employee.name }}">
+                    <input type="hidden" name="name" value="{{ employees.0.name }}">
                     <input type="hidden" name="month" id="month{{ employee.employeeid }}" value="">
                     <input type="hidden" name="year" id="year{{ employee.employeeid }}" value="">
                     <!-- Add these lines where you want to display the month and year -->
@@ -757,6 +738,8 @@
                     {% comment %} <h4>Year: <span id="year-display"></span></h4> {% endcomment %}
                     <p style="display:none;" id="employeeId">{{ employee.employeeid }} </p>
                 </div>
+                <table id="status-counts" style="border-collapse: collapse; width: 80%; margin-left: auto; margin-right: auto;">
+
                 <thead>
                   <tr>
                       <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;" colspan="2">
@@ -764,30 +747,46 @@
                       </th>
                   </tr>
               </thead>
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Total Payable Days</td>
-                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
-                        <span id="total-payable-days">0</span>
-                        <input type="number" style="display:none;" id="totalw"  name="totalPayableDays" value="">
-                    </td>
-                </tr>
-    
-                <tr>
+
+              <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Total Leave</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
-                        <span id="total-leave-count">0</span>
-                        <input type="number" style="display:none;" id="totall" name="totalleave" value="">
+                      <span id="total-leave-count">0</span>
+                      <input type="hidden" style="display:none;" id="totall" name="totalleave" value="">
                     </td>
                 </tr>
+
+                <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Paid Leave</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                    <span id="paid-leave-count">0</span>
+                    <input type="hidden" style="display:none;" id="paidleave" name="paidleave" value="">
+                  </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Late Login</td>
+                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;">
+                  <span id="late-login-count">0</span></td>
+                  <input type="hidden" style="display:none;" id="latelogin" name="Latelogin" value="">
+            </tr>
     
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Salary Deducted Leave</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
                         <span id="salary-deducted-count">0</span>
-                        <input type="number" style="display:none;" id="salaryd" name="salarydeductedleave" value="">
+                        <input type="hidden" style="display:none;" id="salaryd" name="salarydeductedleave" value="">
                     </td>
                 </tr>
     
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Total Payable Days</td>
+                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                        <span id="total-payable-days">0</span>
+                        <input type="hidden" style="display:none;" id="totalw"  name="totalPayableDays" value="">
+                    </td>
+                </tr>
+    
+                
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Salary</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
@@ -813,6 +812,14 @@
                 </tr>
     
                 <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Incentive</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                      <span id="incentive"></span>
+                      <input type="number" id="incentives" name="incentive" value="" >
+                  </td>
+              </tr>
+                
+                <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Monthly Salary</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
                         <span id="monthlysalary">0</span>
@@ -820,13 +827,15 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="text-align: center;">
-  <button type="submit" class="btn bg-gradient-dark btn-lg" onclick="updateFormFields({{ employee.employeeid }})">Generate Salary Slip</button>                    </td>
-                </tr>
-            </form>
-            {% endfor %}
-        </table>
-    </div>     
+                  <td colspan="2" style="text-align: center;">
+                      <button type="submit" class="btn bg-gradient-dark btn-lg" onclick="updateFormFields({{ employees.0.employeeid }})">Generate Salary Slip</button>
+                  </td>
+              </tr>
+          </table>
+      </form>
+  </div>
+
+
 
 
 {% comment %} <input type="text" name="" value={{"presentCount"}}> {% endcomment %}
@@ -855,6 +864,7 @@
 
       data.forEach(record => {
           const normalizedStatus = normalizeStatus(record.status);
+          console.log('Normalized Status:', normalizedStatus); //
           switch (normalizedStatus) {
               case 'present':
                   presentCount++;
@@ -915,6 +925,15 @@
           }
           return count;
       }, 0);
+      console.log(`total half: ${totalHalfdayCounts}`);
+      console.log(`total halfpl: ${halfdayleavePL}`);
+      const totalhalf = totalHalfdayCounts + (halfdayleavePL);
+      console.log(`total halfplandul: ${totalhalf}`);
+      const halfdaywork = totalhalf/2;
+      console.log(`total halfdaywork: ${halfdaywork}`);
+
+
+
 
       // Calculate the total halfday counts
       const totalFulldayCounts = data.reduce((count, record) => {
@@ -929,7 +948,7 @@
       halfdayValue = halfdayleavePL/2;
       // Calculate the total working days
       const totalPayableDays = presentCount + weekoffCount + sundayCount + holidayCount +
-          (halfdayValue > 0 ? halfdayValue : 0) + (fulldayleavePL > 0 ? fulldayleavePL : 0);
+          (halfdayValue > 0 ? halfdayValue : 0) + (fulldayleavePL > 0 ? fulldayleavePL : 0) +  halfdaywork;
 
       // Update the total working days in the HTML table
       document.getElementById('total-payable-days').textContent = totalPayableDays;
@@ -956,9 +975,9 @@
       document.getElementById('status-counts-table').style.display = 'block';
 
       // Calculate and display the total leave count
-      const totalLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5) + fulldayleavePL + (halfdayleavePL * 0.5);
-      document.getElementById('total-leave-count').textContent = totalLeave;
-      document.getElementById('totall').value = totalLeave;
+      const totalleave = totalFulldayCounts + (totalHalfdayCounts * 0.5) + fulldayleavePL + (halfdayleavePL * 0.5);
+      document.getElementById('total-leave-count').textContent = totalleave;
+      document.getElementById('totall').value = totalleave;
 
 
       //salary deducted leave
@@ -966,13 +985,18 @@
       document.getElementById('salary-deducted-count').textContent = salarydeductedLeave;
       document.getElementById('salaryd').value = salarydeductedLeave;
 
+      const paidleave = totalleave - salarydeductedLeave;
+      document.getElementById('paid-leave-count').textContent = paidleave;
+      document.getElementById('paidleave').value = paidleave;
+
+
       console.log("monthly salary======>  ",  document.getElementById('salaryd').value);
 
       // Retrieve the value of {{ salary }} and store it in a variable
       var salary = parseFloat("{{ salary }}") || 0; // Assuming the salary is a numeric value
 
       //perday salary
-      perdaySalary = salary / 30;
+      perdaySalary = salary / daysBetween;
       perdaySalary = parseFloat(perdaySalary.toFixed(3)); // Limit to 3 decimal points
       document.getElementById('perdaysalary').textContent = perdaySalary;
       document.getElementById('perdays').value = perdaySalary;
@@ -985,42 +1009,88 @@
       // Log the calculated amount to the console
       console.log(`Amount calculated: ${amt}`);
 
+
+                // Initialize late login count
+      let lateLoginCount = 0;
+
+      // Calculate late login count
+      data.forEach(record => {
+          if (record.login === "Latelogin") {
+              lateLoginCount++;
+          }
+      });
+
+      // Initialize reduction
+      let reduction = 0;
+
+      // Check if late login count is greater than or equal to 3
+      if (lateLoginCount >= 3) {
+          reduction = perdaySalary / 2; // Assuming reduction is half of the per day salary
+      }
+
+ 
+
+    // Update the late login count in the HTML table
+    document.getElementById('late-login-count').textContent = lateLoginCount;
+    document.getElementById('latelogin').value = lateLoginCount;
+      
+
       //deduction amount
-      deductionAmount = perdaySalary * salarydeductedLeave;
+      deductionAmount = (perdaySalary * salarydeductedLeave) + reduction;
       deductionAmount = parseFloat(deductionAmount.toFixed(3)); // Limit to 3 decimal points
       document.getElementById('deductionamount').textContent = deductionAmount;
       document.getElementById('deductionA').value = deductionAmount;
 
       //monthly salary
-      monthlySalary = totalPayableDays * perdaySalary;
+      monthlySalary = (totalPayableDays * perdaySalary) - reduction;
       monthlySalary = Math.round(monthlySalary);
       document.getElementById('monthlysalary').textContent = monthlySalary;
+      
       
 
       document.getElementById('salaryd').value = salarydeductedLeave;
      
       document.getElementById('monthlys').value = monthlySalary;
 
-if (currentDate.getDate() === 25) {
-        // Calculate and round the monthly salary
-        monthlySalary = (totalPayableDays * perdaySalary) + amt;
-        monthlySalary = Math.round(monthlySalary);
 
-        // Log the rounded net amount to the console
-        console.log(`Rounded Net Amount calculated on the 25th: ${monthlySalary}`);
 
-        // Display the rounded monthly salary in the specified HTML element
-        document.getElementById('monthlysalary').textContent = monthlySalary;
-        document.getElementById('monthlys').value = monthlySalary; // Set the hidden input value if needed
-    } else {
-        // Calculate and round the monthly salary
-        monthlySalary = totalPayableDays * perdaySalary;
-        monthlySalary = Math.round(monthlySalary);
+    
 
-        // Display the rounded monthly salary in the specified HTML element
-        document.getElementById('monthlysalary').textContent = monthlySalary;
-        document.getElementById('monthlys').value = monthlySalary; // Set the hidden input value if needed
-    }
+
+// Function to update the displayed monthly salary based on the entered incentive amount
+function updateMonthlySalaryWithIncentive(incentiveAmount) {
+  // Calculate the monthly salary including the entered incentive
+  const monthlySalaryWithIncentive = monthlySalary + parseFloat(incentiveAmount);
+  
+  // Update the displayed monthly salary including incentive
+  document.getElementById('monthlysalary').textContent = monthlySalaryWithIncentive;
+  
+  // Store the calculated monthly salary with incentive in the corresponding hidden form field
+  document.getElementById('monthlys').value = monthlySalaryWithIncentive;
+}
+
+// Add an event listener to the incentive input field to listen for changes
+document.getElementById('incentives').addEventListener('input', function() {
+  // Retrieve the entered incentive amount
+  const incentiveAmount = this.value.trim();
+  
+  // Check if the entered incentive amount is empty
+  if (incentiveAmount === '') {
+    // If the incentive amount is empty, display the original monthly salary without the incentive
+    document.getElementById('monthlysalary').textContent = monthlySalary;
+    
+    // Store the original monthly salary in the corresponding hidden form field
+    document.getElementById('monthlys').value = monthlySalary;
+  } else {
+    // If the incentive amount is not empty, update the monthly salary including the entered incentive
+    updateMonthlySalaryWithIncentive(incentiveAmount);
+  }
+});
+
+// Call the function to update the monthly salary without any incentive initially
+updateMonthlySalaryWithIncentive(0); // Pass 0 as the incentive amount to display the original monthly salary
+
+
 
   }
 
@@ -1038,17 +1108,39 @@ if (currentDate.getDate() === 25) {
     const month = document.getElementById('month-display').textContent.trim();
     const year = document.getElementById('year-display').textContent.trim();
     const totalPayableDays = document.getElementById('total-payable-days').textContent.trim();
-    const totalLeave = document.getElementById('total-leave-count').textContent.trim();
+    const totalleave = document.getElementById('total-leave-count').textContent.trim();
+    const paidleave = document.getElementById('paid-leave-count').textContent.trim();
     const salaryDeductedLeave = document.getElementById('salary-deducted-count').textContent.trim();
     const salary = document.getElementById('salary').textContent.trim();
     const perDaySalary = document.getElementById('perdaysalary').textContent.trim();
     const deductionAmount = document.getElementById('deductionamount').textContent.trim();
+    const incentive = document.getElementById('incentive').textContent.trim();
     const monthlySalary = document.getElementById('monthlysalary').textContent;
 
 
     console.log("monthly salary",monthlySalary);
     // Set the values to the corresponding hidden form fields
-    document.getElementById(`month${employeeId}`).value = month;
+    
+    
+    //document.getElementById(`month${employeeId}`).value = month;
+
+
+
+    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+// Calculate the previous month
+let previousMonth;
+if (month === 0) {
+    // If the current month is January, set the previous month to December of the previous year
+    previousMonth = "December";
+} else {
+    previousMonth = monthNames[currentMonth];
+}
+
+
+
+    
+    document.getElementById(`month${employeeId}`).value = previousMonth;
     document.getElementById(`year${employeeId}`).value = year;
     
 }

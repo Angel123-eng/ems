@@ -26,18 +26,21 @@
                           
                            
                           
-                          
+                           <div class="row">
+                             <div class="col-md-12 text-center mb-3">
+                                 <img src="{% static img %}" alt="Employee Image" style="max-width: 200px; max-height: 200px;">
+                             </div>
+                           </div>
                            
                             <div class="input-group input-group-outline mb-2">
-                              <label class="form-label" style="color: #d81b60;">Password:</label>
+                              <label class="form-label" style="color: black;">Password:</label>
                               <input type="password" class="form-control" name="password" value="{{a.password}}">
                             </div>
-                            <div class="input-group input-group-outline mb-2">
-                              <label class="form-label" style="color: #d81b60;">Image:</label>
-
-                              <input class="au-input au-input--full" type="file" name="image"
-                                     placeholder="Image">
-                          </div>
+             
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Image:</label>
+                            <input class="au-input au-input--full" type="file" name="image" placeholder="Image">
+                        </div>
                               <div class="text-center">
                                 <div class="row">
                                     <div class="col-md-12">

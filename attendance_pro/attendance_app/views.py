@@ -130,8 +130,10 @@ def page3(request):
 
 
 def editprofile(request):
-    
-    return render(request, 'editprofile.html')
+    id1 = request.session['id']
+    a = regmodel.objects.get(employeeid=id1)
+    img = str(a.image).split('/')[-1]
+    return render(request, 'editprofile.html', {'a':a, 'img':img})
 
 
 
@@ -233,12 +235,37 @@ def page5(request):
 
 
 
-def page6(request):
-    id1=request.session['id']
-    a=regmodel.objects.get(employeeid=id1)
-    img=str(a.image).split('/')[-1]
-    return render(request,'salaryx.html',{'a':a})
+# def page6(request):
+#     id1=request.session['id']
+#     a=regmodel.objects.get(employeeid=id1)
+#     img=str(a.image).split('/')[-1]
+#     return render(request,'salaryx.html',{'a':a})
 
+from django.shortcuts import render
+from .models import SalarySlipModel
+
+def page6(request):
+    if request.method == 'POST':
+        # Get employee ID from session
+        id1 = request.session.get('id')
+        
+        # Get selected month and year from the form data
+        selected_month_year = request.POST.get('month-year-picker')
+        selected_date = datetime.strptime(selected_month_year, '%Y-%m')
+        
+        # Filter the SalarySlipModel objects based on employee ID and selected month/year
+        salary_slips = SalarySlipModel.objects.filter(employeeid=id1, month=selected_date.strftime('%B'), year=selected_date.year)
+        
+        # Fetch employee details
+        employee = regmodel.objects.get(employeeid=id1)
+        
+        # Extract image filename
+        #img = str(employee.image).split('/')[-1]
+        #, 'selected_month_year': selected_month_year
+        return render(request, 'salaryx.html', {'a': employee, 'salary_slips': salary_slips})
+    else :
+        return render(request, 'salaryx.html')   
+        
 def page7(request):
     id1=request.session['id']
     a=regmodel.objects.get(employeeid=id1)
@@ -282,8 +309,11 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from .models import regmodel
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import regmodel
+
 def employeedetails(request):
-    a = regmodel.objects.all()
+    a = regmodel.objects.filter(status__in=['Active', 'Inactive'])
     uid = []
     nme = []
     emid = []
@@ -299,6 +329,10 @@ def employeedetails(request):
     brc = []
     ifs = []
     sl = []
+    lgt = []
+    adr = []
+    s = []
+    
 
     for i in a:
         id = i.id
@@ -331,8 +365,15 @@ def employeedetails(request):
         ifs.append(ifsc)
         sal = i.salary
         sl.append(sal)
+        lg = i.logintime
+        lgt.append(lg)
+        add = i.address
+        adr.append(add)
+        sts= i.status
+        s.append(sts)
+        
 
-    pair = zip(uid, nme, emid, dsg, eml, blg, phno, db, jnd, img, accno, bknm, brc, ifs, sl)
+    pair = zip(uid, nme, emid, dsg, eml, blg, phno, db, jnd, img, accno, bknm, brc, ifs, sl, lgt, adr, s)
 
     if request.method == 'POST':
         employee_id = request.POST.get('employee_id')
@@ -342,16 +383,21 @@ def employeedetails(request):
 
         if action == 'inactive':
             employee.status = 'Active' if employee.status == 'Inactive' else 'Inactive'
+        elif action == 'active':
+            employee.status = 'Inactive' if employee.status == 'Active' else 'Active'
         elif action == 'resigned':
             employee.status = 'Resigned'
         else:
             # Handle invalid action, if needed
             pass
-
+        
         # Save the updated status
         employee.save()
+        
+        return redirect(employeedetails)  # Redirect to the same view after processing the form submission
 
     return render(request, 'employeedetails.html', {'a': pair})
+
 
 
 
@@ -461,11 +507,13 @@ def register(request):
             sal = a.cleaned_data['salary']
             psw = a.cleaned_data['password']
             cpsw = a.cleaned_data['confirmpassword']
+            lgt = a.cleaned_data['logintime']
+            add = a.cleaned_data['address']
 
             if psw == cpsw:
                 b = regmodel(name=nm, employeeid=eid, designation=ds, email=em, bloodgroup=bg,
                              phonenumber=phn, dateofbirth=dob, joiningdate=jnd, image=img, accountnumber=acno,
-                             bankname=bnknm, branch=br, ifsccode=ifsc, salary=sal, password=psw)
+                             bankname=bnknm, branch=br, ifsccode=ifsc, salary=sal, password=psw, logintime=lgt, address=add)
                 b.save()
                 return redirect(employeedetails)
             else:
@@ -807,6 +855,10 @@ from datetime import datetime, date
 from django.shortcuts import render
 from .models import ExcelModel
 
+from django.shortcuts import render
+from datetime import datetime, date, time
+from .models import ExcelModel, ExtraModel
+
 def calculate_working_hours(intime, outtime):
     if intime and outtime:
         delta = datetime.combine(date.today(), outtime) - datetime.combine(date.today(), intime)
@@ -837,11 +889,14 @@ def get_attendance_status(working_hours):
             return "Leave"
     else:
         return "N/A"
+    
 
 
 from .models import ExcelModel, ExtraModel
 
 from django.shortcuts import get_object_or_404
+
+from datetime import datetime, time
 
 def display_attendance_details(request):
     excel_data = ExcelModel.objects.all()
@@ -854,22 +909,85 @@ def display_attendance_details(request):
         # Check if data already exists for the employee on that date
         existing_data = ExtraModel.objects.filter(employeeid=row.employeeid, date=row.date).first()
 
-        # Retrieve the registered name
-        registered_name = regmodel.objects.filter(employeeid=row.employeeid).values('name').first()
+        # Retrieve the registered name and login time
+        reg_data = regmodel.objects.filter(employeeid=row.employeeid).values('name', 'logintime').first()
 
-        if existing_data:
+        if reg_data:
+            # Compare intime with logintime and mark login if intime is greater
+            intime_str = row.intime
+            logintime_str = reg_data['logintime']
+
+            # Convert logintime_str to a datetime.time object
+            logintime = datetime.strptime(logintime_str, '%H:%M').time()
+
+            if row.status != "Leave" and intime_str > logintime:
+                row.login = 'Latelogin'
+            else:
+                row.login = ''
+
             # Update existing record
-            existing_data.name = registered_name['name'] if registered_name else row.name
-            existing_data.status = row.status
-            existing_data.save()
-        else:
-            # Create a new record
-            extra_data = ExtraModel(name=registered_name['name'] if registered_name else row.name, 
-                                    employeeid=row.employeeid, date=row.date, status=row.status)
-            extra_data.save()
+            if existing_data:
+                existing_data.name = reg_data['name'] if reg_data['name'] else row.name
+                existing_data.status = row.status
+                existing_data.login = row.login
+                existing_data.save()
+            else:
+                # Create a new record
+                extra_data = ExtraModel(name=reg_data['name'] if reg_data['name'] else row.name, 
+                                        employeeid=row.employeeid, date=row.date, status=row.status, login=row.login)
+                extra_data.save()
 
     return render(request, 'attendancedetails.html', {'excel_data': excel_data})
 
+
+
+# from .models import ExcelModel, ExtraModel
+
+# from django.shortcuts import get_object_or_404
+
+# from datetime import datetime, time
+
+# from datetime import datetime
+
+# def display_attendance_details(request):
+#     excel_data = ExcelModel.objects.all()
+
+#     for row in excel_data:
+#         # Calculate working hours and get attendance status
+#         row.working_hours = calculate_working_hours(row.intime, row.outtime)
+#         row.status = get_attendance_status(row.working_hours)
+
+#         # Check if data already exists for the employee on that date
+#         existing_data = ExtraModel.objects.filter(employeeid=row.employeeid, date=row.date).first()
+
+#         # Retrieve the registered name and logintime
+#         registered_info = regmodel.objects.filter(employeeid=row.employeeid).values('name', 'logintime').first()
+
+#         if registered_info:
+#             logintime_str = registered_info['logintime']
+#             logintime = datetime.strptime(logintime_str, '%H:%M').time()
+
+#             # Extract hours and minutes from intime and logintime
+#             intime_hours, intime_minutes = row.intime.hour, row.intime.minute
+#             logintime_hours, logintime_minutes = logintime.hour, logintime.minute
+
+#             # Compare hours and minutes
+#             if (intime_hours > logintime_hours) or \
+#                (intime_hours == logintime_hours and intime_minutes > logintime_minutes):
+#                 row.status = 'Late Login'
+
+#         if existing_data:
+#             # Update existing record
+#             existing_data.name = registered_info['name'] if registered_info else row.name
+#             existing_data.status = row.status
+#             existing_data.save()
+#         else:
+#             # Create a new record
+#             extra_data = ExtraModel(name=registered_info['name'] if registered_info else row.name, 
+#                                     employeeid=row.employeeid, date=row.date, status=row.status)
+#             extra_data.save()
+
+#     return render(request, 'attendancedetails.html', {'excel_data': excel_data})
 
 
 
@@ -1093,89 +1211,70 @@ from .forms import WeekoffForm
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 
+from django.shortcuts import render, redirect
+from .models import ExtraModel
+from .forms import ExtraForm  # Import your ExtraForm from forms.py
+
+from django.shortcuts import render, redirect
+from .models import regmodel, ExtraModel
+from .forms import ExtraForm  # Import your ExtraForm from forms.py
+
+from django.shortcuts import render, redirect
+from .models import regmodel, ExtraModel
+from .forms import ExtraForm
+
 def weekoff(request):
     if request.method == 'POST':
-        for key, value in request.POST.items():
-            if key.startswith('name_'):
-                employee_id = key.split('_')[1]
+        date = request.POST.get('date')  # Get the selected date
 
-                form_data = {
-                    'name': request.POST.get(f'name_{employee_id}'),
-                    'employeeid': request.POST.get(f'employeeid_{employee_id}'),
-                    'weekoff1': request.POST.get(f'weekoff1_{employee_id}'),
-                    'weekoff2': request.POST.get(f'weekoff2_{employee_id}'),
-                }
+        # Get the list of selected employee IDs from the checkboxes
+        selected_employee_ids = request.POST.getlist('employee_checkbox')
 
-                form = WeekoffForm(form_data)
+        for employee_id in selected_employee_ids:
+            form_data = {
+                'name': request.POST.get(f'name_{employee_id}'),
+                'employeeid': request.POST.get(f'employeeid_{employee_id}'),
+                'date': date,  # Use the selected date
+                'status': 'Weekoff',
+            }
 
-                if form.is_valid():
-                    weekoff_instance = form.save()
+            form = ExtraForm(form_data)
 
-                    # Check if there is an existing leave entry for weekoff1 and update it to 'Weekoff'
-                    existing_leave1 = ExtraModel.objects.filter(
-                        name=weekoff_instance.name,
-                        employeeid=weekoff_instance.employeeid,
-                        date=weekoff_instance.weekoff1,
-                        status='Leave'
-                    ).first()
+            if form.is_valid():
+                form.save()
 
-                    if existing_leave1:
-                        existing_leave1.status = 'Weekoff'
-                        existing_leave1.save()
-                    else:
-                        # If there is no existing leave entry, create a new one for weekoff1
-                        ExtraModel.objects.create(
-                            name=weekoff_instance.name,
-                            employeeid=weekoff_instance.employeeid,
-                            date=weekoff_instance.weekoff1,
-                            status='Weekoff'
-                        )
+        return redirect(weekoff)  # Replace 'admindashboard' with the actual URL name or path
 
-                    # Check if there is an existing leave entry for weekoff2 and update it to 'Weekoff'
-                    existing_leave2 = ExtraModel.objects.filter(
-                        name=weekoff_instance.name,
-                        employeeid=weekoff_instance.employeeid,
-                        date=weekoff_instance.weekoff2,
-                        status='Leave'
-                    ).first()
-
-                    if existing_leave2:
-                        existing_leave2.status = 'Weekoff'
-                        existing_leave2.save()
-                    else:
-                        # If there is no existing leave entry, create a new one for weekoff2
-                        ExtraModel.objects.create(
-                            name=weekoff_instance.name,
-                            employeeid=weekoff_instance.employeeid,
-                            date=weekoff_instance.weekoff2,
-                            status='Weekoff'
-                        )
-
-        return redirect(admindashboard)  # Replace 'admindashboard' with the actual URL name or path
     else:
-        form = WeekoffForm()
+        form = ExtraForm()
+        a = regmodel.objects.filter(status='Active')
 
-    a = regmodel.objects.filter(status='Active')
-
-    return render(request, 'weekoff.html', {'a': a, 'form': form})
-
+        return render(request, 'weekoff.html', {'a': a, 'form': form})
 
 
 
 
-# Weekoff display page for admin
+
+
+
+
+
+
+from django.shortcuts import render
+from .models import ExtraModel
+
 def weekoffdisplayadmin(request):
     try:
-        # Fetch all unique dates from the WeekoffModel
-        unique_dates = WeekoffModel.objects.values_list('weekoff1', flat=True).distinct()
+        # Fetch all unique dates from the ExtraModel where status is 'Weekoff'
+        unique_dates = ExtraModel.objects.filter(status='Weekoff').values_list('date', flat=True).distinct()
 
         # Create a list to store the data for each date
         weekoff_data_by_date = []
 
         # Iterate over unique dates
         for date in unique_dates:
-            # Fetch records for the current date
-            records_for_date = WeekoffModel.objects.filter(weekoff1=date)
+            # Fetch records for the current date and status 'Weekoff'
+            records_for_date = ExtraModel.objects.filter(date=date, status='Weekoff')
 
             # Extract the name and employeeid for each record and store in a list
             records_data = [{'name': record.name, 'employeeid': record.employeeid} for record in records_for_date]
@@ -1188,6 +1287,7 @@ def weekoffdisplayadmin(request):
 
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
+
 
     
 # Weekoff display page for employee
@@ -1265,7 +1365,7 @@ def publicholidays(request):
             public_holiday = PublicholidaysModel(date=date_value, status=status)
             public_holiday.save()
 
-        return redirect(publicholidays)  # Redirect to the same page after submission
+        return redirect(admindashboard)  # Redirect to the same page after submission
 
     # If it's not a POST request, check if Sundays for the current year are already stored
     current_year = timezone.now().year
@@ -1390,6 +1490,15 @@ from .models import ExtraModel, regmodel
 # from .models import ExtraModel, SalarySlipModel
 # from decimal import Decimal
 
+from decimal import Decimal
+from django.shortcuts import render, HttpResponse, get_object_or_404
+from .models import ExtraModel, regmodel, SalarySlipModel
+
+from decimal import Decimal, InvalidOperation
+
+from django.http import JsonResponse
+
+
 def view_monthly_details(request, employee_id):
     request.session['empid'] = employee_id
     employees = ExtraModel.objects.filter(employeeid=employee_id).values('name', 'employeeid').distinct()
@@ -1402,39 +1511,80 @@ def view_monthly_details(request, employee_id):
             month = request.POST.get('month', '')
             year = request.POST.get('year', '')
 
-            total_working_days = int(request.POST.get('totalPayableDays', 0))
-            total_leave = int(request.POST.get('totalleave', 0))
-            salary_deducted_leave = int(request.POST.get('salarydeductedleave', 0))
+            total_working_days = convert_to_decimal(request.POST.get('totalPayableDays', 0))
+            total_leave = convert_to_decimal(request.POST.get('totalleave', 0))
+            paid_leave = convert_to_decimal(request.POST.get('paidleave', 0))
+            late_login = convert_to_decimal(request.POST.get('Latelogin', 0))
+            salary_deducted_leave = convert_to_decimal(request.POST.get('salarydeductedleave', 0))
+            salary = convert_to_decimal(request.POST.get('salary', 0))
+            per_day_salary = convert_to_decimal(request.POST.get('perdaysalary', 0))
+            deduction_amount = convert_to_decimal(request.POST.get('deductionamount', 0))
+            monthly_salary = convert_to_decimal(request.POST.get('monthlysalary', 0))
 
-            salary = Decimal(request.POST.get('salary', 0)) if request.POST.get('salary', '').replace('.', '', 1).isdigit() else 0
-            per_day_salary = Decimal(request.POST.get('perdaysalary', 0)) if request.POST.get('perdaysalary', '').replace('.', '', 1).isdigit() else 0
-            deduction_amount = Decimal(request.POST.get('deductionamount', 0)) if request.POST.get('deductionamount', '').replace('.', '', 1).isdigit() else 0
-            monthly_salary = Decimal(request.POST.get('monthlysalary', 0)) if request.POST.get('monthlysalary', '').replace('.', '', 1).isdigit() else 0
+            # Check if incentive is provided
+            incentive = Decimal(0)
+            if 'incentive' in request.POST:
+                incentive = convert_to_decimal(request.POST.get('incentive', 0))
 
-            salary_slip = SalarySlipModel(
-                name=name,
+            # Check if data already exists for the given employee and month
+            existing_entry = SalarySlipModel.objects.filter(
                 employeeid=employee_id,
                 month=month,
-                year=year,
-                totalPayableDays=total_working_days,
-                totalleave=total_leave,
-                salarydeductedleave=salary_deducted_leave,
-                salary=salary,
-                perdaysalary=per_day_salary,
-                deductionamount=deduction_amount,
-                monthlysalary=monthly_salary
-            )
-            salary_slip.save()
+                year=year
+            ).first()
 
-            return HttpResponse("Salary Slip generated and saved successfully!")
+            if existing_entry:
+                # Update existing entry
+                existing_entry.name = name
+                existing_entry.totalPayableDays = total_working_days
+                existing_entry.totalleave = total_leave
+                existing_entry.paidleave = paid_leave
+                existing_entry.Latelogin = late_login
+                existing_entry.salarydeductedleave = salary_deducted_leave
+                existing_entry.salary = salary
+                existing_entry.perdaysalary = per_day_salary
+                existing_entry.deductionamount = deduction_amount
+                existing_entry.incentive = incentive
+                existing_entry.monthlysalary = monthly_salary
+                existing_entry.save()
+            else:
+                # Insert new entry
+                salary_slip = SalarySlipModel(
+                    name=name,
+                    employeeid=employee_id,
+                    month=month,
+                    year=year,
+                    totalPayableDays=total_working_days,
+                    totalleave=total_leave,
+                    paidleave=paid_leave,
+                    Latelogin=late_login,
+                    salarydeductedleave=salary_deducted_leave,
+                    salary=salary,
+                    perdaysalary=per_day_salary,
+                    deductionamount=deduction_amount,
+                    incentive=incentive,
+                    monthlysalary=monthly_salary
+                )
+                salary_slip.save()
+
+            return JsonResponse({'message': "Salary Slip generated and saved successfully!"})
 
         return render(request, 'calendar.html', {'employees': employees, 'salary': employee_salary})
     else:
         return HttpResponse("Details do not exist!!!")
 
 
+def convert_to_int(value):
+    try:
+        return int(float(value))
+    except (ValueError, TypeError):
+        return 0
 
-
+def convert_to_decimal(value):
+    try:
+        return Decimal(value)
+    except (InvalidOperation, ValueError):
+        return Decimal(0)
 
 
 
@@ -1445,7 +1595,7 @@ def fetch_dat(request, year, month):
     # Calculate start and end dates for the selected month
     start_date = date(year, month, 26)
     if month == 12:
-        end_date = date(year + 1, 1, 25)
+        end_date = date(year , month , 25)
     else:
         end_date = date(year, month, 25)
 
@@ -1552,3 +1702,45 @@ def holidaycalendar(request):
 #     extra_model_data_list = list(extra_model_data)
 
 #     return JsonResponse(extra_model_data_list, safe=False)
+
+
+from django.shortcuts import render
+from .models import regmodel
+
+def resigned_employees(request):
+    resigned_employees = regmodel.objects.filter(status='Resigned')
+    return render(request, 'resigned.html', {'resigned_employees': resigned_employees})
+
+
+
+# from datetime import datetime, time, timedelta
+# from .models import regmodel, ExcelModel
+
+# # Define late login threshold (e.g., 15 minutes)
+# late_threshold = timedelta(minutes=1) 
+
+# # Fetch all records from both models
+# regmodel_objects = regmodel.objects.all()
+# excelmodel_objects = ExcelModel.objects.all()
+
+# # Loop through ExcelModel objects and check for corresponding regmodel's logintime
+# for excel_record in excelmodel_objects:
+#     try:
+#         reg_record = regmodel_objects.get(employeeid=excel_record.employeeid)
+#         reg_logintime = datetime.strptime(reg_record.logintime, '%H:%M')
+#         excel_intime = datetime.combine(datetime.today(), excel_record.intime)
+#         late_time = reg_logintime + late_threshold
+
+#         if excel_intime <= late_time:
+#             excel_record.status = "Present"
+#         else:
+#             excel_record.status = "Late Login"
+        
+#         excel_record.save()
+#     except regmodel.DoesNotExist:
+#         # Handle the case where there's no corresponding record in regmodel
+#         pass
+    
+
+
+

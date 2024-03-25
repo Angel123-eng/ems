@@ -18,16 +18,17 @@
     <div class="card card-body mx-3 mx-md-4 mt-n6">
       <div class="row gx-4 mb-2">
         <div class="col-auto">
-          <div class="avatar avatar-xl position-relative">
-            <img src="{% static img %}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+          <div class="avatar avatar-xl position-relative" style="width: 200px; height: 200px;">
+            <img src="{% static img %}" alt="profile_image" class="w-100 h-100 border-radius-lg shadow-sm">
           </div>
+          
         </div>
         
         <div class="col-auto my-auto">
           <div class="h-100">
-            <h5 class="mb-1">
+            <h4 class="mb-1">
              {{a.name}}
-            </h5>
+            </h4>
             <p class="mb-0 font-weight-normal text-sm">
               {{a.designation}}
             </p>
@@ -84,6 +85,7 @@
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">PHONE NUMBER:</strong> &nbsp; {{a.phonenumber}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">DATE OF BIRTH:</strong> &nbsp; {{a.dateofbirth}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">JOINING DATE:</strong> &nbsp; {{a.joiningdate}}</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">ADDRESS:</strong> &nbsp; {{a.address}}</li>
 
                         </ul>
                     </div>
@@ -119,6 +121,7 @@
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">BRANCH:</strong> &nbsp; {{a.branch}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">IFSC CODE:</strong> &nbsp; {{a.ifsccode}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">SALARY:</strong> &nbsp; {{a.salary}}</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">LOGINTIME:</strong> &nbsp; {{a.logintime}}</li>
 
                         </ul>
                     </div>

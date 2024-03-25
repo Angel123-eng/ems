@@ -1,15 +1,15 @@
 from django import forms
+from datetime import datetime
 
 class regform(forms.Form):
     name=forms.CharField(max_length=30)
-    employeeid=forms.IntegerField()
+    employeeid=forms.CharField(max_length=20)
     designation=forms.CharField(max_length=30)
     email=forms.EmailField()
     bloodgroup=forms.CharField(max_length=10)
     phonenumber=forms.IntegerField()
     dateofbirth=forms.DateField(widget=forms.SelectDateWidget)
     joiningdate=forms.DateField(widget=forms.SelectDateWidget)
-    
     image=forms.FileField()
     accountnumber=forms.IntegerField()
     bankname=forms.CharField(max_length=100)
@@ -19,13 +19,15 @@ class regform(forms.Form):
     password=forms.CharField(max_length=20)
     confirmpassword=forms.CharField(max_length=20)
     status =forms.CharField(max_length=20)
+    logintime = forms.CharField(max_length=20)
+    address = forms.CharField(max_length=1000)
     
 class adminloginform(forms.Form):
     username=forms.CharField(max_length=20)
     password=forms.CharField(max_length=20)
     
 class logform(forms.Form):
-    employeeid=forms.IntegerField()
+    employeeid=forms.CharField(max_length=20)
     password=forms.CharField(max_length=20)
     
 
@@ -97,4 +99,6 @@ class SalarySlipModelForm(forms.ModelForm):
         fields = '__all__'  # You can specify the fields you want to include here if needed
 
     # You can add additional custom validation or form logic here if necessary
+ 
+ 
       

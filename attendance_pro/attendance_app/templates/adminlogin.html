@@ -26,7 +26,7 @@
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
 </head>
 
-<body class="">
+<body class="bg-light">
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
       <div class="col-12">
@@ -38,53 +38,47 @@
   </div>
   <main class="main-content  mt-0">
     <section>
-      <div class="page-header min-vh-75">
+      <div class="page-header min-vh-75 d-flex align-items-center" style="margin-top: -50px;"> <!-- Adjusted margin-top -->
         <div class="container">
-          <div class="row">
-            <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-              <div class="card card-plain mt-8">
-                <div class="card-header pb-0 text-left bg-transparent">
-                  <div class="row">
-                      <div class="col-2">
-                        <img src="/static/assets/img/ictlogotext.png" class="navbar-brand-img h-100" alt="main_logo" style="width: 80px;">
-                      </div>
-                      <div class="col-10 text-center" style="margin: 10px 0;"> <!-- Adjusted margin for less space -->
-                          <h3 class="font-weight-bolder text-info text-gradient">Login</h3>
-                      </div>
-                  </div>
-              </div>
-              
-              
-                <div class="card-body">
-                  <form role="form" method="POST">{% csrf_token %}
-                    <label>Username</label>
-                    <div class="mb-3">
-                      <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username" aria-describedby="username-addon">
+            <div class="row">
+                <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+                  <div class="card card-plain mt-8" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; border-radius:15px; background-color: white;">
+                    <div class="card-header pb-0 text-left bg-transparent">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <img src="/static/ict logo.png" class="navbar-brand-img h-100" alt="main_logo" style="width: 200px;">
+                                </div>
+                                <div class="col text-center mt-3">
+                                    <h2 class="font-weight-bolder text-info text-gradient">Welcome!</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form role="form" method="POST">{% csrf_token %}
+                                <label style="font-size:15px;">Username</label>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Username" aria-describedby="username-addon">
+                                </div>
+                                <label style="font-size:15px;">Password</label>
+                                <div class="mb-3">
+                                    <input type="password" class="form-control"  name="password" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn bg-gradient-dark w-100 mt-4 mb-0">Sign in</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <label>Password</label>
-                    <div class="mb-3">
-                      <input type="password" class="form-control"  name="password" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
-                    </div>
-                  
-                    <div class="text-center">
-                      <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
-                    </div>
-                  </form>
                 </div>
-              
-              </div>
+                
             </div>
-            <div class="col-md-6">
-              <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url(' /static/assets/img/17918283.jpg')"></div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+    
+    
     </section>
   </main>
-  <footer class="footer py-5">
+  {% comment %} <footer class="footer py-5">
     <div class="container">
     
       <div class="row">
@@ -99,7 +93,7 @@
         </div>
       </div>
     </div>
-  </footer>
+  </footer> {% endcomment %}
   <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
   <!--   Core JS Files   -->
   <script src=" /static/assets/js/core/popper.min.js"></script>

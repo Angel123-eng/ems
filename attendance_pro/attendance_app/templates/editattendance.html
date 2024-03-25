@@ -262,28 +262,27 @@
             <div class="row justify-content-center">
                 <div class="col-xl-8">
                     <div class="card card-plain">
-                        <div class="card-header">
-                            <h4 class="font-weight-bolder">Edit Attendance</h4>
-                        </div>
+                      
                         <div class="card-body">
                           <form role="form" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div class="input-group input-group-outline mb-2">
-                              <label class="form-label" style="color: #d81b60;">Name:</label>
+                            <div class="col-md-12 mb-3">
+                              <label class="form-label" style="font-size: 15px;">Name:</label>
                               <input type="text" class="form-control" name="name" value="{{employee_details.name}}">
                             </div>
-                            <div class="input-group input-group-outline mb-2">
-                              <label class="form-label" style="color: #d81b60;">Employee ID:</label>
-                              <input type="number" class="form-control" name="employeeid" value="{{employee_details.employeeid}}">
+                            <div class="col-md-12 mb-3">
+                              <label class="form-label" style="font-size: 15px;">Employeeid:</label>
+                              <input type="text" class="form-control" name="employeeid" value="{{employee_details.employeeid}}">
                             </div>
-                            <div class="input-group input-group-outline mb-2">
-                              <label class="form-label" style="color: #d81b60;">Date:</label>
+                            <div class="col-md-12 mb-3">
+                              <label class="form-label" style="font-size: 15px;">Date:</label>
                               <input type="text" class="form-control" name="date" value="{{employee_details.date}}">
                             </div>
                             <div class="input-group input-group-outline mb-2">
-                              <label class="form-label" style="color: #d81b60;">Status:</label>
+                              <label class="form-label" style="font-size: 15px;">Status:</label>
 
                               <select class="form-select" name="status">
+                                  <option value="" {% if employee_details.status == '' %}selected{% endif %}></option>
                                   <option value="Present" {% if employee_details.status == 'Present' %}selected{% endif %}>Present</option>
                                   <option value="Absent" {% if employee_details.status == 'Absent' %}selected{% endif %}>Absent</option>
                                   <option value="Leave" {% if employee_details.status == 'Leave' %}selected{% endif %}>Leave</option>
@@ -295,8 +294,9 @@
                                   <option value="Sunday" {% if employee_details.status == 'Sunday' %}selected{% endif %}>Sunday</option>
                               </select>
                           </div>
-                          
-
+                        
+                       
+                        
                             <div class="text-center">
                               <div class="row">
                                   <div class="col-md-12">
@@ -318,7 +318,7 @@
       </div>
     </div>
     <div class="container-fluid py-4">
-    <footer class="footer py-5" style="margin-top: 40%;">
+    <footer class="footer py-5">
         <div class="container">
           <div class="row">
 

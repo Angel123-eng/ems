@@ -6,69 +6,98 @@
 
 <body>
     <style>
-        .day {
-            padding: 20px;
-            border-radius: 5px;
-            margin: 5px;
-            cursor: pointer;
-            border: 3px solid #ccc; /* Increase border width */
-        }
-    
-        .day:hover {
-            background-color: #f0f0f0;
-        }
-        .current-month {
-            color: #333;
-        }
-
-        .other-month {
-            color: #ccc;
-        }
-
+        /* Calendar Container */
         #calendar {
-            margin: 20px;
-            max-width: 100%; /* Increased maximum width */
-            border: 1px solid #ccc;
-            border-radius: 10px;
+            max-width: 1000px;
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+            border: 2px solid #ccc;
+            border-radius: 8px;
             overflow: hidden;
         }
 
+        /* Calendar Header */
         #calendar-header {
-            background-color: #f2f2f2;
-            padding: 10px;
             display: flex;
             justify-content: space-between;
-        }
-
-        #calendar-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            border-bottom: 1px solid #ccc;
-        }
-
-        #calendar-dates {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            align-items: center;
+            background-color:  #a3c2c2;
             padding: 10px;
+            border-bottom: 2px solid #ccc;
         }
 
-        .day {
-            padding: 20px;
-            border-radius: 5px;
-            margin: 5px;
-            cursor: pointer;
-        }
-
-        .day:hover {
-            background-color: #f0f0f0;
-        }
-
-        .current-month {
+        #calendar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
             color: #333;
         }
 
+        #calendar-header button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        /* Calendar Days */
+        #calendar-days {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        #calendar-days div {
+            flex: 1;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Calendar Dates */
+        #calendar-dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .day {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
         .other-month {
-            color: #ccc;
+            color: #999;
+        }
+
+        .current-month:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Status Colors */
+        .status-present { background-color: green; }
+        .status-half-day { background-color: yellow; }
+        .status-absent { background-color: #FB607F; }
+        .status-leave { background-color: red; }
+        .status-half-day-leave { background-color: purple; }
+        .status-weekoff { background-color: #FFD700; }
+        .status-sunday { background-color: black; color: white; }
+        .status-holiday { background-color: #72A0C1; }
+
+        /* Status Text Color */
+        .status-text {
+            font-size: 0.8rem;
+            color: #fff;
         }
     </style>
     <div class="btn-container text-end">
@@ -150,7 +179,8 @@
         
                     // Display date and status only if it's from the current month
                     if (isCurrentMonth) {
-                        dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>`;
+                        const loginInfo = dayData.login ? `<div style="color: ${dayData.login === 'Latelogin' ? 'red' : 'inherit'};">${dayData.login}</div>` : '';
+                        dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>${loginInfo}`;
                     }
                 }
             });

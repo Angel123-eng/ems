@@ -29,8 +29,8 @@
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-        <img src="  /static/assets/img/ictlogotext.png " class="navbar-brand-img h-100" alt="main_logo">
+      <a class="navbar-brand m-0" href="  " target="_blank">
+        <img src="  /static/ict logo.png " class="navbar-brand-img h-100" alt="main_logo">
 
         <span class="ms-1 font-weight-bold">ICT Global Tech</span>
       </a>
@@ -164,26 +164,7 @@
             <span class="nav-link-text ms-1">Public Holidays</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link  " href="/monthlyattendance/">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <title>credit-card</title>
-                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                    <g transform="translate(1716.000000, 291.000000)">
-                      <g transform="translate(453.000000, 454.000000)">
-                        <path class="color-background opacity-6" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"></path>
-                        <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            </div>
-            <span class="nav-link-text ms-1">Monthly Attendance</span>
-          </a>
-        </li>
+       
    
      
        
@@ -404,56 +385,118 @@
           background-color: #45a049;
       }
   </style>
+  <style>
+    .form-check-input {
+        border: 1px solid #000; /* Black border */
+        padding: 5px; /* Optional: Add some padding for better appearance */
+        margin: 0; /* Optional: Remove default margin */
+    }
+</style>
 </head>
 <body>
+  
+  <div class="container-fluid py-4" style="max-width: 800px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-body px-0 pt-0 pb-2">
+                    <form class="form-header" method="POST" id="main-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="table-responsive table-responsive-data2 col-12">
+                                <div class="date-input">
+                                    <label for="date">Select Date:</label>
+                                    <input type="date" id="date" name="date" min="2018-03" value="2024-01-01" class="form-control" />
+                                </div>
+                                <table class="table table-bordered table-striped table-hover" id="employeeTable">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Select</th>
+                                            <th>Employee ID</th>
+                                            <th>Name</th>
+                                            <!-- Additional header columns can be added here if needed -->
+                                        </tr>
+                                    </thead>
+                                    <tbody id="employeeTableBody">
+                                        {% for i in a %}
+                                        <tr>
+                                            <td><input type="checkbox" name="employee_checkbox" value="{{ i.id }}" class="form-check-input"></td>
+                                            <td>
+                                                <p>{{ i.employeeid }}</p>
+                                                <input type="hidden" name="employeeid_{{ i.id }}" value="{{ i.employeeid }}">
+                                            </td>
+                                            <td>
+                                                <p>{{ i.name }}</p>
+                                                <input type="hidden" name="name_{{ i.id }}" value="{{ i.name }}">
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
 
-<div class="container-fluid py-4">
-  <div class="row">
-      <div class="col-12">
-          <div class="card mb-4">
-             
-              <div class="card-body px-0 pt-0 pb-2">
-                  <div class="table-responsive p-0">
-                      <form class="form-header" method="POST">
-                          {% csrf_token %}
-                          <div class="row">
-                              <div class="table-responsive table-responsive-data2 col-12">
-                                  <table class="table table-data2" border="2">
-                                      <thead>
-                                      <tr>
-                                          <th>Sl.no</th>
-                                          <th>Name</th>
-                                          <th>Employee ID</th>
-                                          <th>Weekoff 1</th>
-                                          <th>Weekoff 2</th>
-                                      </tr>
-                                      </thead>
-                                      <tbody>
-                                      {% for i in a %}
-                                          <tr>
-                                              <td>{{forloop.counter}}</td>
-                                              <td><p>{{ i.name }}</p><input type="hidden" name="name_{{ i.id }}" value="{{ i.name }}"></td>
-                                              <td><p>{{ i.employeeid }}</p><input type="hidden" name="employeeid_{{ i.id }}" value="{{ i.employeeid }}"></td>
-                                              <td><input type="date" name="weekoff1_{{ i.id }}" min="2018-03" value="2024-01-01"/></td>
-                                              <td><input type="date" name="weekoff2_{{ i.id }}" min="2018-03" value="2024-01-01"/></td>
-                                          </tr>
-                                      {% endfor %}
-                                      </tbody>
-                                  </table>
-
-                                  <div class="button-container">
-                                      <button type="submit">Submit</button>
-                                  </div>
-
-                              </div>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+                                {% comment %} <div class="button-container">
+                                    <button type="button" onclick="addNew()" class="btn btn-success">Add New</button>
+                                    <button type="button" onclick="removeTable(this)" class="btn btn-danger">Remove</button>
+                                </div> {% endcomment %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Submit button outside the loop -->
+<div class="button-container mt-3 text-center">
+    <button type="button" onclick="submitForm()" class="btn btn-dark">Submit</button>
+</div>
+
+<script>
+    {% comment %} function addNew() {
+        // Clone the entire container for each new set of inputs (date + employees)
+        var newContainer = $(".table-responsive-data2:first").clone();
+
+        // Generate a unique ID for the new date input
+        var newDateInputId = "date_" + new Date().getTime();
+
+        // Update the ID attribute for the new date input
+        newContainer.find("input[type='date']").attr("id", newDateInputId);
+
+        // Clear the checkbox and hidden input values in the new row
+        newContainer.find(":checkbox").prop("checked", false);
+        newContainer.find("input[type='hidden']").val("");
+
+        // Clone the date input and append it to the new container
+        var newDateInput = $(".date-input:first").clone();
+        newDateInput.find("input[type='date']").attr("id", newDateInputId);
+        newContainer.find(".date-input").remove(); // Remove existing date input if any
+        newContainer.prepend(newDateInput);
+
+        // Append the new container to the form
+        $("#main-form").append(newContainer);
+    }
+
+    function removeTable(button) {
+        // Remove the parent container when the remove button is clicked
+        $(button).closest(".table-responsive-data2").remove();
+    } {% endcomment %}
+
+    function submitForm() {
+        // Clear any previously selected date and employees before submitting the form
+        $(".table-responsive-data2").each(function () {
+            $(this).find("input[type='checkbox']:not(:checked)").siblings("input[type='hidden']").val("");
+        });
+
+        // Trigger the submit event on the main form
+        $("#main-form").submit();
+    }
+</script>
+
+
+
+
+
       
       <footer class="footer pt-3  ">
         <div class="container-fluid">

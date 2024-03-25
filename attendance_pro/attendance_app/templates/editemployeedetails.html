@@ -1,5 +1,6 @@
 
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
@@ -29,8 +30,8 @@
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-        <img src="  /static/assets/img/ictlogotext.png " class="navbar-brand-img h-100" alt="main_logo">
+      <a class="navbar-brand m-0" href="" target="_blank">
+        <img src="  /static/ict logo.png " class="navbar-brand-img h-100" alt="main_logo">
 
         <span class="ms-1 font-weight-bold">ICT Global Tech</span>
       </a>
@@ -39,7 +40,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link  active" href="/admindashboard/">
+          <a class="nav-link" href="/admindashboard/">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>shop </title>
@@ -164,26 +165,7 @@
             <span class="nav-link-text ms-1">Public Holidays</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link  " href="/monthlyattendance/">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-              <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <title>credit-card</title>
-                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                    <g transform="translate(1716.000000, 291.000000)">
-                      <g transform="translate(453.000000, 454.000000)">
-                        <path class="color-background opacity-6" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"></path>
-                        <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            </div>
-            <span class="nav-link-text ms-1">Monthly Attendance</span>
-          </a>
-        </li>
+     
    
      
        
@@ -247,98 +229,158 @@
         </div>
       </div>
     </nav>
+<style>
+  .bg-grey {
+    background-color: #dddddd; /* You can replace #dddddd with the desired shade of grey */
+}
 
+</style>
     <div class="container-fluid">
-      <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('/static/assets/img/17918283.jpg'); background-position-y: 50%;">
-        <span class="mask bg-gradient-primary opacity-6"></span>
-      </div>
-      <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
-        <div class="row gx-4">
-          
-        
-          <main class="main-content mt-0">
-    <section>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-8">
-                    <div class="card card-plain">
-                        <div class="card-header">
-                            <h4 class="font-weight-bolder">Edit Employee Details</h4>
-                        </div>
-                        <div class="card-body">
-                            <form role="form" method="POST" enctype="multipart/form-data">{% csrf_token %}
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Name:</label>
-                                <input type="text" class="form-control"  name="name" value="{{a.name}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Employee ID:</label>
-                                <input type="number" class="form-control" name="employeeid" value="{{a.employeeid}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Designation:</label>
-                                <input type="text" class="form-control" name="designation" value="{{a.designation}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Email:</label>
-                                <input type="email" class="form-control" name="email" value="{{a.email}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Blood group:</label>
-                                <input type="text" class="form-control" name="bloodgroup" value="{{a.bloodgroup}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Phone number:</label>
-                                <input type="number" class="form-control" name="phonenumber" value="{{a.phonenumber}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Date of birth:</label>
-                                <input type="date" class="form-control" name="dateofbirth" value="{{a.dateofbirth}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Joining date:</label>
-                                <input type="date" class="form-control" name="joiningdate" value="{{a.joiningdate}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Account number:</label>
-                                <input type="number" class="form-control" name="accountnumber" value="{{a.accountnumber}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Bank name:</label>
-                                <input type="text" class="form-control" name="bankname" value="{{a.bankname}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Branch:</label>
-                                <input type="text" class="form-control" name="branch" value="{{a.branch}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">IFSC code:</label>
-                                <input type="number" class="form-control" name="ifsccode" value="{{a.ifsccode}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Salary:</label>
-                                <input type="number" class="form-control" name="salary" value="{{a.salary}}">
-                              </div>
-                              <div class="input-group input-group-outline mb-2">
-                                <label class="form-label" style="color: #d81b60;">Image:</label>
+      <main class="main-content mt-0">
+          <section>
+              <div class="container">
+                  <div class="row justify-content-center">
+                      <div class="col-xl-8">
+                        <div class="card shadow p-3 mb-5 bg-grey rounded">
+                          <div class="card-body">
+                                  <div class="box">
+                                      <form role="form" method="POST" enctype="multipart/form-data">
+                                          {% csrf_token %}
+  
+                                          <div class="row">
+                                              <div class="col-md-12 text-center mb-3">
+                                                  <img src="{% static img %}" alt="Employee Image" style="max-width: 200px; max-height: 200px;">
+                                              </div>
+                                          </div>
+                      
+                
 
-                                <input class="au-input au-input--full" type="file" name="image"
-                                       placeholder="Image">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Name:</label>
+                                <input type="text" class="form-control" name="name" value="{{a.name}}">
                             </div>
-                                <div class="text-center">
-                                  <div class="row">
-                                      <div class="col-md-12">
-                                          <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">UPLOAD</button>
-                                      </div>
-                                     
-                                  </div>
-                              </div>
-                            </form>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Employee ID:</label>
+                                <input type="number" class="form-control" name="employeeid" value="{{a.employeeid}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Designation:</label>
+                                <input type="text" class="form-control" name="designation" value="{{a.designation}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Email:</label>
+                                <input type="email" class="form-control" name="email" value="{{a.email}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Blood group:</label>
+                                <input type="text" class="form-control" name="bloodgroup" value="{{a.bloodgroup}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Phone number:</label>
+                                <input type="number" class="form-control" name="phonenumber" value="{{a.phonenumber}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Date of birth:</label>
+                                <input type="date" class="form-control" name="dateofbirth" value="{{a.dateofbirth}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Joining date:</label>
+                                <input type="date" class="form-control" name="joiningdate" value="{{a.joiningdate}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Account number:</label>
+                                <input type="number" class="form-control" name="accountnumber" value="{{a.accountnumber}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Bank name:</label>
+                                <input type="text" class="form-control" name="bankname" value="{{a.bankname}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Branch:</label>
+                                <input type="text" class="form-control" name="branch" value="{{a.branch}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">IFSC code:</label>
+                                <input type="number" class="form-control" name="ifsccode" value="{{a.ifsccode}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Salary:</label>
+                                <input type="number" class="form-control" name="salary" value="{{a.salary}}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label" style="font-size: 15px;">Login Time:</label>
+                              <input type="text" class="form-control" name="logintime" value="{{a.logintime}}">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 15px;">Address:</label>
+                            <input type="text" class="form-control" name="address" value="{{a.address}}">
                         </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Image:</label>
+                                <input class="au-input au-input--full" type="file" name="image" placeholder="Image">
+                            </div>
+                        </div>
+                
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col-md-12">
+                                  <button type="submit" class="btn btn-lg  bg-gradient-success btn-lg w-100 mt-4 mb-0">UPLOAD</button>
+                                </div>
+                            </div>
+                        </div>
+                      </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<style>
+  .box {
+      border: 1px solid #e9ecef; /* Light gray border */
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+      background-color: #fff; /* White background */
+  }
+
+  /* Style form labels */
+  .form-label {
+      font-weight: bold;
+      color: #333; /* Dark gray color */
+  }
+
+  /* Style form inputs */
+  .form-control {
+      border-radius: 8px;
+      border-color: #ced4da; /* Light gray border color */
+  }
+
+  /* Style the submit button */
+  .btn-lg {
+      border-radius: 12px;
+      font-weight: bold;
+  }
+
+  /* Add some margin to the top of the form */
+  .mt-4 {
+      margin-top: 20px;
+  }
+</style>
     </section>
 </main>
          

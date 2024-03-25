@@ -12,19 +12,19 @@
            
               <div class="card-body">
                 <div class="container-box">
-                  <h4 class="font-weight-bolder">Leave Application</h4>
+                  <h3 class="font-weight-bolder">Leave Application</h3>
 
                   <form role="form" method="POST" class="my-form">
                     {% csrf_token %}
                     
                     <div class="input-group input-group-outline mb-2" style="position: relative;">
-                        <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -7px;">Name</label>
-                        <input type="text" readonly class="form-control" name="name" value="{{a.name}}" style="margin-top: 30px; width: 100%;">
+                        <label class="form-label" style="color:  #2B3B90; font-size: 16px; position: absolute; top: 0; left: 0; margin-top: -7px;">Name</label>
+                        <input type="text" readonly class="form-control" name="name" value="{{a.name}}" style="margin-top: 40px; width: 100%;">
                     </div>
                 
                     <div class="input-group input-group-outline mb-2" style="position: relative;">
-                        <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -7px;">Employee ID</label>
-                        <input type="number" readonly class="form-control" name="employeeid" value="{{a.employeeid}}" style="margin-top: 30px; width: 100%;">
+                        <label class="form-label" style="color:  #2B3B90; font-size: 16px;position: absolute; top: 0; left: 0; margin-top: -7px;">Employee ID</label>
+                        <input type="number" readonly class="form-control" name="employeeid" value="{{a.employeeid}}" style="margin-top: 40px; width: 100%;">
                     </div>
                 
                     <div class="input-group input-group-outline mb-2" style="position: relative;">
@@ -40,32 +40,32 @@
                 
                     <div id="halfDayFields" style="display: none;">
                         <div class="input-group input-group-outline mb-2" style="position: relative;">
-                            <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px;">Half Day Date</label>
-                            <input type="date" class="form-control" name="halfDayDate" style="margin-top: 30px; width: 100%;">
+                            <label class="form-label" style="color: #2B3B90; position: absolute; top: 0; left: 0; margin-top: -3px;">Half Day Date</label>
+                            <input type="date" class="form-control" name="halfDayDate" style="margin-top: 40px; width: 100%;">
                         </div>
                     </div>
                 
                     <div id="fullDayFields" style="display: none;">
                         <div class="input-group input-group-outline mb-2" style="position: relative;">
-                            <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px;">From date</label>
-                            <input type="date" class="form-control" name="fromdate" style="margin-top: 30px; width: 100%;">
+                            <label class="form-label" style="color:  #2B3B90; position: absolute; top: 0; left: 0; margin-top: -3px;">From date</label>
+                            <input type="date" class="form-control" name="fromdate" style="margin-top: 40px; width: 100%;">
                         </div>
                         <div class="input-group input-group-outline mb-2" style="position: relative;">
-                            <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -3px; ">To date</label>
-                            <input type="date" class="form-control" name="todate" style="margin-top: 30px; width: 100%;">
+                            <label class="form-label" style="color: #2B3B90; position: absolute; top: 0; left: 0; margin-top: -3px; ">To date</label>
+                            <input type="date" class="form-control" name="todate" style="margin-top: 40px; width: 100%;">
                         </div>
                     </div>
                 
                     <div class="input-group input-group-outline mb-2" style="position: relative;">
-                        <label class="form-label" style="color: #d81b60; position: absolute; top: 0; left: 0; margin-top: -7px;">Reason</label>
-                        <textarea class="form-control" name="reason" style="margin-top: 30px; width: 100%;"></textarea>
+                        <label class="form-label" style="color:  #2B3B90; font-size: 16px;position: absolute; top: 0; left: 0; margin-top: -7px;">Reason</label>
+                        <textarea class="form-control" name="reason" style="margin-top: 40px; width: 100%;"></textarea>
                     </div>
                 
                     <input type="hidden" name="status" value="Pending">
                 
                     <div class="container">
                         <div class="text-center">
-                            <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Apply</button>
+                            <button type="submit" class="btn btn-lg bg-gradient-dark btn-lg w-100 mt-4 mb-0">Apply</button>
                         </div>
                     </div>
                 </form>

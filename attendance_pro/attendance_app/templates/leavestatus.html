@@ -9,11 +9,12 @@
         <div class="">
             <div class="card-body pt-4 p-3">
                 <ul class="list-group">
+                    <h3 style="text-align:center;">Applied Leave Status</h3>
+
                     {% for leave_status in leave_statuses %}
                     <li class="list-group-item border-0 d-flex p-4 bg-gray-100 border-radius-lg card my-3">
                         <div class="container custom-container">
                             <div class="d-flex flex-column">
-                                <h3>Applied Leave Status</h3>
                         
                                 <p><b>Name:</b> {{ leave_status.name }}</p>
                                 <p><b>Employee ID:</b> {{ leave_status.employeeid }}</p>

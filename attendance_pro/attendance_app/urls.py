@@ -58,5 +58,7 @@ urlpatterns=[
     path('holidaycalendar/', holidaycalendar, name='holidaycalendar'),
     path('display_attendance_details/', display_attendance_details, name='display_attendance_details'),
     path('calculate_working_hours/', calculate_working_hours, name='calculate_working_hours'),
+    path('resigned_employees/', views.resigned_employees, name='resigned_employees'),
+    
     
     ]
