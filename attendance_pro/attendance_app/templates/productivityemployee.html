@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Leave Status{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h4 class="mt-4 mb-3">Employee Productivity Data</h4>
+            {% if productivity_data %}
+                {% for data in productivity_data %}
+                <div class="card mb-3" style="max-width: 400px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Employee ID: {{ data.employeeid }}</h5>
+                        <p class="card-text"><b>Month:</b> {{ data.month }}</p>
+                        <p class="card-text"><b>Productivity:</b> {{ data.productivity }}</p>
+                        <p class="card-text"><b>Quality Score:</b> {{ data.quality }}</p>
+                        <p class="card-text"><b>Appreciations:</b> {{ data.appreciations }}</p>
+                        <p class="card-text"><b>Extra Initiatives:</b> {{ data.extraInitiatives }}</p>
+                        <p class="card-text"><b>Target:</b> {{ data.target }}</p>
+                        <p class="card-text"><b>Achievement:</b> {{ data.achievement }}</p>
+                        <p class="card-text"><b>Percentage of Achievement:</b> {{ data.percentage }}</p>
+                        <p class="card-text"><b>New Client On Board:</b> {{ data.newClient }}</p>
+                        <p class="card-text"><b>Renewals %:</b> {{ data.renewals }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                    No productivity data available for this employee.
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

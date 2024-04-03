@@ -59,6 +59,7 @@ urlpatterns=[
     path('display_attendance_details/', display_attendance_details, name='display_attendance_details'),
     path('calculate_working_hours/', calculate_working_hours, name='calculate_working_hours'),
     path('resigned_employees/', views.resigned_employees, name='resigned_employees'),
-    
-    
+    path('productivity/<int:employee_id>/', productivity, name='productivity'),    
+    path('productivityemployee/',productivityemployee, name='productivityemployee'),
+    path('display_productivity_data/',display_productivity_data,name='display_productivity_data')
     ]

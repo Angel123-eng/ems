@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="row" style="justify-content: center;">
-    <div class="col-md-9 mt-4">
+    <div class="col-md-6 mt-4">
         <div class="">
             <div class="card-body pt-4 p-3">
                 <ul class="list-group">
@@ -15,25 +15,25 @@
                     <li class="list-group-item border-0 d-flex p-4 bg-gray-100 border-radius-lg card my-3">
                         <div class="container custom-container">
                             <div class="d-flex flex-column">
-                        
-                                <p><b>Name:</b> {{ leave_status.name }}</p>
-                                <p><b>Employee ID:</b> {{ leave_status.employeeid }}</p>
+                                <p><b>Leave.no: {{ forloop.counter }}</b></p>
+                               
                                 <p><b>Leave Type:</b> {{ leave_status.leaveType }}</p>
                                 {% if leave_status.leaveType == 'Half Day' %}
-                                    <p><b>Half Day Date:</b> {{ leave_status.halfDayDate|date:"Y-m-d" }}</p>
+                                    <p><b>Half Day Date:</b> {{ leave_status.halfDayDate|date:"d-m-Y" }}</p>
                                 {% elif leave_status.leaveType == 'Full Day' %}
-                                    <p><b>From date:</b> {{ leave_status.fromdate|date:"Y-m-d" }}</p>
-                                    <p><b>To date:</b> {{ leave_status.todate|date:"Y-m-d" }}</p>
+                                    <p><b>From date:</b> {{ leave_status.fromdate|date:"d-m-Y" }}</p>
+                                    <p><b>To date:</b> {{ leave_status.todate|date:"d-m-Y" }}</p>
                                 {% endif %}
                         
                              
                                 <p><b>Reason:</b> {{ leave_status.reason }}</p>
+                                <p><b>Applied date:</b> {{ leave_status.applieddate }}</p>  
 
                               
                             </div>
                         </div>
                         
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <button type="button" class="btn btn-lg w-100 {% if leave_status.status == 'Approved' %}btn-success{% elif leave_status.status == 'Rejected' %}btn-danger{% elif leave_status.status == 'Pending' %}btn-warning{% else %}custom-red-btn{% endif %}">{{ leave_status.status }}</button>
                             <style>
                             .custom-container {

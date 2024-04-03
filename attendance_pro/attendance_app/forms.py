@@ -11,10 +11,10 @@ class regform(forms.Form):
     dateofbirth=forms.DateField(widget=forms.SelectDateWidget)
     joiningdate=forms.DateField(widget=forms.SelectDateWidget)
     image=forms.FileField()
-    accountnumber=forms.IntegerField()
+    accountnumber=forms.CharField(max_length=30)
     bankname=forms.CharField(max_length=100)
     branch=forms.CharField(max_length=30)
-    ifsccode=forms.IntegerField()
+    ifsccode=forms.CharField(max_length=30)
     salary=forms.IntegerField()
     password=forms.CharField(max_length=20)
     confirmpassword=forms.CharField(max_length=20)
@@ -31,7 +31,7 @@ class logform(forms.Form):
     password=forms.CharField(max_length=20)
     
 
-from .models import LeaveModel, AttendanceModel, WeekoffModel, PublicholidaysModel, ExtraModel
+from .models import LeaveModel, AttendanceModel, WeekoffModel, PublicholidaysModel, ExtraModel, ProductivityModel
 
 class LeaveForm(forms.ModelForm):
     class Meta:
@@ -101,4 +101,19 @@ class SalarySlipModelForm(forms.ModelForm):
     # You can add additional custom validation or form logic here if necessary
  
  
-      
+from django import forms
+from .models import ProductivityModel
+
+class ProductivityForm(forms.ModelForm):
+    class Meta:
+        model = ProductivityModel
+        fields = ['name', 'employeeid', 'month', 'productivity', 'quality', 'appreciations', 'extraInitiatives', 'target', 'achievement', 'percentage', 'newClient', 'renewals']
+
+    def clean_percentage(self):
+        percentage = self.cleaned_data['percentage']
+        if percentage < 0 or percentage > 1:
+            raise forms.ValidationError("Percentage value must be between 0 and 1.")
+        return percentage
+
+
+     

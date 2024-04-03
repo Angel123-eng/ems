@@ -14,10 +14,10 @@ class regmodel(models.Model):
     dateofbirth=models.CharField(max_length=30)
     joiningdate=models.CharField(max_length=30)
     image=models.FileField(upload_to='attendance_app/static')
-    accountnumber=models.IntegerField()
+    accountnumber=models.CharField(max_length=30)
     bankname=models.CharField(max_length=100)
     branch=models.CharField(max_length=30)
-    ifsccode=models.IntegerField()
+    ifsccode=models.CharField(max_length=30)
     salary=models.IntegerField()
     password=models.CharField(max_length=10)
     status = models.CharField(max_length=20, default='Active')
@@ -108,6 +108,27 @@ class SalarySlipModel(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.month} {self.year} Salary Slip"
+    
+    
+from django.db import models
+
+from django.db import models
+
+class ProductivityModel(models.Model):
+    name = models.CharField(max_length=30)
+    employeeid = models.CharField(max_length=20)
+    month = models.CharField(max_length=30)
+    productivity = models.DecimalField(max_digits=10, decimal_places=2)
+    quality = models.DecimalField(max_digits=10, decimal_places=2)
+    appreciations = models.IntegerField()
+    extraInitiatives = models.IntegerField()
+    target = models.DecimalField(max_digits=10, decimal_places=2)
+    achievement = models.DecimalField(max_digits=10, decimal_places=2)
+    percentage = models.DecimalField(max_digits=10, decimal_places=2)
+    newClient = models.CharField(max_length=50)
+    renewals = models.DecimalField(max_digits=10, decimal_places=2)
+
+
     
 
 

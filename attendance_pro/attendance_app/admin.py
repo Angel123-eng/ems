@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import regmodel,LeaveModel,AttendanceModel,WeekoffModel,PublicholidaysModel,ExtraModel,ExcelModel,SalarySlipModel
+from .models import regmodel,LeaveModel,AttendanceModel,WeekoffModel,PublicholidaysModel,ExtraModel,ExcelModel,SalarySlipModel,ProductivityModel
 # Register your models here.
 
 class regAdmin(admin.ModelAdmin):
@@ -26,6 +26,8 @@ class ExcelModelAdmin(admin.ModelAdmin):
 class SalarySlipModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'employeeid', 'month', 'year', 'totalPayableDays', 'totalleave', 'paidleave','Latelogin', 'salarydeductedleave', 'salary', 'perdaysalary', 'deductionamount', 'incentive', 'monthlysalary')
 
+class ProductivityModelAdmin(admin.ModelAdmin):
+    list_display = ('employeeid', 'month', 'productivity', 'quality', 'appreciations','extraInitiatives','target','achievement','percentage','newClient','renewals')
 
 admin.site.register(regmodel, regAdmin)
 admin.site.register(LeaveModel, leaveAdmin)
@@ -35,3 +37,4 @@ admin.site.register(PublicholidaysModel, PublicholidaysAdmin)
 admin.site.register(ExtraModel, ExtraAdmin)
 admin.site.register(ExcelModel,ExcelModelAdmin)
 admin.site.register(SalarySlipModel, SalarySlipModelAdmin)
+admin.site.register(ProductivityModel,ProductivityModelAdmin)

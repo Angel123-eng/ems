@@ -16,18 +16,21 @@
 
                   <form role="form" method="POST" class="my-form">
                     {% csrf_token %}
-                    
+                    <hr/>
+                    <div class="d-flex justify-content-between">
+                        <h6>{{a.name}}</h6>
+                        <h6>{{a.employeeid}}</h6>
+                    </div>
+                    <hr/>
                     <div class="input-group input-group-outline mb-2" style="position: relative;">
-                        <label class="form-label" style="color:  #2B3B90; font-size: 16px; position: absolute; top: 0; left: 0; margin-top: -7px;">Name</label>
-                        <input type="text" readonly class="form-control" name="name" value="{{a.name}}" style="margin-top: 40px; width: 100%;">
+                        <input type="hidden" readonly class="form-control" name="name" value="{{a.name}}" style="margin-top: 40px; width: 100%;">
                     </div>
                 
                     <div class="input-group input-group-outline mb-2" style="position: relative;">
-                        <label class="form-label" style="color:  #2B3B90; font-size: 16px;position: absolute; top: 0; left: 0; margin-top: -7px;">Employee ID</label>
-                        <input type="number" readonly class="form-control" name="employeeid" value="{{a.employeeid}}" style="margin-top: 40px; width: 100%;">
+                        <input type="hidden" readonly class="form-control" name="employeeid" value="{{a.employeeid}}" style="margin-top: 40px; width: 100%;">
                     </div>
                 
-                    <div class="input-group input-group-outline mb-2" style="position: relative;">
+                    <div class="input-group input-group-outline mb-2 justify-content-center" style="position: relative;">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="leaveType" id="halfDay" value="Half Day">
                             <label class="form-check-label" for="halfDay">Half Day</label>
@@ -37,28 +40,29 @@
                             <label class="form-check-label" for="fullDay">Full Day</label>
                         </div>
                     </div>
+                    
                 
                     <div id="halfDayFields" style="display: none;">
                         <div class="input-group input-group-outline mb-2" style="position: relative;">
-                            <label class="form-label" style="color: #2B3B90; position: absolute; top: 0; left: 0; margin-top: -3px;">Half Day Date</label>
+                            <label class="form-label" style="color: black; position: absolute; top: 0; left: 0; margin-top: -3px;">Half Day Date</label>
                             <input type="date" class="form-control" name="halfDayDate" style="margin-top: 40px; width: 100%;">
                         </div>
                     </div>
                 
                     <div id="fullDayFields" style="display: none;">
                         <div class="input-group input-group-outline mb-2" style="position: relative;">
-                            <label class="form-label" style="color:  #2B3B90; position: absolute; top: 0; left: 0; margin-top: -3px;">From date</label>
+                            <label class="form-label" style="color: black; position: absolute; top: 0; left: 0; margin-top: -3px;">From date</label>
                             <input type="date" class="form-control" name="fromdate" style="margin-top: 40px; width: 100%;">
                         </div>
                         <div class="input-group input-group-outline mb-2" style="position: relative;">
-                            <label class="form-label" style="color: #2B3B90; position: absolute; top: 0; left: 0; margin-top: -3px; ">To date</label>
+                            <label class="form-label" style="color: black; position: absolute; top: 0; left: 0; margin-top: -3px; ">To date</label>
                             <input type="date" class="form-control" name="todate" style="margin-top: 40px; width: 100%;">
                         </div>
                     </div>
                 
                     <div class="input-group input-group-outline mb-2" style="position: relative;">
-                        <label class="form-label" style="color:  #2B3B90; font-size: 16px;position: absolute; top: 0; left: 0; margin-top: -7px;">Reason</label>
-                        <textarea class="form-control" name="reason" style="margin-top: 40px; width: 100%;"></textarea>
+                        <label class="form-label" style="color: black; font-size: 16px;position: absolute; top: 0; left: 0; margin-top: -7px;">Reason</label>
+                        <textarea class="form-control" name="reason" rows="5" style="margin-top: 40px; width: 100%;"></textarea>
                     </div>
                 
                     <input type="hidden" name="status" value="Pending">

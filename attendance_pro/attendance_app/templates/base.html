@@ -125,6 +125,14 @@
             <span class="nav-link-text ms-1">Salary slip</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/productivityemployee/">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">work</i>
+            </div>
+            <span class="nav-link-text ms-1">Productivity</span>
+          </a>
+        </li>
      
       </ul>
     </div>
@@ -242,7 +250,7 @@
             </li>
             <li class="nav-item dropdown pe-2 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-user me-sm-1" >{{a.name}} </i>
+                <i class="fa fa-user me-sm-1" style="font-size: larger;">{{a.name}}</i>
               </a>
               <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                 <li class="mb-2">
@@ -259,7 +267,18 @@
                     </div>
                   </a>
               
-               
+                  <a class="dropdown-item border-radius-md" href="{% url 'page3' %}">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        <i class="fa fa-user me-3"></i> <!-- Add a sign-out icon -->
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          <span class="font-weight-bold">Profile</span>
+                        </h6>
+                      </div>
+                    </div>
+                  </a>
               
                      
                     </div>

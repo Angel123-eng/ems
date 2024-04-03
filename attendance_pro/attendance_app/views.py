@@ -113,7 +113,7 @@ def handle_frontend_data(request):
 def base(request):
     return render(request, 'base.html')
 
-# Dashborad of employee
+# Dashboard of employee
 def page2(request):
     id1=request.session['id']
     a=regmodel.objects.get(employeeid=id1)
@@ -264,7 +264,9 @@ def page6(request):
         #, 'selected_month_year': selected_month_year
         return render(request, 'salaryx.html', {'a': employee, 'salary_slips': salary_slips})
     else :
-        return render(request, 'salaryx.html')   
+        return render(request, 'salaryx.html')  
+    
+     
         
 def page7(request):
     id1=request.session['id']
@@ -288,8 +290,9 @@ def adminlogin(request):
                 return HttpResponse("login failed")
     return render(request,'adminlogin.html')
 
-from django.contrib.auth import logout
 
+
+from django.contrib.auth import logout
 
 #Admin logout
 def adminlogout(request):
@@ -412,6 +415,7 @@ from .forms import ExtraForm
 from django.shortcuts import render, get_object_or_404
 from .models import ExtraModel
 from .forms import ExtraForm
+
 def editattendance(request, employee_id):
     # Get a list of ExtraModel instances matching the employee_id
     extra_instances = ExtraModel.objects.filter(id=employee_id)
@@ -463,6 +467,8 @@ def editemployeedetails(request,id):
         a.branch=request.POST.get('branch')
         a.ifsccode=request.POST.get('ifsccode')
         a.salary=request.POST.get('salary')
+        a.logintime=request.POST.get('logintime')
+        a.address=request.POST.get('address')
         if len(request.FILES) != 0:
             if len(a.image) != 0:
                 os.remove(a.image.path)
@@ -898,46 +904,51 @@ from django.shortcuts import get_object_or_404
 
 from datetime import datetime, time
 
-def display_attendance_details(request):
-    excel_data = ExcelModel.objects.all()
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+def display_attendance_details(request):
+    # Get all data ordered by date
+    excel_data = ExcelModel.objects.all().order_by('-date')
+
+    # Pagination
+    paginator = Paginator(excel_data, 10)  # Show 10 records per page
+
+    page = request.GET.get('page')
+    try:
+        excel_data = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        excel_data = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        excel_data = paginator.page(paginator.num_pages)
+
+    # Iterate over the paginated data and process as before
     for row in excel_data:
-        # Calculate working hours and get attendance status
         row.working_hours = calculate_working_hours(row.intime, row.outtime)
         row.status = get_attendance_status(row.working_hours)
-
-        # Check if data already exists for the employee on that date
         existing_data = ExtraModel.objects.filter(employeeid=row.employeeid, date=row.date).first()
-
-        # Retrieve the registered name and login time
         reg_data = regmodel.objects.filter(employeeid=row.employeeid).values('name', 'logintime').first()
-
         if reg_data:
-            # Compare intime with logintime and mark login if intime is greater
             intime_str = row.intime
             logintime_str = reg_data['logintime']
-
-            # Convert logintime_str to a datetime.time object
             logintime = datetime.strptime(logintime_str, '%H:%M').time()
-
             if row.status != "Leave" and intime_str > logintime:
                 row.login = 'Latelogin'
             else:
                 row.login = ''
-
-            # Update existing record
             if existing_data:
                 existing_data.name = reg_data['name'] if reg_data['name'] else row.name
                 existing_data.status = row.status
                 existing_data.login = row.login
                 existing_data.save()
             else:
-                # Create a new record
-                extra_data = ExtraModel(name=reg_data['name'] if reg_data['name'] else row.name, 
+                extra_data = ExtraModel(name=reg_data['name'] if reg_data['name'] else row.name,
                                         employeeid=row.employeeid, date=row.date, status=row.status, login=row.login)
                 extra_data.save()
 
     return render(request, 'attendancedetails.html', {'excel_data': excel_data})
+
 
 
 
@@ -1243,7 +1254,7 @@ def weekoff(request):
             if form.is_valid():
                 form.save()
 
-        return redirect(weekoff)  # Replace 'admindashboard' with the actual URL name or path
+        return redirect(weekoff)  
 
     else:
         form = ExtraForm()
@@ -1741,6 +1752,120 @@ def resigned_employees(request):
 #         # Handle the case where there's no corresponding record in regmodel
 #         pass
     
+
+
+
+
+from django.shortcuts import render, redirect
+from .models import ProductivityModel
+
+def productivity(request, employee_id):
+    if request.method == 'POST':
+        print(request.POST) 
+        # Get data from the form
+        name = request.POST.get('name')
+        employeeid = request.POST.get('employeeid')
+        month = request.POST.get('month')
+        productivity = request.POST.get('productivity')
+        quality = request.POST.get('quality')
+        appreciations = request.POST.get('appreciations')
+        extra_initiatives = request.POST.get('extraInitiatives')
+        target = request.POST.get('target')
+        achievement = request.POST.get('achievement')
+        percentage = request.POST.get('percentage')
+        new_client = request.POST.get('newClient')
+        renewals = request.POST.get('renewals')
+
+        # Create and save ProductivityModel instance
+        productivity_instance = ProductivityModel(
+            name=name,
+            employeeid=employeeid,
+            month=month,
+            productivity=productivity,
+            quality=quality,
+            appreciations=appreciations,
+            extraInitiatives=extra_initiatives,
+            target=target,
+            achievement=achievement,
+            percentage=percentage,
+            newClient=new_client,
+            renewals=renewals
+        )
+        productivity_instance.save()
+
+        # Redirect after successful submission
+        return redirect(admindashboard)
+
+    # Render the form template for GET requests
+    return render(request, 'productivity.html', {'employee_id': employee_id})
+
+
+
+from django.http import JsonResponse
+
+def productivityemployee(request):
+    try:
+        # Fetch the employee ID from the session
+        id1 = request.session.get('id')
+
+        # Check if the employee ID exists in the session
+        if id1 is not None:
+            # Fetch the productivity data for the specific employee based on their ID
+            productivity_data = ProductivityModel.objects.filter(employeeid=id1)
+
+            # Pass the productivity data to the template for rendering
+            return render(request, 'productivityemployee.html', {'productivity_data': productivity_data})
+        else:
+            # If the employee ID is not in the session, handle accordingly
+            return JsonResponse({'status': 'error', 'message': 'Employee ID not found in session'})
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
+
+
+
+from django.shortcuts import render
+from .models import ProductivityModel
+
+from django.shortcuts import render
+from .models import ProductivityModel
+from .models import regmodel
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import ProductivityModel
+
+def display_productivity_data(request):
+    # Retrieve all instances of ProductivityModel and reverse the queryset
+    productivity_data = ProductivityModel.objects.all().order_by('-id')
+    
+    # Fetching names based on employee IDs
+    employee_names = [(entry.employeeid, entry.name) for entry in regmodel.objects.all()]
+    
+    # Pagination
+    paginator = Paginator(productivity_data, 10)  # 10 entries per page
+    page = request.GET.get('page')
+    try:
+        productivity_data = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        productivity_data = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        productivity_data = paginator.page(paginator.num_pages)
+    
+    # Pass the data and names to the template for rendering
+    return render(request, 'productivityadmin.html', {'productivity_data': productivity_data, 'employee_names': employee_names})
+
+
+
+
+
+
+
+
+
 
 
 
