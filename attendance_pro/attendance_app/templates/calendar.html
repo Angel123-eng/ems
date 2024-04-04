@@ -583,11 +583,16 @@
 
 <script>
   // Add this function to update the employee details table
-  function updateEmployeeDetailsTable(data) {
-    const tableBody = document.getElementById('employee-details-table-body');
-    tableBody.innerHTML = ''; // Clear existing data
+ // Add this function to update the employee details table
+function updateEmployeeDetailsTable(data) {
+  const tableBody = document.getElementById('employee-details-table-body');
+  tableBody.innerHTML = ''; // Clear existing data
+  
+  const uniqueDates = {}; // To keep track of unique dates
 
-    data.forEach(item => {
+  data.forEach(item => {
+    // Check if the date already exists in the uniqueDates object
+    if (!uniqueDates[item.date]) {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td style="display: none;">${item.id}</td>
@@ -601,33 +606,38 @@
         </td>
       `;
       tableBody.appendChild(row);
+      
+      // Add the date to the uniqueDates object to avoid displaying duplicates
+      uniqueDates[item.date] = true;
+    }
+  });
+}
+
+// Modify the fetchData function to call the new function
+function fetchData(year, month) {
+  const url = `/fetch_dat/${year}/${month}/`;
+
+  return fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      // Update the calendar first, then the counts
+      updateCalendar(data.records_specified_month);
+      updateCounts(data.records_current_month);
+      // Update the employee details table
+      updateEmployeeDetailsTable(data.records_current_month); // or updateEmployeeDetailsTable(data.records_specified_month);
+      return data; // Return the data for any further processing if needed
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
     });
-  }
+}
 
-  // Modify the fetchData function to call the new function
-  function fetchData(year, month) {
-    const url = `/fetch_dat/${year}/${month}/`;
+// Example of an editEmployee function (replace with your actual implementation)
+function editEmployee(id) {
+  // Redirect to the "editattendance" page with the 'id' parameter in the URL
+  window.location.href = `/editattendance/${id}`;
+}
 
-    return fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        // Update the calendar first, then the counts
-        updateCalendar(data.records_specified_month);
-        updateCounts(data.records_current_month);
-        // Update the employee details table
-        updateEmployeeDetailsTable(data.records_current_month); // or updateEmployeeDetailsTable(data.records_specified_month);
-        return data; // Return the data for any further processing if needed
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }
-
-  // Example of an editEmployee function (replace with your actual implementation)
-  function editEmployee(id) {
-    // Redirect to the "editattendance" page with the 'id' parameter in the URL
-    window.location.href = `/editattendance/${id}`;
-  }
 </script>
 
 

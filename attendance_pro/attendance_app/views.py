@@ -287,7 +287,7 @@ def adminlogin(request):
             if user is not None:
                 return redirect(admindashboard)
             else:
-                return HttpResponse("login failed")
+                return redirect(adminlogin)
     return render(request,'adminlogin.html')
 
 
@@ -493,41 +493,69 @@ def monthlyattendance(request):
 
 
 # Employee registration for admin
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import ExtraModel, regmodel
+from datetime import timedelta
+from django.db.models import Q
+
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.db.models import Q
+from .models import PublicholidaysModel, ExtraModel, regmodel
+from .forms import regform
+
 def register(request):
     if request.method == 'POST':
-        a = regform(request.POST, request.FILES)
-        if a.is_valid():
-            nm = a.cleaned_data['name']
-            eid = a.cleaned_data['employeeid']
-            ds = a.cleaned_data['designation']
-            em = a.cleaned_data['email']
-            bg = a.cleaned_data['bloodgroup']
-            phn = a.cleaned_data['phonenumber']
-            dob = a.cleaned_data['dateofbirth']
-            jnd = a.cleaned_data['joiningdate']
-            img = a.cleaned_data['image']
-            acno = a.cleaned_data['accountnumber']
-            bnknm = a.cleaned_data['bankname']
-            br = a.cleaned_data['branch']
-            ifsc = a.cleaned_data['ifsccode']
-            sal = a.cleaned_data['salary']
-            psw = a.cleaned_data['password']
-            cpsw = a.cleaned_data['confirmpassword']
-            lgt = a.cleaned_data['logintime']
-            add = a.cleaned_data['address']
+        form = regform(request.POST, request.FILES)
+        if form.is_valid():
+            nm = form.cleaned_data['name']
+            eid = form.cleaned_data['employeeid']
+            ds = form.cleaned_data['designation']
+            em = form.cleaned_data['email']
+            bg = form.cleaned_data['bloodgroup']
+            phn = form.cleaned_data['phonenumber']
+            dob = form.cleaned_data['dateofbirth']
+            jnd = form.cleaned_data['joiningdate']
+            img = form.cleaned_data['image']
+            acno = form.cleaned_data['accountnumber']
+            bnknm = form.cleaned_data['bankname']
+            br = form.cleaned_data['branch']
+            ifsc = form.cleaned_data['ifsccode']
+            sal = form.cleaned_data['salary']
+            psw = form.cleaned_data['password']
+            cpsw = form.cleaned_data['confirmpassword']
+            lgt = form.cleaned_data['logintime']
+            add = form.cleaned_data['address']
 
             if psw == cpsw:
-                b = regmodel(name=nm, employeeid=eid, designation=ds, email=em, bloodgroup=bg,
-                             phonenumber=phn, dateofbirth=dob, joiningdate=jnd, image=img, accountnumber=acno,
-                             bankname=bnknm, branch=br, ifsccode=ifsc, salary=sal, password=psw, logintime=lgt, address=add)
-                b.save()
+                employee = regmodel(name=nm, employeeid=eid, designation=ds, email=em, bloodgroup=bg,
+                                    phonenumber=phn, dateofbirth=dob, joiningdate=jnd, image=img, accountnumber=acno,
+                                    bankname=bnknm, branch=br, ifsccode=ifsc, salary=sal, password=psw, logintime=lgt, address=add)
+                employee.save()
+
+                # Fetch existing holidays and Sundays from ExtraModel
+                existing_dates = ExtraModel.objects.filter(Q(status='Holiday') | Q(status='Sunday')).values_list('date', 'status')
+
+                # If there are existing dates, copy them for the newly registered employee
+                if existing_dates.exists():
+                    for date, status in existing_dates:
+                        # Check if the date already exists for this employee, to avoid duplication
+                        if not ExtraModel.objects.filter(employeeid=eid, date=date).exists():
+                            # Save the existing date for the newly registered employee with the correct status
+                            extra_data = ExtraModel(name=nm, employeeid=eid, date=date, status=status)
+                            extra_data.save()
+
                 return redirect(employeedetails)
             else:
                 return HttpResponse("Password doesn't match")
         else:
-           
             return HttpResponse("Registration failed")
-    return render(request, 'register.html')
+    else:
+        form = regform()
+    return render(request, 'register.html', {'form': form})
+
+
 
 
 # def attendance(request):
