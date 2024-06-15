@@ -85,7 +85,7 @@ WSGI_APPLICATION = "attendance_pro.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
+        'NAME': 'attendancetracker',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',  # or the hostname where your MySQL server is running
@@ -127,3 +127,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+
+

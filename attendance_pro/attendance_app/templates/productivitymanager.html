@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% load static %}
+    <style>
+      /* Add some basic styling if needed */
+      body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: green; /* Green color, you can change this to your preferred color */
+        color: white; /* Text color for better contrast */
+        border: none; /* Remove border for a cleaner look */
+        border-radius: 5px; /* Add border-radius for rounded corners */
+    }
+  </style>
+    <!-- End Navbar -->
+    <div class="container-fluid">
+<div class="input-group">
+    <div class="form-outline" data-mdb-input-init>
+        <input type="search" id="form1" class="form-control" />
+    </div>
+    <button type="button" id="searchButton" class="btn btn-dark" data-mdb-ripple-init>
+        <i class="fas fa-search"></i>
+    </button>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchButton = document.getElementById("searchButton");
+        const searchInput = document.getElementById("form1");
+        const tableRows = document.querySelectorAll("table tbody tr"); // Adjusted the selector
+    
+        searchButton.addEventListener("click", searchEmployees);
+        searchInput.addEventListener("input", searchEmployees);
+    
+        function searchEmployees() {
+            const searchQuery = searchInput.value.trim().toLowerCase();
+    
+            tableRows.forEach(function (row) {
+                const rowData = row.textContent.trim().toLowerCase();
+                if (rowData.includes(searchQuery)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    });
+</script>
+
+
+  
+ 
+    
+      
+      <!-- Small Search input field and button -->
+      <style>
+        /* Add custom styles here */
+        body {
+          background-color: #f8f9fa;
+        }
+    
+        .card {
+          border-radius: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .card-header {
+          background-color: #00004d;
+          color: #ffffff;
+          border-bottom: 1px solid #dee2e6;
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
+        }
+    
+        .table th, .table td {
+          font-size: 14px;
+        }
+    
+        .btn-toggle-state, .btn-resign {
+          margin-right: 5px;
+        }
+      </style>
+      <style>
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+        }
+    
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    
+        tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+    
+        /* Button Style */
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    
+    
+    <div class="table-container" style="max-height: 500px; overflow-y: auto;">
+      <table class="table table-bordered table-striped table-hover">
+          <thead class="thead-dark">
+              <tr>
+                  <th>Sl.no</th>
+                  <th>Name</th>
+                  <th>Employee ID</th>
+                  <th>Month</th>
+                  <th>Productivity</th>
+                  <th>Quality Score</th>
+                  <th>Appreciations</th>
+                  <th>Extra Initiatives</th>
+                  <th>Target</th>
+                  <th>Achievement</th>
+                  <th>Percentage of Achievement</th>
+                  <th>New Client On Board</th>
+                  <th>Renewals %</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for entry in productivity_data %}
+              {% if forloop.counter <= 10 %}
+              <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+                      {% for emp_id, name in employee_names %}
+                      {% if emp_id == entry.employeeid %}
+                      {{ name }}
+                      {% endif %}
+                      {% endfor %}
+                  </td>
+                  <td>{{ entry.employeeid }}</td>
+                  <td>{{ entry.month }}</td>
+                  <td>{{ entry.productivity }}</td>
+                  <td>{{ entry.quality }}</td>
+                  <td>{{ entry.appreciations }}</td>
+                  <td>{{ entry.extraInitiatives }}</td>
+                  <td>{{ entry.target }}</td>
+                  <td>{{ entry.achievement }}</td>
+                  <td>{{ entry.percentage }}</td>
+                  <td>{{ entry.newClient }}</td>
+                  <td>{{ entry.renewals }}</td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+  <div class="pagination">
+      <span class="previous-box">
+          {% if productivity_data.has_previous %}
+          <div class="previous-button-box">
+              <a href="?page={{ productivity_data.previous_page_number }}" class="pagination-link">
+                  <i class="pagination-icon fas fa-chevron-left"></i> Previous
+              </a>
+          </div>
+          {% endif %}
+      </span>
+  
+      <span class="next-box">
+          {% if productivity_data.has_next %}
+          <div class="next-button-box">
+              <a href="?page={{ productivity_data.next_page_number }}" class="pagination-link">
+                  Next <i class="pagination-icon fas fa-chevron-right"></i>
+              </a>
+          </div>
+          {% endif %}
+      </span>
+  </div>
+  
+  <div class="page-number">
+    Page {{ productivity_data.number }} of {{ productivity_data.paginator.num_pages }}
+</div>
+  
+
+  
+  <style>
+    .previous-button-box,
+    .next-button-box {
+        background-color: grey;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    
+    .previous-box {
+        margin-right: auto;
+    }
+    
+    .next-box {
+        margin-left: auto;
+    }
+    
+    .next-button-box {
+      background-color: grey;
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: inline-block;
+  }
+  
+    /* Custom styling for the table */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border-collapse: collapse;
+    border-radius: 0.25rem;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody + tbody {
+    border-top: 2px solid #dee2e6;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* Custom styling for the header */
+.table th {
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Custom styling for the cells */
+.table td {
+    text-align: center;
+}
+
+  </style>
+  
+</div> 
+    
+    
+    
+
+    <footer class="footer pt-3  ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                Copyright © <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                Developed by
+                <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
+               
+              </div>
+            </div>
+        
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <!--   Core JS Files   -->
+  <script src="/static/assets/js/core/popper.min.js"></script>
+  <script src="/static/assets/js/core/bootstrap.min.js"></script>
+  <script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="/static/assets/js/plugins/smooth-scrollbar.min.js"></script>
+ 
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+  {% endblock %}

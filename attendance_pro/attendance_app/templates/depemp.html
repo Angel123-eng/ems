@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Weekoff{% endblock %}
+
+{% block content %}
+
+
+</head>
+
+
+<h2>Employees under your department:</h2>
+<ul>
+    {% for employee in employees %}
+        <li>{{ employee.name }}</li>
+    {% endfor %}
+</ul>
+
+
+
+{% endblock %}

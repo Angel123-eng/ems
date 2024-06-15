@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% load static %}
+    <style>
+      /* Add some basic styling if needed */
+      body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: green; /* Green color, you can change this to your preferred color */
+        color: white; /* Text color for better contrast */
+        border: none; /* Remove border for a cleaner look */
+        border-radius: 5px; /* Add border-radius for rounded corners */
+    }
+  </style>
+    <!-- End Navbar -->
+    
+
+
+      
+      <!-- Small Search input field and button -->
+      <style>
+        /* Add custom styles here */
+        body {
+          background-color: #f8f9fa;
+        }
+    
+        .card {
+          border-radius: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .card-header {
+          background-color: #00004d;
+          color: #ffffff;
+          border-bottom: 1px solid #dee2e6;
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
+        }
+    
+        .table th, .table td {
+          font-size: 14px;
+        }
+    
+        .btn-toggle-state, .btn-resign {
+          margin-right: 5px;
+        }
+      </style>
+
+
+
+
+
+   
+
+      {% comment %} <div class="row border-top"> 
+        <div class="col mt-2"> 
+            <a href="/resigned_employees/">
+                <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#weekOffModal">
+                    <i class="zmdi zmdi-search"></i> Resigned employees
+                </button>
+            </a>
+        </div>
+        <div class="col mt-2"> 
+            <a href="/terminated_employees/">
+                <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#weekOffModal">
+                    <i class="zmdi zmdi-search"></i> Terminated employees
+                </button>
+            </a>
+        </div>
+      </div>  {% endcomment %}
+
+    
+      <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card mb-4">
+              <div class="card-header pb-1 justify-content-center">
+
+              
+              
+
+                <div class="input-group mt-3">
+                    <div class="form-outline" style="width:80%" data-mdb-input-init>
+                        <input type="search" id="form1" class="form-control" placeholder="Search..."/>
+                    </div>
+                    <button type="button" id="searchButton" class="btn btn-dark" style="width:10%;" data-mdb-ripple-init>
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+              </div>
+            
+              <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+       
+                  <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th>Sl.no</th>
+                            <th>Name</th>
+                            <th>Employee ID</th>
+                            <th>Monthly Details</th>
+                            <th>Productivity</th>
+                            <th>View</th>
+                            {% comment %} <th>Status</th> {% endcomment %}
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in a %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ employee.name }}</td>
+                            <td>{{ employee.employeeid }}</td>
+                            <td>
+                                <a href="/calendarman/{{ employee.employeeid }}" class="btn btn-dark" title="View monthly details">
+                                    <i class="fas fa-calendar"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/productivityman/{{ employee.employeeid }}" class="btn btn-secondary" title="Enter productivity">
+                                    <i class="fas fa-desktop"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-dark view-details" data-toggle="modal" data-target="#employeeDetailsModal{{ forloop.counter }}">
+                                    View
+                                </button>
+                            </td>
+                            {% comment %} <td>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="employee_id" value="{{ employee.id }}">
+                                    {% if employee.status == 'Active' %}
+                                    <button type="submit" name="action" value="inactive" class="btn btn-toggle-state inactive-state" data-employee-id="{{ employee.id }}" data-current-state="Inactive">
+                                        Inactive
+                                    </button>
+                                    {% elif employee.status == 'Inactive' %}
+                                    <button type="submit" name="action" value="active" class="btn btn-toggle-state active-state" data-employee-id="{{ employee.id }}" data-current-state="Active">
+                                        Active
+                                    </button>
+                                    {% endif %}
+                                    <button type="submit" onclick="return confirm('Are you sure you want to move this employee to resigned?')" name="action" value="resigned" class="btn btn-resign">
+                                        Resign
+                                    </button>
+                                    <button type="submit" onclick="return confirm('Are you sure you want to terminate this employee?')" name="action" value="terminated" class="btn btn-danger">
+                                        Terminate
+                                    </button>
+                                    
+                                </form>
+                            </td> {% endcomment %}
+                            <td>
+                                <a href="/editemployeedetailsmanager/{{ employee.id }}" class="btn btn-success" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <!-- Modal for employee details -->
+                        <div class="modal fade" id="employeeDetailsModal{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="employeeDetailsModalLabel{{ forloop.counter }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="employeeDetailsModalLabel{{ forloop.counter }}">Employee Details</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="employee-profile">
+                                            <div class="profile-picture">
+                                                <img src="{% static employee.image %}" width="150px" height="150px">
+                                            </div>
+                                            <div class="profile-details">
+                                                <h5 style="margin-top:2"><strong>Personal Details</strong></h5>
+                                                <p><strong>Name:</strong> {{ employee.name }}</p>
+                                                <p><strong>Employee ID:</strong> {{ employee.employeeid }}</p>
+                                                <p><strong>Gender:</strong> {{ employee.gender }}</p>
+                                                <p><strong>Marital Status:</strong> {{ employee.maritalstatus }}</p>
+                                                <p><strong>Email:</strong> {{ employee.email }}</p>
+                                                <p><strong>Blood Group:</strong> {{ employee.bloodgroup }}</p>
+                                                <p><strong>Phone Number:</strong> {{ employee.phonenumber }}</p>
+                                                <p><strong>Date of Birth:</strong> {{ employee.dateofbirth }}</p>
+                                                <p><strong>Joining Date:</strong> {{ employee.joiningdate }}</p>
+                                                <p><strong>Address:</strong> {{ employee.address }}</p>
+                                                <p><strong>Status:</strong> {{ employee.status }}</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="additional-info">
+                                            <h5><strong>Bank Details</strong></h5>
+                                            <p><strong>Account Number:</strong> {{ employee.accountnumber }}</p>
+                                            <p><strong>Bank Name:</strong> {{ employee.bankname }}</p>
+                                            <p><strong>Branch:</strong> {{ employee.branch }}</p>
+                                            <p><strong>IFSC Code:</strong> {{ employee.ifsccode }}</p>
+                                            <hr>
+                                            <h5><strong>Work Details</strong></h5>
+                                            <p><strong>Designation:</strong> {{ employee.designation }}</p>
+                                            <p><strong>Department:</strong> {{ employee.department }}</p>
+                                            <p><strong>Salary:</strong> {{ employee.salary }}</p>
+                                            <p><strong>Login Time:</strong> {{ employee.logintime }}</p>
+                                            <p><strong>Shift Time:</strong> {{ employee.shifttime }}</p>
+                                        </div>
+                                        <hr>
+                                        <div class="certificate-info">
+                                            <h5><strong>Certificates</strong></h5>
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary ellipsis-button" type="button" id="certificateDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-lg"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="certificateDropdown">
+                                                    <a class="dropdown-item" href="{% url 'view_pdf' file_path=employee.idproof %}" target="_blank">ID Proof</a>
+                                                    <a class="dropdown-item" href="{% url 'view_pdf' file_path=employee.educationalcertificate %}" target="_blank">Educational Certificate</a>
+                                                    <a class="dropdown-item" href="{% url 'view_pdf' file_path=employee.workexperience %}" target="_blank">Work Experience</a>
+                                                    <a class="dropdown-item" href="{% url 'view_pdf' file_path=employee.resume %}" target="_blank">Resume</a>
+                                                    <a class="dropdown-item" href="{% url 'view_pdf' file_path=employee.others %}" target="_blank">Others</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+                
+                
+            
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    
+   
+      <style>
+        .table tbody tr:hover {
+          background-color: #e0e0e0; /* Lighter gray color on hover, adjust as needed */
+      }
+      
+        
+        /* Add this style to your CSS or within the <style> tag in the head */
+        .btn-toggle-state {
+            cursor: pointer;
+            border: none;
+        }
+        .btn-resign {
+          background-color: red; /* Change this color to yellow for Resigned button */
+          color: white; /* You can adjust the text color as needed */
+      }
+        .inactive-state {
+            background-color: yellow; /* Change this color to your desired color for Inactive state */
+            color: black;
+        }
+        .active-state {
+          background-color: green; /* Change this color to your desired color for Inactive state */
+          color: white;
+      }
+        </style>
+      
+        
+        
+      
+      <footer class="footer pt-3  ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                Copyright © <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                Developed by
+                <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
+               
+              </div>
+            </div>
+        
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <!-- Include Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchButton = document.getElementById("searchButton");
+        const searchInput = document.getElementById("form1");
+        const tableRows = document.querySelectorAll(".table tbody tr"); // Adjusted the selector
+
+        searchButton.addEventListener("click", function () {
+            searchEmployees();
+        });
+
+        searchInput.addEventListener("input", function () {
+            searchEmployees();
+        });
+
+        function searchEmployees() {
+            const searchQuery = searchInput.value.toLowerCase();
+
+            tableRows.forEach(function (row) {
+                const rowData = row.textContent.toLowerCase();
+                if (rowData.includes(searchQuery)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    });
+</script>
+
+  
+    <script>
+        // JavaScript function to handle the button click event and redirect to register.html
+        function redirectToRegisterPage() {
+            // You can add your logic here to handle the addition of a new employee
+            // For demonstration purposes, redirect to register.html
+            window.location.href = '/register/';
+        }
+    </script>
+    
+
+  <!--   Core JS Files   -->
+  <script src="/static/assets/js/core/popper.min.js"></script>
+  <script src="/static/assets/js/core/bootstrap.min.js"></script>
+  <script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="/static/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+{% endblock %}

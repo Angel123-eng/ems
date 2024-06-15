@@ -20924,9 +20924,9 @@ fieldset:disabled .btn {
   box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
 }
 
-.card .card-header {
+/* .card .card-header {
   padding: 1.5rem;
-}
+} */
 
 .card .card-body {
   font-family: "Open Sans";

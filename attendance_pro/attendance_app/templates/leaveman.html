@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% load static %}
+    <!-- End Navbar -->
+    <div class="container">
+      <div class="row justify-content-center">
+          <div class="col-xl-8">
+              <div class="card card-plain">
+                  <div class="card-header">
+                      <h3 class="font-weight-bolder" style="text-align:center;">Leave Application</h3>
+                  </div>
+                  <div class="card-body">
+                      <form role="form" method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Name:</th>
+                                        <td>{{a.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Employee ID:</th>
+                                        <td>{{a.employeeid}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Leave Type:</th>
+                                        <td>{{a.leaveType}}</td>
+                                    </tr>
+                                    {% if a.leaveType == 'Half Day' %}
+                                        <tr>
+                                            <th>Half Day Date:</th>
+                                            <td>{{a.halfDayDate|date:"Y-m-d"}}</td>
+                                        </tr>
+                                    {% elif a.leaveType == 'Full Day' and a.fromdate and a.todate %}
+                                        <tr>
+                                            <th>From Date:</th>
+                                            <td>{{a.fromdate|date:"Y-m-d"}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>To Date:</th>
+                                            <td>{{a.todate|date:"Y-m-d"}}</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th>Reason:</th>
+                                        <td>{{a.reason}}</td>
+                                    </tr>
+                                 
+                                </thead>
+                            </table>
+                        </div>
+                        
+                          <div class="row mt-4">
+                            <div class="col-md-6">
+                              <button type="submit" name="action" value="approve" class="btn btn-lg custom-green-btn w-100">APPROVE</button>
+                            </div>
+                            <div class="col-md-6">
+                              <button type="submit" name="action" value="reject" class="btn btn-lg custom-red-btn w-100">REJECT</button>
+                            </div>
+                        </div>
+                          
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <style>
+      .custom-green-btn {
+          background-color: #118211;
+          /* Add any other styles as needed */
+      }
+  
+      .custom-red-btn {
+          background-color: #b30000;
+          /* Add any other styles as needed */
+      }
+  
+      .card-plain {
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+  </style>
+  
+    <div class="container-fluid py-4">
+     
+      <footer class="footer py-5">
+        <div class="container">
+        
+          <div class="row">
+            <div class="col-8 mx-auto text-center mt-1">
+              <p class="mb-0 text-secondary">
+                Copyright © <script>
+                  document.write(new Date().getFullYear())
+                </script> Developed by 
+                <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
+    
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+ 
+  <!--   Core JS Files   -->
+  <script src="/static/assets/js/core/popper.min.js"></script>
+  <script src="/static/assets/js/core/bootstrap.min.js"></script>
+  <script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="/static/assets/js/plugins/smooth-scrollbar.min.js"></script>
+ 
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+
+
+{% endblock %}

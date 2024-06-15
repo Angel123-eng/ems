@@ -29,6 +29,8 @@ class SalarySlipModelAdmin(admin.ModelAdmin):
 class ProductivityModelAdmin(admin.ModelAdmin):
     list_display = ('employeeid', 'month', 'productivity', 'quality', 'appreciations','extraInitiatives','target','achievement','percentage','newClient','renewals')
 
+
+    
 admin.site.register(regmodel, regAdmin)
 admin.site.register(LeaveModel, leaveAdmin)
 admin.site.register(AttendanceModel, AttendanceAdmin)
@@ -38,3 +40,4 @@ admin.site.register(ExtraModel, ExtraAdmin)
 admin.site.register(ExcelModel,ExcelModelAdmin)
 admin.site.register(SalarySlipModel, SalarySlipModelAdmin)
 admin.site.register(ProductivityModel,ProductivityModelAdmin)
+

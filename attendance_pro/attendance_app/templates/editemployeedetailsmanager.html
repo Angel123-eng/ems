@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% load static %}
+<style>
+  .bg-grey {
+    background-color: #dddddd; /* You can replace #dddddd with the desired shade of grey */
+}
+
+</style>
+    <div class="container-fluid">
+      <main class="main-content mt-0">
+          <section>
+              <div class="container">
+                  <div class="row justify-content-center">
+                      <div class="col-xl-8">
+                        <div class="card shadow p-3 mb-5 bg-grey rounded">
+                       <div class="card-body">
+                         <div class="box">
+                            <form role="form" method="POST" enctype="multipart/form-data">
+                                 {% csrf_token %}
+  
+                                  <div class="row">
+                                      <div class="col-md-12 text-center mb-3">
+                                          <img src="{% static img %}" alt="Employee Image" style="max-width: 200px; max-height: 200px;">
+                                      </div>
+                                  </div>
+                      
+                                  <h5 class="mt-3" style="text-align: center;">Personal Details</h5>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Name:</label>
+                                <input type="text" class="form-control" name="name" value="{{a.name}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Employee ID:</label>
+                                <input type="text" class="form-control" name="employeeid" value="{{a.employeeid}}">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label" style="font-size: 15px;">Email:</label>
+                              <input type="email" class="form-control" name="email" value="{{a.email}}">
+                          </div>
+              
+                          <div class="col-md-6 mb-3">
+                              <label class="form-label" style="font-size: 15px;">Blood group:</label>
+                              <input type="text" class="form-control" name="bloodgroup" value="{{a.bloodgroup}}">
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 15px;">Phone number:</label>
+                            <input type="number" class="form-control" name="phonenumber" value="{{a.phonenumber}}">
+                        </div>
+            
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 15px;">Date of birth:</label>
+                            <input type="date" class="form-control" name="dateofbirth" value="{{a.dateofbirth}}">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label" style="font-size: 15px;">Marital status:</label>
+                          <select class="form-select" name="maritalstatus">
+                              <option value="Single" {% if a.maritalstatus == "Single" %} selected {% endif %}>Single</option>
+                              <option value="Married" {% if a.maritalstatus == "Married" %} selected {% endif %}>Married</option>
+                          </select>
+                      </div>
+                      
+
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" style="font-size: 15px;">Gender:</label>
+                        <select class="form-select" name="gender">
+                            <option value="Male" {% if a.gender == "Male" %} selected {% endif %}>Male</option>
+                            <option value="Female" {% if a.gender == "Female" %} selected {% endif %}>Female</option>
+                            <option value="Other" {% if a.gender == "Other" %} selected {% endif %}>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label" style="font-size: 15px;">Address:</label>
+                      <input type="text" class="form-control" name="address" value="{{a.address}}">
+                    </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" style="font-size: 15px;">Image:</label>
+                        <input class="form-control" type="file" name="image" placeholder="Image">
+                      </div>
+
+                    <h5 class="mt-3" style="text-align: center;">Official Details</h5>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Designation:</label>
+                                <input type="text" class="form-control" name="designation" value="{{a.designation}}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label" style="font-size:15px;">Department:</label>
+                              <select class="form-select" name="department" aria-label="Department" required>
+                                  <option value="{{a.department}}">{{a.department}}</option>
+                                  {% for department in departments %}
+                                      <option value="{{ department.id }}">{{ department.department }}</option>
+                                  {% endfor %}
+                              </select>
+                          </div>
+                         
+
+                       
+                        
+                           
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Joining date:</label>
+                                <input type="date" class="form-control" name="joiningdate" value="{{a.joiningdate}}">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label" style="font-size: 15px;">Salary:</label>
+                              <input type="text" class="form-control" name="salary" value="{{a.salary}}">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 15px;">Login Time:</label>
+                            <input type="time" class="form-control" name="logintime" value="{{a.logintime}}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label" style="font-size: 15px;">Shift Time:</label>
+                          <input type="text" class="form-control" name="shifttime" value="{{a.shifttime}}">
+                      </div>
+
+                      <h5 class="mt-3" style="text-align: center;">Bank Account Details</h5>
+                      
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Account number:</label>
+                                <input type="text" class="form-control" name="accountnumber" value="{{a.accountnumber}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Bank name:</label>
+                                <input type="text" class="form-control" name="bankname" value="{{a.bankname}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">Branch:</label>
+                                <input type="text" class="form-control" name="branch" value="{{a.branch}}">
+                            </div>
+                
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" style="font-size: 15px;">IFSC code:</label>
+                                <input type="text" class="form-control" name="ifsccode" value="{{a.ifsccode}}">
+                            </div>
+                
+                        
+                        
+
+                        <h5 class="mt-3" style="text-align: center;">Documents</h5>
+                        <div class="row mt-4">
+
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size:15px;">ID Proof:</label>
+                            <input type="file" class="form-control" name="idproof" accept=".pdf, .jpg, .jpeg, .png">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size:15px;">Educational Certificate:</label>
+                            <input type="file" class="form-control" name="educationalcertificate" accept=".pdf, .jpg, .jpeg, .png">
+                          </div>
+                        </div>
+      
+                        <div class="row">
+      
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size:15px;">Work Experience:</label>
+                            <input type="file" class="form-control" name="workexperience" accept=".pdf, .jpg, .jpeg, .png">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size:15px;">Resume:</label>
+                            <input type="file" class="form-control" name="resume" accept=".pdf">
+                          </div>
+                        </div>
+      
+                        <div class="row">
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size:15px;">Others:</label>
+                            <input type="file" class="form-control" name="others" accept=".pdf">
+                          </div>
+                          {% comment %} <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 15px;">Reporting Manager:</label>
+                            <select class="form-select" name="reportingmanager" aria-label="ReportingManager">
+                                {% if a.reportingmanager %}
+                                    <option value="{{a.reportingmanager}}">{{a.reportingmanager}}</option>
+                                    <option value="">Remove Reporting Manager</option>
+                                {% else %}
+                                    <option value="" selected>Choose Reporting Manager</option>
+                                {% endif %}
+                                {% for employee in employees %}
+                                    <option value="{{ employee.name }}" {% if a.reportingmanager_id == employee.id %} selected {% endif %}>{{ employee.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div> {% endcomment %}
+                        
+                        
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col-md-12">
+                                  <button type="submit" class="btn btn-lg  bg-gradient-dark btn-lg w-100 mt-4 mb-0">UPDATE</button>
+                                </div>
+                            </div>
+                        </div>
+                      </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+  .box {
+      border: 1px solid #e9ecef; /* Light gray border */
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+      background-color: #fff; /* White background */
+  }
+
+  /* Style form labels */
+  .form-label {
+      font-weight: bold;
+      color: #333; /* Dark gray color */
+  }
+
+  /* Style form inputs */
+  .form-control {
+      border-radius: 8px;
+      border-color: #ced4da; /* Light gray border color */
+  }
+
+  /* Style the submit button */
+  .btn-lg {
+      border-radius: 12px;
+      font-weight: bold;
+  }
+
+  /* Add some margin to the top of the form */
+  .mt-4 {
+      margin-top: 20px;
+  }
+</style>
+    </section>
+</main>
+         
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid py-4">
+    <footer class="footer py-5">
+        <div class="container">
+          <div class="row">
+
+
+          </div>
+          <div class="row">
+            <div class="col-8 mx-auto text-center mt-1">
+              <p class="mb-0 text-secondary">
+                Copyright © <script>
+                  document.write(new Date().getFullYear())
+                </script> Developed by
+                <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
+
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <!--   Core JS Files   -->
+  <script src="  /static/assets/js/core/popper.min.js "></script>
+  <script src="  /static/assets/js/core/bootstrap.min.js "></script>
+  <script src="  /static/assets/js/plugins/perfect-scrollbar.min.js "></script>
+  <script src="  /static/assets/js/plugins/smooth-scrollbar.min.js "></script>
+  <script src="  /static/assets/js/plugins/chartjs.min.js "></script>
+
+ 
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="  /static/assets/js/soft-ui-dashboard.min.js?v=1.0.7 "></script>
+
+  {% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% load static %}
+    
+    <div class="input-group w-100 justify-content-center">
+        <div class="form-outline" data-mdb-input-init style="width:80%;">
+            <input type="search" id="form1" class="form-control " />
+        </div>
+        <button type="button" id="searchButton" class="btn btn-dark" data-mdb-ripple-init style="width:10%;">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchButton = document.getElementById("searchButton");
+            const searchInput = document.getElementById("form1");
+            const tableRows = document.querySelectorAll(".table tbody tr"); // Adjusted the selector
+    
+            searchButton.addEventListener("click", function () {
+                searchEmployees();
+            });
+    
+            searchInput.addEventListener("input", function () {
+                searchEmployees();
+            });
+    
+            function searchEmployees() {
+                const searchQuery = searchInput.value.toLowerCase();
+    
+                tableRows.forEach(function (row) {
+                    const rowData = row.textContent.toLowerCase();
+                    if (rowData.includes(searchQuery)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            }
+        });
+    </script>
+    <div class="btn-container text-end">
+      <a href="/appliedleaves/" class="btn btn-light btn-sm me-4">
+        <i class="zmdi zmdi-search"></i>Applied leave
+      </a>
+    </div> 
+ 
+   
+    
+    
+    <!-- Your HTML code -->
+   
+    
+    
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4">
+            
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0 table-striped table-hover">
+                  <thead>
+                    <tr class="bg-dark text-white">
+                      <th>Sl. No</th>
+                      <th>Name</th>
+                      <th>Employee ID</th>
+                      <th>Applied Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for leave in a %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ leave.name }}</td>
+                        <td>{{ leave.employeeid }}</td>
+                        <td>{{ leave.applieddate }}</td>
+                        <td>
+                            <a href="/leaveman/{{ leave.id }}" class="btn btn-info btn-sm">
+                                <i class="zmdi zmdi-search"></i> View
+                            </a>
+                        </td>
+                        
+                    </tr>
+                    {% empty %}
+                  
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+                    <footer class="footer py-5">
+                        <div class="container">
+                        
+                          <div class="row">
+                            <div class="col-8 mx-auto text-center mt-1">
+                              <p class="mb-0 text-secondary">
+                                Copyright © <script>
+                                  document.write(new Date().getFullYear())
+                                </script> Developed by 
+                                <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
+                    
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </footer>
+                    </div>
+                  </div>
+              
+                  <!--   Core JS Files   -->
+                  <script src="/static/assets/js/core/popper.min.js"></script>
+                  <script src="/static/assets/js/core/bootstrap.min.js"></script>
+                  <script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
+                  <script src="/static/assets/js/plugins/smooth-scrollbar.min.js"></script>
+               
+                  <!-- Github buttons -->
+                  <script async defer src="https://buttons.github.io/buttons.js"></script>
+                  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+                  <script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+                  {% endblock %}

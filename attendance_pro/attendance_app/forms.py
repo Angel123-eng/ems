@@ -16,16 +16,32 @@ class regform(forms.Form):
     branch=forms.CharField(max_length=30)
     ifsccode=forms.CharField(max_length=30)
     salary=forms.IntegerField()
-    password=forms.CharField(max_length=20)
-    confirmpassword=forms.CharField(max_length=20)
+    password=forms.CharField(max_length=30)
+    confirmpassword=forms.CharField(max_length=30)
     status =forms.CharField(max_length=20)
     logintime = forms.CharField(max_length=20)
+    logintime_sat = forms.CharField(max_length=20, required=False)
     address = forms.CharField(max_length=1000)
-    
+    department = forms.CharField(max_length=30)
+    shifttime = forms.CharField(max_length=30)
+    shifttime_sat = forms.CharField(max_length=30)
+    idproof=forms.FileField()
+    educationalcertificate=forms.FileField()
+    workexperience=forms.FileField()
+    resume=forms.FileField()
+    others=forms.FileField()
+    maritalstatus=forms.CharField(max_length=20)
+    gender=forms.CharField(max_length=20)  
+     
 class adminloginform(forms.Form):
     username=forms.CharField(max_length=20)
     password=forms.CharField(max_length=20)
     
+class managerloginform(forms.Form):
+    username=forms.CharField(max_length=20)
+    password=forms.CharField(max_length=20)
+    
+        
 class logform(forms.Form):
     employeeid=forms.CharField(max_length=20)
     password=forms.CharField(max_length=20)
@@ -62,10 +78,14 @@ class PublicholidaysForm(forms.ModelForm):
         model=PublicholidaysModel
         fields=['date','status']
         
+from django import forms
+from .models import ExtraModel
+
 class ExtraForm(forms.ModelForm):
     class Meta:
-        model=ExtraModel
-        fields=['name','employeeid','date','status']       
+        model = ExtraModel
+        fields = ['name', 'employeeid', 'date', 'status']
+       
         
         
 # forms.py
@@ -96,9 +116,9 @@ from .models import SalarySlipModel
 class SalarySlipModelForm(forms.ModelForm):
     class Meta:
         model = SalarySlipModel
-        fields = '__all__'  # You can specify the fields you want to include here if needed
+        fields = '__all__' 
 
-    # You can add additional custom validation or form logic here if necessary
+   
  
  
 from django import forms
@@ -114,6 +134,18 @@ class ProductivityForm(forms.ModelForm):
         if percentage < 0 or percentage > 1:
             raise forms.ValidationError("Percentage value must be between 0 and 1.")
         return percentage
+    
+class DepartmentForm(forms.Form):
+    department=forms.CharField(max_length=30)
+    
 
+class Managerform(forms.Form):
+    department=forms.CharField(max_length=30)
+    employeeid=forms.CharField(max_length=30)
+    
 
-     
+class ChangePasswordForm(forms.Form):
+    new_password = forms.CharField(max_length=20, widget=forms.PasswordInput)
+    confirm_password = forms.CharField(max_length=20, widget=forms.PasswordInput)
+
+  

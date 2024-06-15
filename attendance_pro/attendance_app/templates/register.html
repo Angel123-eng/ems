@@ -47,109 +47,173 @@
         <div class="row mt-lg-n10 mt-md-n11 mt-n10">
           <div class="col-xl-10 col-lg-12 col-md-7 mx-auto">
             <div class="card z-index-0">
-           
-          
               <div class="card-body">
                 <form method="POST" enctype="multipart/form-data" role="form text-left">{% csrf_token %}
                   <div class="text-center">
                     <img src="/static/ict logo.png"  class="navbar-brand-img h-100 mx-auto" alt="main_logo" style="width: 170px;">
                   </div>
-                
-                 
-                  <div class="row" style="margin-top:5%">
+                  <h5 class="mt-5" style="text-align: center;">Personal Details</h5>
+                  <div class="row" style="margin-top:3%">
                     <div class="col-md-6 mb-3">
                       <label class="form-label" style="font-size:15px;">Name:</label>
-                        <input type="text" class="form-control" name="name" placeholder="Name(Enter In Capital Letters)" aria-label="Name" aria-describedby="email-addon" required>
+                      <input type="text" class="form-control" name="name" placeholder="Name(Enter In Capital Letters)" aria-label="Name" aria-describedby="email-addon" required pattern="[A-Za-z\s]+" title="Please enter alphabetic characters only">
                     </div>
                     <div class="col-md-6 mb-3">
                       <label class="form-label" style="font-size:15px;">Employee ID:</label>
-                        <input type="number" class="form-control" name="employeeid" placeholder="Employee ID" aria-label="Employeeid" aria-describedby="employeeid-addon" required>
+                      <input type="text" class="form-control" name="employeeid" placeholder="Employee ID" aria-label="Employeeid" aria-describedby="employeeid-addon" required>
                     </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label class="form-label" style="font-size:15px;">Designation:</label>
-                      <input type="text" class="form-control" name="designation" placeholder="Designation" aria-label="Designation" aria-describedby="designation-addon" required>
-                  </div>
-                  <div class="col-md-6 mb-3">
                     <label class="form-label" style="font-size:15px;">Email:</label>
-                      <input type="email" class="form-control" name="email" placeholder="Email" aria-label="Email" aria-describedby="email-addon" required>
+                    <input type="email" class="form-control" name="email" placeholder="Email" aria-label="Email" aria-describedby="email-addon" required>
                   </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label" style="font-size:15px;">Blood group:</label>
+                    <input type="text" class="form-control" name="bloodgroup" placeholder="Blood group" aria-label="Bloodgroup" aria-describedby="bloodgroup-addon">
+                  </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" style="font-size:15px;">Phone number:</label>
+                        <input type="text" class="form-control" name="phonenumber" placeholder="Phone number" aria-label="Phonenumber" aria-describedby="phonenumber-addon" pattern="[0-9]{10}" title="Please enter a 10-digit phone number">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" style="font-size:15px;">Date of birth:</label>
+                        <input type="date" class="form-control" name="dateofbirth" placeholder="Date of birth" aria-label="ofbirthdate" aria-describedby="dateofbirth-addon">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" style="font-size:15px;">Address:</label>
+                        <input type="text" class="form-control" name="address" placeholder="Address" aria-label="address" aria-describedby="Address-addon">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" style="font-size:15px;">Marital status:</label>
+                        <select class="form-select" name="maritalstatus" aria-label="Marital status" aria-describedby="maritalstatus-addon" required>
+                          <option value="">Select Marital Status</option>
+                          <option value="Single">Single</option>
+                          <option value="Married">Married</option>
+                      </select>
+                   </div>
+                  </div>
+                  <div class="row" >           
+                  <div class="col-md-6 mb-3">
+                  <label class="form-label" style="font-size:15px;">Gender:</label>
+                  <select class="form-select" name="gender" aria-label="Gender" aria-describedby="gender-addon" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+               </div>
+               <div class="col-md-6 mb-3">
+                <label class="form-label" style="font-size:15px;">Image:</label>
+                <input type="file" class="form-control" name="image" placeholder="Image" aria-label="Image" aria-describedby="image-addon" required accept="image/*">
               </div>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label" style="font-size:15px;">Blood group:</label>
-                    <input type="text" class="form-control" name="bloodgroup" placeholder="Blood group" aria-label="Bloodgroup" aria-describedby="bloodgroup-addon" required>
+               </div>
+               <h5 class="mt-5" style="text-align: center;">Official Details</h5>
+                <div class="row" style="margin-top:5%">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label" style="font-size:15px;">Designation:</label>
+                    <input type="text" class="form-control" name="designation" placeholder="Designation" aria-label="Designation" aria-describedby="designation-addon" required>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label class="form-label" style="font-size:15px;">Phone number:</label>
-                    <input type="number" class="form-control" name="phonenumber" placeholder="Phone number" aria-label="Phonenumber" aria-describedby="phonenumber-addon" required>
-                  </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label" style="font-size:15px;">Date of birth:</label>
-                      <input type="date" class="form-control" name="dateofbirth" placeholder="Date of birth" aria-label="ofbirthdate" aria-describedby="dateofbirth-addon" required>
-
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label" style="font-size:15px;">Image:</label>
-                    <input type="file" class="form-control" name="image" placeholder="Image" aria-label="Image" aria-describedby="image-addon" required>
-                  </div>
-                  </div>
-                  <div class="row">
+                    <label class="form-label" style="font-size:15px;">Department:</label>
+                    <select class="form-select" name="department" aria-label="Department">
+                        <option value=""></option>
+                        {% for department in departments %}
+                            <option value="{{ department.id }}">{{ department.department }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+           <div class="col-md-6 mb-3">
+                <label class="form-label" style="font-size:15px;">Joining date:</label>
+                <input type="date" class="form-control" name="joiningdate" placeholder="Joining date" aria-label="Joiningdate" aria-describedby="joiningdate-addon">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label" style="font-size:15px;">Salary:</label>
+                <input type="text" class="form-control" name="salary" placeholder="Salary" aria-label="salary" aria-describedby="Salary-addon" pattern="\d+(\.\d{1,2})?" title="Please enter a valid salary amount">
+              </div>
+            </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label" style="font-size:15px;">Login Time (Monday to Friday):</label>
+                <input type="time" class="form-control" name="logintime" placeholder="Time" aria-label="logintime" aria-describedby="Logintime-addon">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" style="font-size:15px;">Login Time (Saturday):</label>
+              <input type="time" class="form-control" name="logintime_sat" placeholder="Time" aria-label="logintime_sat" aria-describedby="Logintime_sat-addon">
+          </div>  
+          </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label" style="font-size:15px;">Shift Time:</label>
+                <input type="text" class="form-control" name="shifttime" placeholder="Shift time" aria-label="shifttime" aria-describedby="Shifttime-addon" title="Please enter a valid time in 24-hour format">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" style="font-size:15px;">Shift Time(Saturday):</label>
+              <input type="text" class="form-control" name="shifttime_sat" placeholder="Shift time" aria-label="shifttime_sat" aria-describedby="Shifttime_sat-addon" title="Please enter a valid time in 24-hour format">
+          </div>
+            </div>
+            <h5 class="mt-5" style="text-align: center;">Bank Account Details</h5>
+                  <div class="row" style="margin-top:5%">
                     <div class="col-md-6 mb-3">
                       <label class="form-label" style="font-size:15px;">Account number:</label>
-                    <input type="text" class="form-control" name="accountnumber" placeholder="Account number" aria-label="Accountnumber" aria-describedby="accountnumber-addon" required>
+                    <input type="text" class="form-control" name="accountnumber" placeholder="Account number" aria-label="Accountnumber" aria-describedby="accountnumber-addon">
+                  </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label" style="font-size:15px;">Branch:</label>
+                    <input type="text" class="form-control" name="branch" placeholder="Branch" aria-label="Branch" aria-describedby="branch-addon">
+                  </div>
+                  </div>
+              <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label" style="font-size:15px;">IFSC code:</label>
+                    <input type="text" class="form-control"name="ifsccode" placeholder="IFSC code" aria-label="IFSCcode" aria-describedby="IFSCcode-addon">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label class="form-label" style="font-size:15px;">Bank name:</label>
-                    <input type="text" class="form-control" name="bankname" placeholder="Bank name" aria-label="Bankname" aria-describedby="bankname-addon" required>
+                    <input type="text" class="form-control" name="bankname" placeholder="Bank name" aria-label="Bankname" aria-describedby="bankname-addon">
                   </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label" style="font-size:15px;">Branch:</label>
-                    <input type="text" class="form-control" name="branch" placeholder="Branch" aria-label="Branch" aria-describedby="branch-addon" required>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label" style="font-size:15px;">IFSC code:</label>
-                    <input type="text" class="form-control"name="ifsccode" placeholder="IFSC code" aria-label="IFSCcode" aria-describedby="IFSCcode-addon" required>
-                  </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label" style="font-size:15px;">Joining date:</label>
-                      <input type="date" class="form-control" name="joiningdate" placeholder="Joining date" aria-label="Joiningdate" aria-describedby="joiningdate-addon" required>
-
-                    </div>
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label" style="font-size:15px;">Salary:</label>
-                    <input type="number" class="form-control"name="salary" placeholder="Salary" aria-label="salary" aria-describedby="Salary-addon" required>
-                  </div>
-                </div>
-                <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label" style="font-size:15px;">Login Time:</label>
-                  <input type="time" class="form-control"name="logintime" placeholder="Time" aria-label="logintime" aria-describedby="Logintime-addon" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label" style="font-size:15px;">Address:</label>
-                  <input type="text" class="form-control"name="address" placeholder="Address" aria-label="address" aria-describedby="Address-addon" required>
-                </div>
               </div>
-                  <div class="row">
-                 
+                 <h5 class="mt-5" style="text-align: center;">Upload Documents</h5>
+                 <p style="text-align: center;">[Upload pdf files]</p>
+                  <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label" style="font-size:15px;">ID Proof:</label>
+                      <input type="file" class="form-control" name="idproof" accept=".pdf, .jpg, .jpeg, .png">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label" style="font-size:15px;">Educational Certificate:</label>
+                      <input type="file" class="form-control" name="educationalcertificate" accept=".pdf, .jpg, .jpeg, .png">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label" style="font-size:15px;">Work Experience:</label>
+                      <input type="file" class="form-control" name="workexperience" accept=".pdf, .jpg, .jpeg, .png">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label" style="font-size:15px;">Resume:</label>
+                      <input type="file" class="form-control" name="resume" accept=".pdf">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label" style="font-size:15px;">Others:</label>
+                      <input type="file" class="form-control" name="others" accept=".pdf">
+                    </div>
+                  </div>
+                  <h5 class="mt-5" style="text-align: center;">Enter Password</h5>
+                  <div class="row mt-4">
                     <div class="col-md-6 mb-3">
                       <label class="form-label" style="font-size:15px;">Password:</label>
-                    <input type="password" class="form-control" name="password" placeholder="Password" aria-label="Password" aria-describedby="password-addon" required>
+                      <input type="password" class="form-control" name="password" placeholder="Password" aria-label="Password" aria-describedby="password-addon" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label" style="font-size:15px;">Re-enter password:</label>
+                      <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm password" aria-label="cpassword" aria-describedby="cpassword-addon" required>
+                    </div>
                   </div>
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label" style="font-size:15px;">Re-enter password:</label>
-                    <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm password" aria-label="cpassword" aria-describedby="cpassword-addon" required>
-                  </div>
-                  </div>
-                 
                   <input type="hidden" name="status" value="Active">
                   <div class="text-center">
                     <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Register</button>
@@ -164,8 +228,6 @@
     <footer class="footer">
       <div class="container">
         <div class="row">
-         
-        
         </div>
         <div class="row">
           <div class="col-8 mx-auto text-center mt-1">
@@ -174,7 +236,6 @@
                 document.write(new Date().getFullYear())
               </script> Developed by 
               <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
-
             </p>
           </div>
         </div>

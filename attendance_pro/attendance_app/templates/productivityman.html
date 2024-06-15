@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% load static %}
+    <style>
+        /* Custom CSS to reduce the width of the input fields */
+        .form-control {
+            width: 500px; /* Adjust the width as needed */
+        }
+    </style>
+
+  
+    <div class="container">
+        <div class="card p-4" style="max-width: 600px;">
+          <form method="POST" id="performanceForm">
+            {% csrf_token %}
+            <input type="hidden" name="name" value="{{ name }}">
+            <input type="hidden" name="employeeid" value="{{ employee_id }}" required>
+            
+            <div class="mb-3">
+              <label for="month" class="form-label" style="font-size: 15px;">Month</label>
+              <input type="month" class="form-control" id="month" name="month" required>
+            </div>
+            <div class="mb-3">
+              <label for="productivity" class="form-label" style="font-size: 15px;">Productivity</label>
+              <input type="text" class="form-control" id="productivity" name="productivity" required>
+            </div>
+            <div class="mb-3">
+              <label for="quality" class="form-label" style="font-size: 15px;">Quality Score</label>
+              <input type="text" class="form-control" id="quality" name="quality" required>
+            </div>
+            <div class="mb-3">
+              <label for="appreciations" class="form-label" style="font-size: 15px;">Appreciations</label>
+              <input type="text" class="form-control" id="appreciations" name="appreciations" required>
+            </div>
+            <div class="mb-3">
+              <label for="extraInitiatives" class="form-label" style="font-size: 15px;">Extra Initiatives</label>
+              <input type="text" class="form-control" id="extraInitiatives" name="extraInitiatives" required>
+            </div>
+            <div class="mb-3">
+              <label for="target" class="form-label" style="font-size: 15px;">Target</label>
+              <input type="text" class="form-control" id="target" name="target" required>
+            </div>
+            <div class="mb-3">
+              <label for="achievement" class="form-label" style="font-size: 15px;">Achievement</label>
+              <input type="text" class="form-control" id="achievement" name="achievement" required>
+            </div>
+            <div class="mb-3">
+              <label for="percentage" class="form-label" style="font-size: 15px;">Percentage of Achievement</label>
+              <input type="text" class="form-control" id="percentage" name="percentage" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="newClient" class="form-label" style="font-size: 15px;">New Client On Board</label>
+              <input type="text" class="form-control" id="newClient" name="newClient" required>
+            </div>
+            <div class="mb-3">
+              <label for="renewals" class="form-label" style="font-size: 15px;">Renewals %</label>
+              <input type="text" class="form-control" id="renewals" name="renewals" required>
+            </div>
+            <button type="submit" class="btn btn-dark">Submit</button>
+          </form>
+          
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const targetInput = document.getElementById("target");
+              const achievementInput = document.getElementById("achievement");
+              const percentageInput = document.getElementById("percentage");
+          
+              targetInput.addEventListener("input", updatePercentage);
+              achievementInput.addEventListener("input", updatePercentage);
+          
+              function updatePercentage() {
+                const target = parseFloat(targetInput.value);
+                const achievement = parseFloat(achievementInput.value);
+          
+                if (!isNaN(target) && !isNaN(achievement) && target !== 0) {
+                  const percentage = (achievement / target) * 100;
+                  percentageInput.value = percentage.toFixed(2);
+                } else {
+                  percentageInput.value = "";
+                }
+              }
+            });
+          </script>
+          
+        </div>
+      </div>
+      
+  <footer class="footer pt-3  ">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-lg-between">
+        <div class="col-lg-6 mb-lg-0 mb-4">
+          <div class="copyright text-center text-sm text-muted text-lg-start">
+            Copyright © <script>
+              document.write(new Date().getFullYear())
+            </script>,
+            Developed by
+            <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
+           
+          </div>
+        </div>
+    
+      </div>
+    </div>
+  </footer>
+</div>
+</main>
+
+<!--   Core JS Files   -->
+<script src="/static/assets/js/core/popper.min.js"></script>
+<script src="/static/assets/js/core/bootstrap.min.js"></script>
+<script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="/static/assets/js/plugins/smooth-scrollbar.min.js"></script>
+
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+
+
+{% endblock %}
+  

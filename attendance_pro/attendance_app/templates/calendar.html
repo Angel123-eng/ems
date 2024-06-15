@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="/static/assets/img/ictlogotext.png">
   <title>
-    Attendance Records
+    Admin
     </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -35,9 +35,7 @@
           align-items: center;
           height: 100vh;
           margin: 0;
-         
       }
-
       #calendar {
           max-width: 1000px; /* Increased maximum width */
           max-height: 1000px; /* Increased maximum height */
@@ -46,26 +44,22 @@
           overflow: hidden;
           margin: auto; /* Centering the calendar */
       }
-
       #calendar-header {
           background-color:    #e0ebeb;
           padding: 10px;
           display: flex;
           justify-content: space-between;
       }
-
       #calendar-days {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
           border-bottom: 1px solid #ccc;
       }
-
       #calendar-dates {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
           padding: 10px;
       }
-
    .day {
     padding: 10px;
     border-radius: 5px;
@@ -73,24 +67,64 @@
     cursor: pointer;
     border: 3px solid #ccc; /* Add border to create lines between dates */
 }
-
 .day:hover {
     background-color: #f0f0f0;
 }
-
 .current-month {
     color: #333;
 }
-
 .other-month {
     color: #ccc;
 }
-
 .content-container {
   text-align: center;
 }
-
-  </style>
+    #month-display,
+    #year-display {
+        display: none;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 12px;
+    }
+    th {
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+    }
+    tr:hover {
+        background-color: #f8f9fa;
+        transition: background-color 0.3s;
+    }
+    .status-active {
+        color: green;
+        font-weight: bold;
+    }
+    .status-inactive {
+        color: red;
+        font-weight: bold;
+    }
+    .edit-button {
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .edit-button:hover {
+        background-color: #217dbb;
+    }
+</style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -146,7 +180,6 @@
             <span class="nav-link-text ms-1">Employee Details</span>
           </a>
         </li>
-      
         <li class="nav-item">
             <a class="nav-link" href="/display_attendance/">
               <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -168,7 +201,6 @@
               <span class="nav-link-text ms-1">Attendance Records</span>
             </a>
           </li>
-      
         <li class="nav-item">
           <a class="nav-link  " href="/leavedisplay/">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -190,7 +222,6 @@
             <span class="nav-link-text ms-1">Leave Application</span>
           </a>
         </li>
-     
         <li class="nav-item">
           <a class="nav-link  " href="/weekoff/">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -212,7 +243,6 @@
             <span class="nav-link-text ms-1">Week off</span>
           </a>
         </li>
-      
         <li class="nav-item">
           <a class="nav-link  " href="/publicholidays/">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -234,7 +264,6 @@
             <span class="nav-link-text ms-1">Public Holidays</span>
           </a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link  " href="/display_productivity_data/">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -256,7 +285,48 @@
             <span class="nav-link-text ms-1">Productivity</span>
           </a>
         </li>
-     
+        <li class="nav-item">
+          <a class="nav-link  " href="/departments/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>box-3d-50</title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-2319.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g transform="translate(603.000000, 0.000000)">
+                        <path class="color-background" d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474453 38.8987261,9.45068056 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
+                        <path class="color-background opacity-6" d="M23.625,22.429159 L23.625,39.8805372 C23.625,40.4328219 24.0727153,40.8805372 24.625,40.8805372 C24.7802551,40.8805372 24.9333778,40.8443874 25.0722402,40.7749511 L41.2741875,32.673375 L41.2741875,32.673375 C41.719125,32.4515625 42,31.9974375 42,31.5 L42,14.241659 C42,13.6893742 41.5522847,13.241659 41,13.241659 C40.8447549,13.241659 40.6916418,13.2778041 40.5527864,13.3472318 L24.1777864,21.5347318 C23.8390024,21.7041238 23.625,22.0503869 23.625,22.429159 Z"></path>
+                        <path class="color-background opacity-6" d="M20.4472136,21.5347318 L1.4472136,12.0347318 C0.953235098,11.7877425 0.352562058,11.9879669 0.105572809,12.4819454 C0.0361450918,12.6208008 6.47121774e-16,12.7739139 0,12.929159 L0,30.1875 L0,30.1875 C0,30.6849375 0.280875,31.1390625 0.7258125,31.3621875 L19.5528096,40.7750766 C20.0467945,41.0220531 20.6474623,40.8218132 20.8944388,40.3278283 C20.963859,40.1889789 21,40.0358742 21,39.8806379 L21,22.429159 C21,22.0503869 20.7859976,21.7041238 20.4472136,21.5347318 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Departments</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link  " href="/assets/">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>box-3d-50</title>
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <g transform="translate(-2319.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(1716.000000, 291.000000)">
+                      <g transform="translate(603.000000, 0.000000)">
+                        <path class="color-background" d="M22.7597136,19.3090182 L38.8987031,11.2395234 C39.3926816,10.9925342 39.592906,10.3918611 39.3459167,9.89788265 C39.249157,9.70436312 39.0922432,9.5474453 38.8987261,9.45068056 L20.2741875,0.1378125 L20.2741875,0.1378125 C19.905375,-0.04725 19.469625,-0.04725 19.0995,0.1378125 L3.1011696,8.13815822 C2.60720568,8.38517662 2.40701679,8.98586148 2.6540352,9.4798254 C2.75080129,9.67332903 2.90771305,9.83023153 3.10122239,9.9269862 L21.8652864,19.3090182 C22.1468139,19.4497819 22.4781861,19.4497819 22.7597136,19.3090182 Z"></path>
+                        <path class="color-background opacity-6" d="M23.625,22.429159 L23.625,39.8805372 C23.625,40.4328219 24.0727153,40.8805372 24.625,40.8805372 C24.7802551,40.8805372 24.9333778,40.8443874 25.0722402,40.7749511 L41.2741875,32.673375 L41.2741875,32.673375 C41.719125,32.4515625 42,31.9974375 42,31.5 L42,14.241659 C42,13.6893742 41.5522847,13.241659 41,13.241659 C40.8447549,13.241659 40.6916418,13.2778041 40.5527864,13.3472318 L24.1777864,21.5347318 C23.8390024,21.7041238 23.625,22.0503869 23.625,22.429159 Z"></path>
+                        <path class="color-background opacity-6" d="M20.4472136,21.5347318 L1.4472136,12.0347318 C0.953235098,11.7877425 0.352562058,11.9879669 0.105572809,12.4819454 C0.0361450918,12.6208008 6.47121774e-16,12.7739139 0,12.929159 L0,30.1875 L0,30.1875 C0,30.6849375 0.280875,31.1390625 0.7258125,31.3621875 L19.5528096,40.7750766 C20.0467945,41.0220531 20.6474623,40.8218132 20.8944388,40.3278283 C20.963859,40.1889789 21,40.0358742 21,39.8806379 L21,22.429159 C21,22.0503869 20.7859976,21.7041238 20.4472136,21.5347318 Z"></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Company Assets</span>
+          </a>
+        </li>
     <div class="sidenav-footer mx-3 ">
       <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
         <div class="full-background" style="background-image: url('/static/assets/img/curved-images/white-curved.jpg')"></div>
@@ -269,17 +339,12 @@
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
-         
           <h3 class="font-weight-bolder mb-0">Calendar</h3>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            
           </div>
-         
           <ul class="navbar-nav  justify-content-end">
-           
-           
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
@@ -289,10 +354,9 @@
                 </div>
               </a>
             </li>
-           
             <li class="nav-item dropdown pe-2 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-user me-sm-1"></i>
+                <i class="fa fa-user me-sm-1"> ADMIN</i>
               </a>
               <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
              
@@ -301,11 +365,10 @@
                       <div class="my-auto">
                       </div>
                       <a href="{% url 'adminlogout' %}">
-                          Logout <i class="fas fa-arrow-right"></i>
+                          Logout <i class="fas fa-user"></i>
                       </a>
                   </div>
               </li>
-               
                 </li>
               </ul>
             </li>
@@ -313,14 +376,13 @@
         </div>
       </div>
     </nav>
-    <style>
-      #month-display,
-      #year-display {
-          display: none;
-      }
-  </style>
+
+
+
+
+
+  <!-- Calendar to view data-->
     <div class="content-container">
-  
       <div>
         <h3><b>Monthly Details of {{ employees.0.name }}</b></h3>
         <h4><b>Employee ID: {{ employees.0.employeeid }}</b></h4>
@@ -329,16 +391,13 @@
         <h4><span id="month-display"></span></h4>
         <h4><span id="year-display"></span></h4>
     </div>
-    
       <div id="days-between"></div>
-
       <div id="calendar" class="bg-white p-4">
         <div id="calendar-header" class="p-3" style="border-radius:20px">
             <button onclick="previousMonth()">&#8249;</button>
             <h2 id="month-year"></h2>
             <button onclick="nextMonth()">&#8250;</button>
         </div>
-  
       <div id="calendar-days">
           <div>Sun</div>
           <div>Mon</div>
@@ -348,17 +407,19 @@
           <div>Fri</div>
           <div>Sat</div>
       </div>
-  
       <div id="calendar-dates"></div>
   </div>
-  
+
+  <!--===== To display the calendar data start==== -->
   <script>
-    let currentDate = new Date();
-    let currentMonth = currentDate.getMonth();
-    let currentYear = currentDate.getFullYear();
+    var currentDate = new Date();
+    var currentMonth = currentDate.getMonth();
+    var currentYear = currentDate.getFullYear();
+    
     // Add these lines within your script tag 
     document.getElementById('month-display').textContent = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(currentDate);
     document.getElementById('year-display').textContent = currentYear;
+    
     function updateCalendar(data) {
         const calendarDates = document.getElementById('calendar-dates');
     
@@ -408,111 +469,89 @@
     
                 // Display date and status only if it's from the current month
                 if (isCurrentMonth) {
-                  const loginInfo = dayData.login ? `<div style="color: ${dayData.login === 'Latelogin' ? 'red' : 'inherit'};">${dayData.login}</div>` : '';
-                  dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>${loginInfo}`;
+                    const loginInfo = dayData.login ? `<div style="color: ${dayData.login === 'Latelogin' ? 'red' : 'inherit'};">${dayData.login}</div>` : '';
+                    dayElement.innerHTML = `<div>${dayNumber}</div><div style="color: ${borderColor};">${dayData.status}</div>${loginInfo}`;
                 }
             }
         });
     }
     
     function getDaysBetweenDates(startDate, endDate) {
-      const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
-      const start = startDate.getTime();
-      const end = endDate.getTime();
-    
-      return Math.round(Math.abs((start - end) / oneDay)) + 1;
+        const oneDay = 24 * 60 * 60 * 1000; // one day in milliseconds
+        const start = startDate.getTime();
+        const end = endDate.getTime();
+        return Math.round(Math.abs((start - end) / oneDay)) + 1;
     }
-  
-  
-  function generateCalendar() {
-      const calendarHeader = document.getElementById('month-year');
-      const calendarDates = document.getElementById('calendar-dates');
-  
-      calendarHeader.textContent = new Intl.DateTimeFormat('en-US', {
-          month: 'long',
-          year: 'numeric'
-      }).format(currentDate);
-  
-      const selectedMonth = currentMonth;
-      const selectedYear = currentYear;
-  
-      const daysBetween = getDaysBetweenDates(
-          new Date(selectedYear, selectedMonth - 1, 26), // 26th of the previous month
-          new Date(selectedYear, selectedMonth, 25) // 25th of the selected month
-      );
-  
-      // Log or use the calculated daysBetween variable as per your requirement
-      const daysBetweenElement = document.getElementById('days-between');
-      daysBetweenElement.textContent = `Number of days: ${daysBetween}`;
-      //console.log(`Number of days from the 26th of the previous month to the 25th of the selected month: ${daysBetween}`);
-  
-      const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
-      const lastDayOfMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-  
-      calendarDates.innerHTML = '';
-  
-      for (let i = firstDayOfMonth; i > 0; i--) {
-          const day = document.createElement('div');
-          day.className = 'day other-month';
-          day.textContent = new Date(selectedYear, selectedMonth - 1, -i + 1).getDate();
-          calendarDates.appendChild(day);
-      }
-  
-      for (let i = 1; i <= lastDayOfMonth; i++) {
-          const day = document.createElement('div');
-          day.className = 'day current-month';
-  
-          // Set different colors based on the date range
-          const currentDate = new Date(selectedYear, selectedMonth, i);
-          const dateRanges = [
-       
-            { start: new Date(currentYear, -1, 26), end: new Date(currentYear, 0, 25), color: '#fcf4fc' }, // Jan to Feb
-            { start: new Date(currentYear, 0, 26), end: new Date(currentYear, 1, 25), color: '#e3f7e1' }, // Jan to Feb
-            { start: new Date(currentYear, 1, 26), end: new Date(currentYear, 2, 25), color: '#fcedf0' }, // Feb to Mar
-            { start: new Date(currentYear, 2, 26), end: new Date(currentYear, 3, 25), color: '#e0f6f4' }, // Mar to Apr
-            { start: new Date(currentYear, 3, 26), end: new Date(currentYear, 4, 25), color: '#f6f4e0' }, // Apr to May
-            { start: new Date(currentYear, 4, 26), end: new Date(currentYear, 5, 25), color: '#f4e4e4' }, // May to Jun
-            { start: new Date(currentYear, 5, 26), end: new Date(currentYear, 6, 25), color: '#e0f7f1' }, // Jun to Jul
-            { start: new Date(currentYear, 6, 26), end: new Date(currentYear, 7, 25), color: '#f9f0f8' }, // Jul to Aug
-            { start: new Date(currentYear, 7, 26), end: new Date(currentYear, 8, 25), color: '#e9fcd9' }, // Aug to Sep
-            { start: new Date(currentYear, 8, 26), end: new Date(currentYear, 9, 25), color: '#f7ebf3' }, // Sep to Oct
-            { start: new Date(currentYear, 9, 26), end: new Date(currentYear, 10, 25), color: '#e1ecf9' }, // Oct to Nov
-            { start: new Date(currentYear, 10, 26), end: new Date(currentYear, 11, 25), color: '#e4fbdf' }, // Nov to Dec
-            { start: new Date(currentYear, 11, 26), end: new Date(currentYear + 1, 0, 25), color: '#fcf4fc' }, // Dec to Jan (next year)
-        ];
-
-        dateRanges.forEach(range => {
-          if (currentDate >= range.start && currentDate <= range.end) {
-              day.style.backgroundColor = range.color;
-          }
-      });
-
-      day.textContent = i;
-      calendarDates.appendChild(day);
-  }
-
-  const totalDays = calendarDates.children.length;
-  const remainingDays = 42 - totalDays;
-
-  for (let i = 1; i <= remainingDays; i++) {
-      const day = document.createElement('div');
-      day.className = 'day other-month';
-      day.textContent = i;
-      calendarDates.appendChild(day);
-  }
-
-  // Fetch data for the current month
-  fetchData(selectedYear, selectedMonth + 1)
-      .then(data => updateCalendar(data));
-}
-
-  
+    
+    function generateCalendar() {
+        const calendarHeader = document.getElementById('month-year');
+        const calendarDates = document.getElementById('calendar-dates');
+        calendarHeader.textContent = new Intl.DateTimeFormat('en-US', {
+            month: 'long',
+            year: 'numeric'
+        }).format(currentDate);
+        const selectedMonth = currentMonth;
+        const selectedYear = currentYear;
+        const daysBetween = getDaysBetweenDates(
+            new Date(selectedYear, selectedMonth - 1, 26),
+            new Date(selectedYear, selectedMonth, 25)
+        );
+        const daysBetweenElement = document.getElementById('days-between');
+        daysBetweenElement.textContent = `Number of days: ${daysBetween}`;
+        const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay();
+        const lastDayOfMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+        calendarDates.innerHTML = '';
+        for (let i = firstDayOfMonth; i > 0; i--) {
+            const day = document.createElement('div');
+            day.className = 'day other-month';
+            day.textContent = new Date(selectedYear, selectedMonth - 1, -i + 1).getDate();
+            calendarDates.appendChild(day);
+        }
+        for (let i = 1; i <= lastDayOfMonth; i++) {
+            const day = document.createElement('div');
+            day.className = 'day current-month';
+            day.dataset.date = new Date(selectedYear, selectedMonth, i).toISOString().split('T')[0];
+            const currentDate = new Date(selectedYear, selectedMonth, i);
+            const dateRanges = [
+                { start: new Date(currentYear, -1, 26), end: new Date(currentYear, 0, 25), color: '#fcf4fc' },
+                { start: new Date(currentYear, 0, 26), end: new Date(currentYear, 1, 25), color: '#e3f7e1' },
+                { start: new Date(currentYear, 1, 26), end: new Date(currentYear, 2, 25), color: '#fcedf0' },
+                { start: new Date(currentYear, 2, 26), end: new Date(currentYear, 3, 25), color: '#e0f6f4' },
+                { start: new Date(currentYear, 3, 26), end: new Date(currentYear, 4, 25), color: '#f6f4e0' },
+                { start: new Date(currentYear, 4, 26), end: new Date(currentYear, 5, 25), color: '#f4e4e4' },
+                { start: new Date(currentYear, 5, 26), end: new Date(currentYear, 6, 25), color: '#e0f7f1' },
+                { start: new Date(currentYear, 6, 26), end: new Date(currentYear, 7, 25), color: '#f9f0f8' },
+                { start: new Date(currentYear, 7, 26), end: new Date(currentYear, 8, 25), color: '#e9fcd9' },
+                { start: new Date(currentYear, 8, 26), end: new Date(currentYear, 9, 25), color: '#f7ebf3' },
+                { start: new Date(currentYear, 9, 26), end: new Date(currentYear, 10, 25), color: '#e1ecf9' },
+                { start: new Date(currentYear, 10, 26), end: new Date(currentYear, 11, 25), color: '#e4fbdf' },
+                { start: new Date(currentYear, 11, 26), end: new Date(currentYear + 1, 0, 25), color: '#fcf4fc' },
+            ];
+            dateRanges.forEach(range => {
+                if (currentDate >= range.start && currentDate <= range.end) {
+                    day.style.backgroundColor = range.color;
+                }
+            });
+            day.textContent = i;
+            calendarDates.appendChild(day);
+        }
+        const totalDays = calendarDates.children.length;
+        const remainingDays = 42 - totalDays;
+        for (let i = 1; i <= remainingDays; i++) {
+            const day = document.createElement('div');
+            day.className = 'day other-month';
+            day.textContent = i;
+            calendarDates.appendChild(day);
+        }
+        fetchData(selectedYear, selectedMonth + 1)
+            .then(data => updateCalendar(data.records_specified_month));
+    }
+    
     function updateCounts(countData) {
         const statusCounts = {};
         countData.forEach(item => {
             statusCounts[item.status] = item.count;
         });
-    
         document.getElementById('present-count').textContent = statusCounts['present'] || 0;
         document.getElementById('halfday-count').textContent = statusCounts['half day'] || 0;
         document.getElementById('absent-count').textContent = statusCounts['absent'] || 0;
@@ -522,10 +561,10 @@
         document.getElementById('sunday-count').textContent = statusCounts['sunday'] || 0;
         document.getElementById('holiday-count').textContent = statusCounts['holiday'] || 0;
     
-        // Update the table based on the counts
-        updateTable(countData);
+        // Corrected function call
+        updateEmployeeDetailsTable(countData);
     }
-
+    
     function previousMonth() {
         currentMonth--;
         if (currentMonth < 0) {
@@ -535,7 +574,7 @@
         currentDate = new Date(currentYear, currentMonth, 1);
         generateCalendar();
     }
-
+    
     function nextMonth() {
         currentMonth++;
         if (currentMonth > 11) {
@@ -545,24 +584,31 @@
         currentDate = new Date(currentYear, currentMonth, 1);
         generateCalendar();
     }
-
+    
     document.addEventListener('DOMContentLoaded', function () {
         generateCalendar();
-
         document.getElementById('calendar').addEventListener('click', function (event) {
-            if (event.target.classList.contains('day')) {
-                const selectedDate = event.target.textContent;
-                const [year, month] = document.getElementById('month-year').textContent.split(' ');
+            if
+            (event.target.classList.contains('day')) {
+              const selectedDate = event.target.textContent;
+              const [year, month] = document.getElementById('month-year').textContent.split(' ');
+  
+              fetchData(year, month)
+                  .then(data => updateCalendar(data));
+          }
+      });
+  });
+  
 
-                fetchData(year, month)
-                    .then(data => updateCalendar(data));
-            }
-        });
-    });
-</script>
+  </script>
+      
+<!--===== To display the calendar data end==== -->
 
 
-<!-- Add this table below your existing HTML code -->
+
+
+
+<!-- Table to view the data on calendar start-->
 <div class="container py-5">
   <table class="tablee">
     <thead>
@@ -572,6 +618,7 @@
             <th>Date</th>
             <th>Status</th>
             <th>Login</th>
+            <th>Comments</th>
             <th>Edit</th>
         </tr>
     </thead>
@@ -580,120 +627,75 @@
     </tbody>
   </table>
 </div>
-
+<!--====To display the table data start ====-->
 <script>
-  // Add this function to update the employee details table
- // Add this function to update the employee details table
-function updateEmployeeDetailsTable(data) {
-  const tableBody = document.getElementById('employee-details-table-body');
-  tableBody.innerHTML = ''; // Clear existing data
-  
-  const uniqueDates = {}; // To keep track of unique dates
-
-  data.forEach(item => {
-    // Check if the date already exists in the uniqueDates object
-    if (!uniqueDates[item.date]) {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td style="display: none;">${item.id}</td>
-        <td>${item.name}</td>
-        <td>${item.employeeid}</td>
-        <td>${item.date}</td>
-        <td>${item.status}</td>
-        <td>${item.login}</td>
-        <td>
-          <button class="btn btn-primary" onclick="editEmployee(${item.id})">Edit</button>
-        </td>
-      `;
-      tableBody.appendChild(row);
-      
-      // Add the date to the uniqueDates object to avoid displaying duplicates
-      uniqueDates[item.date] = true;
-    }
-  });
-}
-
-// Modify the fetchData function to call the new function
-function fetchData(year, month) {
-  const url = `/fetch_dat/${year}/${month}/`;
-
-  return fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      // Update the calendar first, then the counts
-      updateCalendar(data.records_specified_month);
-      updateCounts(data.records_current_month);
-      // Update the employee details table
-      updateEmployeeDetailsTable(data.records_current_month); // or updateEmployeeDetailsTable(data.records_specified_month);
-      return data; // Return the data for any further processing if needed
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
+  function updateEmployeeDetailsTable(data) {
+    const tableBody = document.getElementById('employee-details-table-body');
+    tableBody.innerHTML = ''; // Clear existing data
+    const uniqueDates = {}; // To keep track of unique dates
+    data.forEach(item => {
+        const formattedDate = formatDate(item.date); // Format the date as per your table data format
+        if (!uniqueDates[formattedDate]) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="display: none;">${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.employeeid}</td>
+                <td>${formattedDate}</td> <!-- Display formatted date -->
+                <td>${item.status}</td>
+                <td>${item.login}</td>
+                <td>${item.comments}</td>
+                <td>
+                    <button class="btn btn-primary" onclick="editEmployee(${item.id})">Edit</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+            uniqueDates[formattedDate] = true;
+        }
     });
+    
+    // Update status counts after populating the table
+    updateTable(data);
 }
 
-// Example of an editEmployee function (replace with your actual implementation)
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = ('0' + date.getDate()).slice(-2); // Get day with leading zero if needed
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Get month with leading zero if needed
+    const year = date.getFullYear(); // Get full year
+    return `${year}-${month}-${day}`; // Adjust format as per your table data's date format
+}
+
+function fetchData(year, month) {
+    const url = `/fetch_dat/${year}/${month}/`;
+    return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            // Assuming the server response has keys: records_specified_month and records_current_month
+            updateCalendar(data.records_specified_month);
+            updateCounts(data.records_current_month);
+            updateEmployeeDetailsTable(data.records_current_month); // or updateEmployeeDetailsTable(data.records_specified_month);
+            return data;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
 function editEmployee(id) {
-  // Redirect to the "editattendance" page with the 'id' parameter in the URL
-  window.location.href = `/editattendance/${id}`;
+    window.location.href = `/editattendance/${id}`;
 }
 
-</script>
+  
+    </script>
+    <!--====To display the table data end ====-->
+
+
+  
 
 
 
-
- <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 12px;
-        }
-
-        th {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-        }
-
-        tr:hover {
-            background-color: #f8f9fa;
-            transition: background-color 0.3s;
-        }
-
-        .status-active {
-            color: green;
-            font-weight: bold;
-        }
-
-        .status-inactive {
-            color: red;
-            font-weight: bold;
-        }
-
-        .edit-button {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .edit-button:hover {
-            background-color: #217dbb;
-        }
-    </style>
-
+<!--Calculation and count display -->
     <div class="row" style="text-align: center;" >
       <div class="col-md-6">
     <table id="status-counts-table" style="border-collapse: collapse; width: 80%; margin-left: auto; margin-right: auto;">
@@ -732,43 +734,30 @@ function editEmployee(id) {
                 <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Sunday</td>
                 <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="sunday-count">0</span></td>
             </tr>
-            
               <tr>
                 <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Weekoff</td>
                 <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;">
                     <span id="weekoff-sunday-sum">0</span>
                 </td>
             </tr>
-            
               <tr>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Holidays</td>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;"><span id="holiday-count">0</span></td>
               </tr>
-
-            
-            
             </tbody>
           </table>
       </div>
-     
-    
       <div class="col-md-6">
         <form class="salary-form" id="salaryForm{{ employees.0.employeeid}}" method="POST" action="{% url 'view_monthly_details' employees.0.employeeid %}">
             {% csrf_token %}
             <div>
-                    {% comment %} <h3><b>Monthly Details of {{ employee.name }}</b></h3> {% endcomment %}
-                    {% comment %} <h4><b>Employee ID: {{ employee.employeeid }}</b></h4> {% endcomment %}
                     <input type="hidden" name="employeeid" value="{{ employee.employeeid }}">
                     <input type="hidden" name="name" value="{{ employees.0.name }}">
                     <input type="hidden" name="month" id="month{{ employee.employeeid }}" value="">
                     <input type="hidden" name="year" id="year{{ employee.employeeid }}" value="">
-                    <!-- Add these lines where you want to display the month and year -->
-                    {% comment %} <h4>Month: <span id="month-display"></span></h4> {% endcomment %}
-                    {% comment %} <h4>Year: <span id="year-display"></span></h4> {% endcomment %}
                     <p style="display:none;" id="employeeId">{{ employee.employeeid }} </p>
                 </div>
                 <table id="status-counts" style="border-collapse: collapse; width: 80%; margin-left: auto; margin-right: auto;">
-
                 <thead>
                   <tr>
                       <th style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center;" colspan="2">
@@ -776,7 +765,6 @@ function editEmployee(id) {
                       </th>
                   </tr>
               </thead>
-
               <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Total Leave</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
@@ -784,7 +772,6 @@ function editEmployee(id) {
                       <input type="hidden" style="display:none;" id="totall" name="totalleave" value="">
                     </td>
                 </tr>
-
                 <tr>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Paid Leave</td>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
@@ -793,12 +780,11 @@ function editEmployee(id) {
                   </td>
               </tr>
               <tr>
-                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Late Login</td>
-                <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;">
-                  <span id="late-login-count">0</span></td>
-                  <input type="hidden" style="display:none;" id="latelogin" name="Latelogin" value="">
-            </tr>
-    
+                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 80%;">Late Login</td>
+                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 80%;">
+                     <span id="late-login-count">0</span></td>
+                     <input type="hidden" style="display:none;" id="latelogin" name="Latelogin" value="">
+               </tr>
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Salary Deducted Leave</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
@@ -806,7 +792,6 @@ function editEmployee(id) {
                         <input type="hidden" style="display:none;" id="salaryd" name="salarydeductedleave" value="">
                     </td>
                 </tr>
-    
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Total Payable Days</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
@@ -814,8 +799,6 @@ function editEmployee(id) {
                         <input type="hidden" style="display:none;" id="totalw"  name="totalPayableDays" value="">
                     </td>
                 </tr>
-    
-                
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Salary</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
@@ -823,7 +806,6 @@ function editEmployee(id) {
                         <input type="hidden" name="salary" value="{{ salary }}">
                     </td>
                 </tr>
-    
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Per Day Salary</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
@@ -831,7 +813,6 @@ function editEmployee(id) {
                         <input type="hidden" id="perdays" name="perdaysalary" value="">
                     </td>
                 </tr>
-    
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Deduction Amount</td>
                     <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
@@ -839,22 +820,34 @@ function editEmployee(id) {
                         <input type="hidden" id="deductionA" name="deductionamount" value="" >
                     </td>
                 </tr>
-    
                 <tr>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Incentive</td>
                   <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
                       <span id="incentive"></span>
-                      <input type="number" id="incentives" name="incentive" value="" >
+                      <input type="text" id="incentives" name="incentive" value="">
                   </td>
               </tr>
-                
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Monthly Salary</td>
-                    <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
-                        <span id="monthlysalary">0</span>
-                        <input type="hidden" id="monthlys" name="monthlysalary" value="">
-                    </td>
-                </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Leave Encashment</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                      <span id="leaveencashment"></span>
+                      <input type="text" id="leaveencashments" name="leaveencashment" value="">
+                  </td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">BYOD</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                      <span id="byod"></span>
+                      <input type="text" id="byodinput" name="byod" value="">
+                  </td>
+              </tr>
+              <tr>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: left; width: 50%;">Monthly Salary</td>
+                  <td style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; width: 50%;">
+                      <span id="monthlysalary">0</span>
+                      <input type="hidden" id="monthlys" name="monthlysalary" value="0">
+                  </td>
+             </tr>
                 <tr>
                   <td colspan="2" style="text-align: center;">
                       <button type="submit" class="btn bg-gradient-dark btn-lg" onclick="updateFormFields({{ employees.0.employeeid }})">Generate Salary Slip</button>
@@ -864,21 +857,89 @@ function editEmployee(id) {
       </form>
   </div>
 
+<footer class="footer pt-3 d-flex align-items-center justify-content-center">
+  <div class="container-fluid">
+      <div class="row align-items-center justify-content-center">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                Copyright © <script>
+                      document.write(new Date().getFullYear())
+                  </script>,
+                  Developed by
+                  <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+</div>
+</main>
+<!--   Core JS Files   -->
+<script src="/static/assets/js/core/popper.min.js"></script>
+<script src="/static/assets/js/core/bootstrap.min.js"></script>
+<script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="/static/assets/js/plugins/smooth-scrollbar.min.js"></script>
+
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
 
 
 
-{% comment %} <input type="text" name="" value={{"presentCount"}}> {% endcomment %}
 <script>
-  window.onload = function() {
-    
-};
-  // Your existing JavaScript code for updating the table
+  // Initial base salary
+  let baseSalary = 0;
+  let prevIncentive = 0;
+  let prevLeaveEncashment = 0;
+  let prevByod = 0;
 
-  // Function to update the hidden form fields before submission
+  // Function to get the numeric value from an input field, returns 0 if invalid
+  function getValue(elementId) {
+      const value = parseFloat(document.getElementById(elementId).value);
+      return isNaN(value) ? 0 : value;
+  }
 
-  
+  // Function to update the monthly salary
+  function updateMonthlySalary() {
+      // Get the new values from the input fields
+      const newIncentive = getValue('incentives');
+      const newLeaveEncashment = getValue('leaveencashments');
+      const newByod = getValue('byodinput');
 
-  function updateTable(data) {
+      // Calculate the change in each field
+      const diffIncentive = newIncentive - prevIncentive;
+      const diffLeaveEncashment = newLeaveEncashment - prevLeaveEncashment;
+      const diffByod = newByod - prevByod;
+
+      // Update the monthly salary
+      let monthlySalary = parseFloat(document.getElementById('monthlysalary').textContent);
+      monthlySalary += diffIncentive + diffLeaveEncashment + diffByod;
+
+      // Update the monthly salary display and hidden input value
+      document.getElementById('monthlysalary').textContent = monthlySalary.toFixed(2);
+      document.getElementById('monthlys').value = monthlySalary.toFixed(2);
+
+      // Update the previous values
+      prevIncentive = newIncentive;
+      prevLeaveEncashment = newLeaveEncashment;
+      prevByod = newByod;
+  }
+
+  // Add event listeners to the input fields
+  document.getElementById('incentives').addEventListener('input', updateMonthlySalary);
+  document.getElementById('leaveencashments').addEventListener('input', updateMonthlySalary);
+  document.getElementById('byodinput').addEventListener('input', updateMonthlySalary);
+
+  // Initialize the monthly salary display
+  updateMonthlySalary();
+</script>
+
+
+
+<!--=== For calculation part and count display  start ====-->
+  <script>
+    function updateTable(data) {
       // Initialize status counts
       let presentCount = 0,
           halfdayCount = 0,
@@ -890,10 +951,9 @@ function editEmployee(id) {
           holidayCount = 0,
           halfdayleavePL = 0,
           fulldayleavePL = 0;
-
+  
       data.forEach(record => {
           const normalizedStatus = normalizeStatus(record.status);
-          console.log('Normalized Status:', normalizedStatus); //
           switch (normalizedStatus) {
               case 'present':
                   presentCount++;
@@ -929,23 +989,21 @@ function editEmployee(id) {
                   console.log('Unknown status:', normalizedStatus);
           }
       });
-
-          // Calculate and display the sum of weekoffCount and sundayCount
-    const weekoffSundaySum = weekoffCount + sundayCount;
-    document.getElementById('weekoff-sunday-sum').textContent = weekoffSundaySum;
-     // Move the code for calculating the number of days here
-     const selectedMonth = currentMonth;
-     const selectedYear = currentYear;
- 
-     const daysBetween = getDaysBetweenDates(
-         new Date(selectedYear, selectedMonth - 1, 26), // 26th of the previous month
-         new Date(selectedYear, selectedMonth, 25) // 25th of the selected month
-     );
- 
-     // Log or use the calculated daysBetween variable as per your requirement
-     const daysBetweenElement = document.getElementById('days-between');
-     daysBetweenElement.textContent = `Number of days: ${daysBetween}`;
-
+  
+      // Calculate and display the sum of weekoffCount and sundayCount
+      const weekoffSundaySum = weekoffCount + sundayCount;
+      document.getElementById('weekoff-sunday-sum').textContent = weekoffSundaySum;
+  
+      // Calculate the number of days between the 26th of the previous month and the 25th of the current month
+      const selectedMonth = currentMonth;
+      const selectedYear = currentYear;
+      const daysBetween = getDaysBetweenDates(
+          new Date(selectedYear, selectedMonth - 1, 26), // 26th of the previous month
+          new Date(selectedYear, selectedMonth, 25) // 25th of the selected month
+      );
+      const daysBetweenElement = document.getElementById('days-between');
+      daysBetweenElement.textContent = `Number of days: ${daysBetween}`;
+  
       // Calculate the total halfday counts
       const totalHalfdayCounts = data.reduce((count, record) => {
           const normalizedStatus = normalizeStatus(record.status);
@@ -954,17 +1012,10 @@ function editEmployee(id) {
           }
           return count;
       }, 0);
-      console.log(`total half: ${totalHalfdayCounts}`);
-      console.log(`total halfpl: ${halfdayleavePL}`);
-      const totalhalf = totalHalfdayCounts + (halfdayleavePL);
-      console.log(`total halfplandul: ${totalhalf}`);
-      const halfdaywork = totalhalf/2;
-      console.log(`total halfdaywork: ${halfdaywork}`);
-
-
-
-
-      // Calculate the total halfday counts
+      const totalhalf = totalHalfdayCounts + halfdayleavePL;
+      const halfdaywork = totalhalf / 2;
+  
+      // Calculate the total fullday counts
       const totalFulldayCounts = data.reduce((count, record) => {
           const normalizedStatus = normalizeStatus(record.status);
           if (normalizedStatus === 'absent' || normalizedStatus === 'leave') {
@@ -972,25 +1023,67 @@ function editEmployee(id) {
           }
           return count;
       }, 0);
-
-
-      halfdayValue = halfdayleavePL/2;
-      // Calculate the total working days
+  
+      const halfdayValue = halfdayleavePL / 2;
       const totalPayableDays = presentCount + weekoffCount + sundayCount + holidayCount +
-          (halfdayValue > 0 ? halfdayValue : 0) + (fulldayleavePL > 0 ? fulldayleavePL : 0) +  halfdaywork;
-
-      // Update the total working days in the HTML table
+          (halfdayValue > 0 ? halfdayValue : 0) + (fulldayleavePL > 0 ? fulldayleavePL : 0) + halfdaywork;
+  
       document.getElementById('total-payable-days').textContent = totalPayableDays;
       document.getElementById('totalw').value = totalPayableDays;
-
-      // Calculate the difference between totalPayableDays and daysBetween
+  
       const daysDifference = 30 - daysBetween;
-
-      // Log or use the calculated daysDifference variable as per your requirement
-      console.log(`Difference between totalPayableDays and daysBetween: ${daysDifference}`);
-
-
-      // Update the status counts in the HTML table
+      const totalleave = totalFulldayCounts + (totalHalfdayCounts * 0.5) + fulldayleavePL + (halfdayleavePL * 0.5);
+      document.getElementById('total-leave-count').textContent = totalleave;
+      document.getElementById('totall').value = totalleave;
+  
+      const salarydeductedLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5);
+      document.getElementById('salary-deducted-count').textContent = salarydeductedLeave;
+      document.getElementById('salaryd').value = salarydeductedLeave;
+  
+      const paidleave = totalleave - salarydeductedLeave;
+      document.getElementById('paid-leave-count').textContent = paidleave;
+      document.getElementById('paidleave').value = paidleave;
+  
+      var salary = parseFloat("{{ salary }}") || 0;
+      const perdaySalary = parseFloat((salary / daysBetween).toFixed(3));
+      document.getElementById('perdaysalary').textContent = perdaySalary;
+      document.getElementById('perdays').value = perdaySalary;
+  
+      const amt = daysDifference * perdaySalary;
+  
+      let lateLoginCount = 0;
+      data.forEach(record => {
+          if (record.login === "Latelogin") {
+              lateLoginCount++;
+          }
+      });
+  
+      let reduction = 0;
+      if (lateLoginCount >= 3 && lateLoginCount <= 5) {
+          reduction = perdaySalary * 0.5;
+      } else if (lateLoginCount >= 6 && lateLoginCount <= 8) {
+          reduction = perdaySalary * 1;
+      } else if (lateLoginCount >= 9 && lateLoginCount <= 11) {
+          reduction = perdaySalary * 1.5;
+      } else if (lateLoginCount >= 12 && lateLoginCount <= 14) {
+          reduction = perdaySalary * 2;
+      } else if (lateLoginCount >= 15 && lateLoginCount <= 17) {
+          reduction = perdaySalary * 2.5;
+      } else if (lateLoginCount >= 18 && lateLoginCount <= 20) {
+          reduction = perdaySalary * 3;
+      }
+  
+      document.getElementById('late-login-count').textContent = lateLoginCount;
+      document.getElementById('latelogin').value = lateLoginCount;
+  
+      const deductionAmount = parseFloat(((perdaySalary * salarydeductedLeave) + reduction).toFixed(3));
+      document.getElementById('deductionamount').textContent = deductionAmount;
+      document.getElementById('deductionA').value = deductionAmount;
+  
+      const monthlySalary = Math.round((totalPayableDays * perdaySalary) - reduction);
+      document.getElementById('monthlysalary').textContent = monthlySalary;
+      document.getElementById('monthlys').value = monthlySalary;
+  
       document.getElementById('present-count').textContent = presentCount;
       document.getElementById('halfday-count').textContent = totalHalfdayCounts;
       document.getElementById('absent-count').textContent = totalFulldayCounts;
@@ -999,213 +1092,48 @@ function editEmployee(id) {
       document.getElementById('weekoff-count').textContent = weekoffCount;
       document.getElementById('sunday-count').textContent = sundayCount;
       document.getElementById('holiday-count').textContent = holidayCount;
-
-      // Display the table once the counts are updated
       document.getElementById('status-counts-table').style.display = 'block';
-
-      // Calculate and display the total leave count
-      const totalleave = totalFulldayCounts + (totalHalfdayCounts * 0.5) + fulldayleavePL + (halfdayleavePL * 0.5);
-      document.getElementById('total-leave-count').textContent = totalleave;
-      document.getElementById('totall').value = totalleave;
-
-
-      //salary deducted leave
-      const salarydeductedLeave = totalFulldayCounts + (totalHalfdayCounts * 0.5);
-      document.getElementById('salary-deducted-count').textContent = salarydeductedLeave;
-      document.getElementById('salaryd').value = salarydeductedLeave;
-
-      const paidleave = totalleave - salarydeductedLeave;
-      document.getElementById('paid-leave-count').textContent = paidleave;
-      document.getElementById('paidleave').value = paidleave;
-
-
-      console.log("monthly salary======>  ",  document.getElementById('salaryd').value);
-
-      // Retrieve the value of {{ salary }} and store it in a variable
-      var salary = parseFloat("{{ salary }}") || 0; // Assuming the salary is a numeric value
-
-      //perday salary
-      perdaySalary = salary / daysBetween;
-      perdaySalary = parseFloat(perdaySalary.toFixed(3)); // Limit to 3 decimal points
-      document.getElementById('perdaysalary').textContent = perdaySalary;
-      document.getElementById('perdays').value = perdaySalary;
-
-   
-
-      // Calculate the amount based on daysDifference and perdaySalary
-      const amt = daysDifference * perdaySalary;
-
-      // Log the calculated amount to the console
-      console.log(`Amount calculated: ${amt}`);
-
-
-                // Initialize late login count
-      let lateLoginCount = 0;
-
-      // Calculate late login count
-      data.forEach(record => {
-          if (record.login === "Latelogin") {
-              lateLoginCount++;
-          }
-      });
-
-      // Initialize reduction
-      let reduction = 0;
-
-      // Check if late login count is greater than or equal to 3
-      if (lateLoginCount >= 3) {
-          reduction = perdaySalary / 2; // Assuming reduction is half of the per day salary
+  
+      // Function to normalize status strings
+      function normalizeStatus(status) {
+          return status.toLowerCase().trim();
       }
-
- 
-
-    // Update the late login count in the HTML table
-    document.getElementById('late-login-count').textContent = lateLoginCount;
-    document.getElementById('latelogin').value = lateLoginCount;
-      
-
-      //deduction amount
-      deductionAmount = (perdaySalary * salarydeductedLeave) + reduction;
-      deductionAmount = parseFloat(deductionAmount.toFixed(3)); // Limit to 3 decimal points
-      document.getElementById('deductionamount').textContent = deductionAmount;
-      document.getElementById('deductionA').value = deductionAmount;
-
-      //monthly salary
-      monthlySalary = (totalPayableDays * perdaySalary) - reduction;
-      monthlySalary = Math.round(monthlySalary);
-      document.getElementById('monthlysalary').textContent = monthlySalary;
-      
-      
-
-      document.getElementById('salaryd').value = salarydeductedLeave;
-     
-      document.getElementById('monthlys').value = monthlySalary;
-
-
-
-    
-
-
-// Function to update the displayed monthly salary based on the entered incentive amount
-function updateMonthlySalaryWithIncentive(incentiveAmount) {
-  // Calculate the monthly salary including the entered incentive
-  const monthlySalaryWithIncentive = monthlySalary + parseFloat(incentiveAmount);
   
-  // Update the displayed monthly salary including incentive
-  document.getElementById('monthlysalary').textContent = monthlySalaryWithIncentive;
+      // Call the function to update the form fields before submitting
+      updateFormFields();
+  }
   
-  // Store the calculated monthly salary with incentive in the corresponding hidden form field
-  document.getElementById('monthlys').value = monthlySalaryWithIncentive;
-}
-
-// Add an event listener to the incentive input field to listen for changes
-document.getElementById('incentives').addEventListener('input', function() {
-  // Retrieve the entered incentive amount
-  const incentiveAmount = this.value.trim();
   
-  // Check if the entered incentive amount is empty
-  if (incentiveAmount === '') {
-    // If the incentive amount is empty, display the original monthly salary without the incentive
-    document.getElementById('monthlysalary').textContent = monthlySalary;
-    
-    // Store the original monthly salary in the corresponding hidden form field
-    document.getElementById('monthlys').value = monthlySalary;
-  } else {
-    // If the incentive amount is not empty, update the monthly salary including the entered incentive
-    updateMonthlySalaryWithIncentive(incentiveAmount);
-  }
-});
-
-// Call the function to update the monthly salary without any incentive initially
-updateMonthlySalaryWithIncentive(0); // Pass 0 as the incentive amount to display the original monthly salary
-
-
-
-  }
-
-  // Function to normalize status strings
-  function normalizeStatus(status) {
-      return status.toLowerCase().trim();
-  }
-
-  // Call the function to update the form fields before submitting
-  updateFormFields();
-
-
   function updateFormFields() {
-    const employeeId = document.getElementById('employeeId').textContent.trim();
-    const month = document.getElementById('month-display').textContent.trim();
-    const year = document.getElementById('year-display').textContent.trim();
-    const totalPayableDays = document.getElementById('total-payable-days').textContent.trim();
-    const totalleave = document.getElementById('total-leave-count').textContent.trim();
-    const paidleave = document.getElementById('paid-leave-count').textContent.trim();
-    const salaryDeductedLeave = document.getElementById('salary-deducted-count').textContent.trim();
-    const salary = document.getElementById('salary').textContent.trim();
-    const perDaySalary = document.getElementById('perdaysalary').textContent.trim();
-    const deductionAmount = document.getElementById('deductionamount').textContent.trim();
-    const incentive = document.getElementById('incentive').textContent.trim();
-    const monthlySalary = document.getElementById('monthlysalary').textContent;
+      const employeeId = document.getElementById('employeeId').textContent.trim();
+      const month = document.getElementById('month-display').textContent.trim();
+      const year = document.getElementById('year-display').textContent.trim();
+      const totalPayableDays = document.getElementById('total-payable-days').textContent.trim();
+      const totalleave = document.getElementById('total-leave-count').textContent.trim();
+      const paidleave = document.getElementById('paid-leave-count').textContent.trim();
+      const salaryDeductedLeave = document.getElementById('salary-deducted-count').textContent.trim();
+      const salary = document.getElementById('salary').textContent.trim();
+      const perDaySalary = document.getElementById('perdaysalary').textContent.trim();
+      const deductionAmount = document.getElementById('deductionamount').textContent.trim();
+      const incentive = document.getElementById('incentive').textContent.trim();
+      const leaveencashment = document.getElementById('leaveencashment').textContent.trim();
+      const monthlySalary = document.getElementById('monthlysalary').textContent;
+  
+      let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      let previousMonth;
+      if (month === 0) {
+          previousMonth = "December";
+      } else {
+          previousMonth = monthNames[currentMonth];
+      }
+      document.getElementById(`month${employeeId}`).value = previousMonth;
+      document.getElementById(`year${employeeId}`).value = year;
+  }
+  </script>
+  <!--=== For calculation part and count display  start ====-->
 
-
-    console.log("monthly salary",monthlySalary);
-    // Set the values to the corresponding hidden form fields
-    
-    
-    //document.getElementById(`month${employeeId}`).value = month;
-
-
-
-    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-// Calculate the previous month
-let previousMonth;
-if (month === 0) {
-    // If the current month is January, set the previous month to December of the previous year
-    previousMonth = "December";
-} else {
-    previousMonth = monthNames[currentMonth];
-}
-
-
-
-    
-    document.getElementById(`month${employeeId}`).value = previousMonth;
-    document.getElementById(`year${employeeId}`).value = year;
-    
-}
-
-
-</script>
-
-<footer class="footer pt-3 d-flex align-items-center justify-content-center">
-  <div class="container-fluid">
-      <div class="row align-items-center justify-content-center">
-          <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                  © <script>
-                      document.write(new Date().getFullYear())
-                  </script>,
-                  Developed by
-                  <a href="https://ictglobaltech.com" class="font-weight-bold" target="_blank">ICT Global Tech</a>
-              </div>
-          </div>
-      </div>
-  </div>
-</footer>
-
-</div>
-</main>
-
-<!--   Core JS Files   -->
-<script src="/static/assets/js/core/popper.min.js"></script>
-<script src="/static/assets/js/core/bootstrap.min.js"></script>
-<script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
-<script src="/static/assets/js/plugins/smooth-scrollbar.min.js"></script>
-
-<!-- Github buttons -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="/static/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+  
+  
 </body>
 
 </html>

@@ -100,7 +100,7 @@
                 <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                   <div class="d-flex flex-column">
                     <h6>Name: {{a.name}}</h6>
-                    <p>Employeeid: {{a.employeeid}}</p>
+                    <p>Employee ID: {{a.employeeid}}</p>
                     <p>Designation: {{a.designation}}</p>
                    
                   </div>
@@ -123,27 +123,45 @@
                   <tbody>
     
                   <tr>
-                    <td>Salary</td>
+                    <td>Basic Pay</td>
                     <td>Rs. {{ a.salary }}</td>
                     <td>Paid Leave</td>
                     <td>{{ salary_slips.0.paidleave}}</td>
+                    <td></td>
                    
                   </tr>
                   <tr>
-                    <td>Total Working days<br>
+                    <td>Total Working Days<br>
                       (including holidays,<br> Week Off & PL)</td>
                     <td>{{ salary_slips.0.totalPayableDays }}</td>
                     <td>Salary<br>Deducted Leave</td>
                     <td>{{ salary_slips.0.salarydeductedleave }}</td>
+                    <td></td>
                    
                   </tr>
                   <tr>
                     <td>Incentive</td>
                     <td>Rs. {{ salary_slips.0.incentive }}</td>
-                    <td>Late Login Count</td>
+                    <td>Late Login</td>
                     <td>{{ salary_slips.0.Latelogin }}</td>
                     <td>{{ salary_slips.0.deductionamount }}</td>
                   </tr>
+                  <tr>
+                  <td>Leave Encashment</td>
+                  <td>Rs. {{ salary_slips.0.leaveencashment }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  </tr>
+
+                  <tr>
+                    <td>BYOD</td>
+                    <td>Rs. {{ salary_slips.0.byod }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    </tr>
+                  
   
                   <tr class="table-success">
                     <td colspan="3"><strong>Total Pay out</strong></td>
@@ -157,7 +175,7 @@
           
         </div>
       </div>
-      <div class="text-center">
+      <div class="text-center" style="margin-top:3%">
         <button type="button" id="download" class="btn btn-dark">Download Salary Slip</button>
         </a>
       </div>

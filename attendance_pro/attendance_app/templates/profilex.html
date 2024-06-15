@@ -6,6 +6,8 @@
 {% block content %}
 {% load static %}
 
+
+
 <div class="container-fluid px-2 px-md-4">
   <h2 class="text-center mb-4">Profile</h2>
 
@@ -34,7 +36,13 @@
             </p>
           </div>
         </div>
-        
+       
+      
+    
+         
+    
+      
+    
     
         <div class="col-lg-3 col-md-4 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
           <div class="nav-wrapper position-relative end-0">
@@ -50,22 +58,19 @@
           </div>
         </div>
       </div>
-      <div class="row">
+
+      <style>
+        .card-container {
+            background-color: #f8f9fa; /* Set your desired background color */
+            border: 1px solid #dee2e6; /* Set your desired border color */
+            border-radius: 10px; /* Adjust as needed for rounded corners */
+            padding: 15px; /* Adjust padding as needed */
+            margin-bottom: 20px; /* Adjust margin as needed */
+        }
+      </style>
         <div class="row">
-          <style>
-            .card-container {
-                background-color: #f8f9fa; /* Set your desired background color */
-                border: 1px solid #dee2e6; /* Set your desired border color */
-                border-radius: 10px; /* Adjust as needed for rounded corners */
-                padding: 15px; /* Adjust padding as needed */
-                margin-bottom: 20px; /* Adjust margin as needed */
-            }
-        </style>
-        {% comment %} <div class="btn-container text-end">
-          <a href="/editprofile/" class="btn btn-light btn-sm me-4">
-            <i class="zmdi zmdi-search"></i>Edit details
-          </a>
-        </div>  {% endcomment %}
+         
+          
           <div class="col-12 col-xl-6">
             <div class="card-container">
                 <div class="card card-plain h-100">
@@ -80,18 +85,24 @@
                     <div class="card-body p-3">
                         <hr class="horizontal gray-light my-4">
                         <ul class="list-group">
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">DEPARTMENT:</strong> &nbsp; {{a.department}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">EMAIL:</strong> &nbsp; {{a.email}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">BLOOD GROUP:</strong> &nbsp; {{a.bloodgroup}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">PHONE NUMBER:</strong> &nbsp; {{a.phonenumber}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">DATE OF BIRTH:</strong> &nbsp; {{a.dateofbirth}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">JOINING DATE:</strong> &nbsp; {{a.joiningdate}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">ADDRESS:</strong> &nbsp; {{a.address}}</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">MARITAL STATUS:</strong> &nbsp; {{a.maritalstatus}}</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">GENDER:</strong> &nbsp; {{a.gender}}</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">LOGINTIME:</strong> &nbsp; {{a.logintime}}</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">SHIFTTIME:</strong> &nbsp; {{a.shifttime}}</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">SALARY:</strong> &nbsp; {{a.salary}}</li>
 
                         </ul>
                     </div>
                 </div>
             </div>
-        </div>
+          </div>
         
           <style>
             .card-container {
@@ -101,7 +112,7 @@
                 padding: 15px; /* Adjust padding as needed */
                 margin-bottom: 20px; /* Adjust margin as needed */
             }
-        </style>
+          </style>
         
           <div class="col-12 col-xl-6">
             <div class="card-container">
@@ -120,16 +131,111 @@
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">BANK NAME:</strong> &nbsp; {{a.bankname}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">BRANCH:</strong> &nbsp; {{a.branch}}</li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">IFSC CODE:</strong> &nbsp; {{a.ifsccode}}</li>
-                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">SALARY:</strong> &nbsp; {{a.salary}}</li>
-                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">LOGINTIME:</strong> &nbsp; {{a.logintime}}</li>
+
 
                         </ul>
                     </div>
                 </div>
+
+                
             </div>
-        </div>
+
+            {% if is_manager %}
+            <div class="card-container">
+                <div class="card card-plain h-100">
+                    <div class="card-header pb-0 p-3">
+                        <div class="row">
+                            <div class="col-md-8 d-flex align-items-center">
+                                <h5 class="mb-0"><u>EMPLOYEES</u></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <hr class="horizontal gray-light my-4">
+                        <ul class="list-group">
+                            {% for employee in emp %}
+                            <li class="list-group-item">
+                                <span class="font-weight-bold">Employee ID:</span> {{ employee.employeeid }}<br>
+                                <span class="font-weight-bold">Employee Name:</span> {{ employee.name }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+          </div>
+
+
+{% if is_manager %}
+<div class="buttons col-12 justify-content-center d-flex">
+  <a  href="/employeeman/" class="btn btn-primary mx-1">Employee details</a>
+  <a  href="/leavemanager/" class="btn btn-primary mx-1">Leave Application</a>
+  <a  href="/productivitymanager/" class="btn btn-primary mx-1">Productivity</a>
+</div>
+{% endif %}
+
+
+          <div class="col-12 ">
+            <p class="text-info text-center" data-bs-toggle="modal" data-bs-target="#changePasswordModal" style="font-weight:400; cursor:pointer;">Change password<p>
+          </div>
+              <!-- Modal for changing password -->
+              <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Form for changing password -->
+                      <form id="changePasswordForm" method="POST" action="{% url 'change_password' %}">
+                        {% csrf_token %}                    
+                        <div class="mb-3">
+                          <label for="newPassword" class="form-label">New Password</label>
+                          <div style="border: 1px solid #000; border-radius: 2px; padding: 2px;">
+                              <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                          </div>
+                      </div>
+                      
+                        <div class="mb-3">
+                          <label for="confirmPassword" class="form-label">Confirm Password</label>
+                          <div style="border: 1px solid #000; border-radius: 2px; padding: 2px;">
+                          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                          </div>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Save Changes</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
       </div>
+  </div>
+
+  <div class="col-12 mt-2">
+    {% comment %} <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#resignationModal">Resignation</button> {% endcomment %}
+  </div>
+</div>
+</div>
+
+<!-- Resignation Modal -->
+{% comment %} <div class="modal fade" id="resignationModal" tabindex="-1" aria-labelledby="resignationModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="resignationModalLabel">Confirm Resignation</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to resign?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-danger">Resign</button>
     </div>
   </div>
+</div>
+</div> {% endcomment %}
 {% endblock %}
